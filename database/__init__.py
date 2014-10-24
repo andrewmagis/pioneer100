@@ -212,6 +212,16 @@ class Database(object):
         if ("DL" in temp.upper()):
             temp = 0;
 
+        # Set A/B and binary entries to integers
+        if (temp.upper == 'A'):
+            temp = 0
+        elif (temp.upper == 'B'):
+            temp = 1
+        elif (temp.upper == "NO"):
+            temp = 0
+        elif (temp.upper == "YES"):
+            temp = 1
+
         return temp;
 
     def UpdateData(self, username, round, db_date, date_ordered, data, mapping):
