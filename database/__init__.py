@@ -212,13 +212,13 @@ class Database(object):
         if ("DL" in temp.upper()):
             temp = 0
         # Set A/B and binary entries to integers
-        elif (temp.upper == 'A'):
+        elif (temp.upper() == 'A'):
             temp = 0.0
-        elif (temp.upper == 'B'):
+        elif (temp.upper() == 'B'):
             temp = 1.0
-        elif (temp.upper == "NO"):
+        elif (temp.upper() == "NO"):
             temp = 0.0
-        elif (temp.upper == "YES"):
+        elif (temp.upper() == "YES"):
             temp = 1.0
 
         return temp;
