@@ -80,6 +80,15 @@ class Participant(object):
             if (med_values.size == 2) and ((med_values[0]==1) or (med_values[1]==1)):
                 return None
 
+        # Check for CHOLESTEROL, DIABETES, or HYPERTENSION
+        if ("GLUCOSE" in measurement):
+            (med_dates, med_values, med_range) = self.GetMeasurement("MEDICATION_DIABETES")
+            print med_dates, med_values
+            if (med_values.size == 1) and (med_values == 1):
+                return None
+            if (med_values.size == 2) and ((med_values[0]==1) or (med_values[1]==1)):
+                return None
+
         if (values.size == 0):
             return None
 
