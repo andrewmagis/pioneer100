@@ -213,12 +213,16 @@ class Database(object):
             temp = 0
         # Set A/B and binary entries to integers
         elif (temp.upper() == 'A'):
+            print temp
             temp = 0.0
         elif (temp.upper() == 'B'):
+            print temp
             temp = 1.0
         elif (temp.upper() == "NO"):
+            print temp
             temp = 0.0
         elif (temp.upper() == "YES"):
+            print temp
             temp = 1.0
 
         return temp;
