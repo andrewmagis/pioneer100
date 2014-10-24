@@ -80,7 +80,7 @@ class Database(object):
         # Get the cursor
         cursor = self.db.cursor();
 
-        cursor.execute("SELECT * FROM test WHERE username = (%s) ORDER BY ROUND", (username,))
+        cursor.execute("SELECT * FROM data2 WHERE username = (%s) ORDER BY ROUND", (username,))
         result = None
         columns = [d[0] for d in cursor.description]
 
