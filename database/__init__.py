@@ -444,64 +444,16 @@ class Database(object):
         ranges = self.LoadRanges();
 
         command = ""
-        command += "CREATE TABLE data(ENTRY INT PRIMARY KEY AUTO_INCREMENT, USERNAME VARCHAR(16) NOT NULL, DATE DATETIME, ROUND INT NOT NULL"
+        command += "CREATE TABLE data3 (ENTRY INT PRIMARY KEY AUTO_INCREMENT, USERNAME VARCHAR(16) NOT NULL, DATE DATETIME, ROUND INT NOT NULL"
         count = 0
 
         for key in sorted(ranges.keys()):
-            if (key == "LDL_PATTERN_QUEST"):
-                command += ", " + key.upper().replace('-','_').replace('/','_').replace(' ', '_').replace('.','_') + " VARCHAR(1)"
-            else:
                 command += ", " + key.upper().replace('-','_').replace('/','_').replace(' ', '_').replace('.','_') + " FLOAT"
         command += ")"
-
-        #print command
 
         # First create columns
         self.Command(command)
 
-    """
-    def AddMetsToDatabase(self):
-
-        command = ""
-        command += "CREATE TABLE data(ENTRY INT PRIMARY KEY, USERNAME VARCHAR(16) NOT NULL, ROUND INT NOT NULL"
-        count = 0
-
-        for met in sorted(self.metabolites):
-            if (met == "Round"):
-                continue
-            elif (met == "Gender"):
-                command += ", " + met.upper().replace('-','_').replace('/','_').replace(' ', '_').replace('.','_') + " INT"
-            elif (met == "LDL PATTERN QUEST"):
-                command += ", " + met.upper().replace('-','_').replace('/','_').replace(' ', '_').replace('.','_') + " VARCHAR(1)"
-            else:
-                command += ", " + met.upper().replace('-','_').replace('/','_').replace(' ', '_').replace('.','_') + " FLOAT"
-        command += ")"
-        print command
-
-        # First create columns
-        self.database.Command(command)
-
-        # Next add the data
-        index = 0
-        for participant in self.participants.keys():
-            print self.participants[participant].metabolites.keys()
-            for date in sorted(self.participants[participant].metabolites.keys()):
-                command = ""
-                command += "INSERT INTO data VALUES (" + str(index) + "," + participant + "," + str(date)
-                for met in sorted(self.participants[participant].metabolites[date]):
-                    value = self.participants[participant].metabolites[date][met]
-                    if (value == "NA"):
-                        command += ',' + 'NULL'
-                    elif (met == "LDL PATTERN QUEST"):
-                        command += ",'" + value + "'"
-                    else:
-                        command += ',' + str(value)
-                command += ")"
-                index += 1
-
-                print command
-                self.database.Command(command)
-    """
 
 
 
