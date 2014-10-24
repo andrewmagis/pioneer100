@@ -124,13 +124,15 @@ class ParticipantDB(object):
 
         # Now calculate the average
         start = bins[0]
-        count = 0
+        count = 1
         for end in bins[1:]:
 
             count += 1
 
+
             # Get the subset of indices for these values
             if (count == len(bins)):
+                print "hello"
                 indices = (x['Score'] >= start) & (x['Score'] <= end)
             else:
                 indices = (x['Score'] >= start) & (x['Score'] < end)
