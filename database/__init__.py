@@ -144,7 +144,7 @@ class Database(object):
     def GetMeasurementByRound(self, measurement, username, round):
 
         cursor = self.db.cursor()
-        cursor.execute("SELECT " + measurement + " FROM data WHERE USERNAME = (%s) and ROUND = (%s)", (username,round))
+        cursor.execute("SELECT " + measurement + " FROM data3 WHERE USERNAME = (%s) and ROUND = (%s)", (username,round))
         results = [];
         for row in cursor:
             results.append(row)
@@ -163,7 +163,7 @@ class Database(object):
     def GetMeasurementByDate(self, measurement, username, date):
 
         cursor = self.db.cursor()
-        cursor.execute("SELECT " + measurement + " FROM data WHERE USERNAME = (%s) and DATE = (%s)", (username,date))
+        cursor.execute("SELECT " + measurement + " FROM data3 WHERE USERNAME = (%s) and DATE = (%s)", (username,date))
         results = [];
         for row in cursor:
             results.append(row)
