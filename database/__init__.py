@@ -258,7 +258,7 @@ class Database(object):
             # If this is None or update = True, we can set the value
             if (original_value is None) or (update):
 
-                command = "UPDATE data SET %s = '%s' WHERE USERNAME = '%s' AND DATE = '%s'"%(mapping[key], new_value, username, db_date)
+                command = "UPDATE data3 SET %s = '%s' WHERE USERNAME = '%s' AND DATE = '%s'"%(mapping[key], new_value, username, db_date)
                 self.Command(command);
 
             """
@@ -273,14 +273,14 @@ class Database(object):
         # Finally, update the date so we don't repeat ourselves
         # TODO: I'm not sure how this will affect Quest additions, so leave it off for now.
         if (update):
-            command = "UPDATE data SET %s = '%s' WHERE USERNAME = '%s' AND DATE = '%s'"%('DATE', date_ordered, username, db_date)
+            command = "UPDATE data3 SET %s = '%s' WHERE USERNAME = '%s' AND DATE = '%s'"%('DATE', date_ordered, username, db_date)
             #print command
             #self.Command(command);
 
     def InsertData(self, username, round, date_ordered, data, mapping):
 
         # Build the insertion statement
-        command = "INSERT INTO data (USERNAME,ROUND,DATE";
+        command = "INSERT INTO data3 (USERNAME,ROUND,DATE";
         for key in data.keys():
 
             if (not key in mapping):
