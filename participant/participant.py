@@ -189,7 +189,7 @@ class Participant(object):
     def GetMeasurement(self, measurement):
 
         if (not measurement in self.data):
-            raise MyError('Unknown measurement', measurement)
+            raise MyError('Unknown measurement'%(measurement))
 
         range = []
         dates = self.data['ROUND']

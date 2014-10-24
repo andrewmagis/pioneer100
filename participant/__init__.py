@@ -41,9 +41,6 @@ class ParticipantDB(object):
         round1 = []
         round2 = []
 
-        if (measurement == "LDL_PATTERN_QUEST"):
-            return
-
         for prt in sorted(self.participants.keys()):
 
             (dates, values, range) = self.participants[prt].GetMeasurement(measurement);
