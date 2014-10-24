@@ -77,7 +77,7 @@ class Participant(object):
             print med_dates, med_values
             if (med_values.size == 1) and (med_values == 1):
                 return None
-            if (med_values.size == 2) and ((med_values[0]==1) or (med_values[1]==1)):
+            if (med_values.size == 2) and (med_values[0]==1):
                 return None
 
         # Check for CHOLESTEROL, DIABETES, or HYPERTENSION
@@ -86,7 +86,7 @@ class Participant(object):
             print med_dates, med_values
             if (med_values.size == 1) and (med_values == 1):
                 return None
-            if (med_values.size == 2) and ((med_values[0]==1) or (med_values[1]==1)):
+            if (med_values.size == 2) and (med_values[0]==1):
                 return None
 
         if (values.size == 0):
