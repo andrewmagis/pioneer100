@@ -129,10 +129,8 @@ class ParticipantDB(object):
 
             count += 1
 
-
             # Get the subset of indices for these values
             if (count == len(bins)):
-                print "hello"
                 indices = (x['Score'] >= start) & (x['Score'] <= end)
             else:
                 indices = (x['Score'] >= start) & (x['Score'] < end)
