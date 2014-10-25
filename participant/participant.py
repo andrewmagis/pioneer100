@@ -71,7 +71,6 @@ class Participant(object):
         # Get the measurement
         (dates, values, range) = self.GetMeasurement(measurement)
 
-        """
         # Check for CHOLESTEROL, DIABETES, or HYPERTENSION
         if ("CHOLESTEROL" in measurement):
             (med_dates, med_values, med_range) = self.GetMeasurement("MEDICATION_CHOLESTEROL")
@@ -89,7 +88,6 @@ class Participant(object):
                 return None
             if (med_values.size == 2) and (med_values[1]==1):
                 return None
-        """
 
         if (values.size == 0):
             return None
