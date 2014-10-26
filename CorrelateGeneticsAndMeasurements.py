@@ -28,13 +28,8 @@ from participant import ParticipantDB
 
 def ArgParser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-g', '--gwas', default='./db/Alzheimers.txt', help="GWAS Catalog file")
-    parser.add_argument('-a', '--actionable', default='./db/100i.Actionable.Variants.txt')
-    parser.add_argument('-f', '--force', default=None, help="Force comparison report")
-    parser.add_argument('-c', '--comparison_reports', action='store_true', help="Create comparison reports")
-    parser.add_argument('-p', '--pharmacogenetics_reports', action='store_true', help="Create pharmacogenenetics reports");
-    parser.add_argument('-r', '--genetic_reports', action='store_true', help='Create genetics reports')
-    parser.add_argument('-d', '--disease_reports', action='store_true', help='Create disease reports')
+    parser.add_argument('-t', '--trait', required=True, default=None, help="Trait")
+    parser.add_argument('-m', '--measurement', required=True, default=None, help="Measurement")
     args = parser.parse_args()
     return args
 
