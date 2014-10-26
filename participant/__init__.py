@@ -110,7 +110,7 @@ class ParticipantDB(object):
         x = np.array(data, dtype=[('Round1', float), ('Round2', float), ('Score', float)])
 
         # Start by calculating the correlation
-        (R, P) = stats.pearsonr(x['Round2'], x['Score'])
+        (R, P) = stats.pearsonr(x['Round1'], x['Score'])
         print R, P
 
         # Sort by the score column
@@ -136,7 +136,7 @@ class ParticipantDB(object):
                 indices = (x['Score'] >= start) & (x['Score'] < end)
 
             # Get the values of round1 for these indices
-            subset = x['Round2'][indices]
+            subset = x['Round1'][indices]
             subind = x['Score'][indices]
 
             # Calculate the mean and stdev of these values
