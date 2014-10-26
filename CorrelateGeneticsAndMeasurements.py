@@ -100,8 +100,12 @@ def main(parser):
     # Load the trait
     #participants.LoadTrait('Fasting glucose-related traits')
 
+    print "Trait: %s"%(parser.trait)
+    print "Measurement: %s"%(parser.measurement)
+    participants.MetaboliteTraitCorrelation(parser.trait, parser.measurement)
+
     #participants.MetaboliteTraitCorrelation('Fasting glucose-related traits', 'GLUCOSE_QUEST')
-    participants.MetaboliteTraitCorrelation('Homocysteine levels', 'HOMOCYSTEINE_CARDIOVASCULAR_QUEST')
+    #participants.MetaboliteTraitCorrelation('Homocysteine levels', 'HOMOCYSTEINE_CARDIOVASCULAR_QUEST')
     #participants.MetaboliteTraitCorrelation('Cholesterol, total', 'TOTAL_CHOLESTEROL')
     #participants.MetaboliteTraitCorrelation('LDL Cholesterol', 'LDL_CHOLESTEROL')
     #participants.MetaboliteTraitCorrelation('Vitamin D insufficiency', 'VITAMIN_D')
