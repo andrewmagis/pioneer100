@@ -21,7 +21,9 @@ class Trait:
 
         for result in results:
             variant = Variant(*result)
-            self.AddVariant(variant)
+
+            if (variant.pval < 1e-10):
+                self.AddVariant(variant)
 
     def AddVariant(self, variant):
 
