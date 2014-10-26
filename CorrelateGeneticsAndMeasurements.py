@@ -106,10 +106,10 @@ def main(parser):
     #participants.LoadTrait('Fasting glucose-related traits')
 
     #participants.MetaboliteTraitCorrelation('Fasting glucose-related traits', 'GLUCOSE_QUEST')
-    #participants.MetaboliteTraitCorrelation('Homocysteine levels', 'HOMOCYSTEINE_CARDIOVASCULAR_QUEST')
+    participants.MetaboliteTraitCorrelation('Homocysteine levels', 'HOMOCYSTEINE_CARDIOVASCULAR_QUEST')
     #participants.MetaboliteTraitCorrelation('Cholesterol, total', 'TOTAL_CHOLESTEROL')
     #participants.MetaboliteTraitCorrelation('LDL Cholesterol', 'LDL_CHOLESTEROL')
-    participants.MetaboliteTraitCorrelation('Vitamin D insufficiency', 'VITAMIN_D')
+    #participants.MetaboliteTraitCorrelation('Vitamin D insufficiency', 'VITAMIN_D')
 
     # Add the GWAS variants for participants
     #participants.AddGWASVariants()
