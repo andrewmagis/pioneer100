@@ -136,7 +136,7 @@ class ParticipantDB(object):
                 indices = (x['Score'] >= start) & (x['Score'] < end)
 
             # Get the values of round1 for these indices
-            subset = x['Round2'][indices]
+            subset = x['Round1'][indices]
             subind = x['Score'][indices]
 
             # Calculate the mean and stdev of these values
