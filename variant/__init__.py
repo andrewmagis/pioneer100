@@ -14,8 +14,8 @@ from errors import MyError
 
 class Variant(object):
 
-    def __init__(self, entry=None, rsid=None, chr=None, start=None, end=None, gene=None, vc=None, assembly=None, pubmed=None, allele=None,
-                 allele_is_reference=None, inheritance=None, effect_type=None, haplotype=None, odds_beta=None, unit=None, pval=None, trait=None,
+    def __init__(self, entry=None, trait=None, rsid=None, chr=None, start=None, end=None, gene=None, vc=None, assembly=None, pubmed=None, allele=None,
+                 allele_is_reference=None, inheritance=None, effect_type=None, haplotype=None, odds_beta=None, unit=None, pval=None,
                  interaction=None, intervention=None, gender=None, ancestry=None, note_generic=None, note_effect0=None, note_effect1=None, note_effect2=None):
 
         self.rsid = rsid
@@ -367,12 +367,12 @@ class Variant(object):
             print "Variant %s already exists for trait %s"%(self.rsid, self.trait)
             return
 
-        command = "INSERT INTO variant (rsid, chr, start, end, gene, vc, assembly, pubmed, allele, allele_is_reference, inheritance, effect_type, haplotype, " \
-                  "odds_beta, unit, pval, trait, interaction, intervention, gender, ancestry, note_generic, note_effect0, note_effect1, note_effect2) VALUES " \
+        command = "INSERT INTO variant (rsid, trait, chr, start, end, gene, vc, assembly, pubmed, allele, allele_is_reference, inheritance, effect_type, haplotype, " \
+                  "odds_beta, unit, pval, interaction, intervention, gender, ancestry, note_generic, note_effect0, note_effect1, note_effect2) VALUES " \
                   "(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
 
-        data = (self.rsid, self.chr, self.start, self.end, self.gene, self.vc, self.assembly, self.pubmed, self.allele, self.allele_is_reference, self.inheritance, self.effect_type,
-                self.haplotype, self.odds_beta, self.unit, self.pval, self.trait, self.interaction, self.intervention, self.gender, self.ancestry,
+        data = (self.rsid, self.trait, self.chr, self.start, self.end, self.gene, self.vc, self.assembly, self.pubmed, self.allele, self.allele_is_reference, self.inheritance, self.effect_type,
+                self.haplotype, self.odds_beta, self.unit, self.pval, self.interaction, self.intervention, self.gender, self.ancestry,
                 self.note_generic, self.note_effect0, self.note_effect1, self.note_effect2)
 
         cursor = database.GetCursor()
@@ -382,10 +382,10 @@ class Variant(object):
     def CreateTable(self, database):
 
         command = ""
-        command += "CREATE TABLE variant (entry INT PRIMARY KEY AUTO_INCREMENT, rsid VARCHAR(16) NOT NULL, chr VARCHAR(16) NOT NULL, start INT NOT NULL, \
+        command += "CREATE TABLE variant (entry INT PRIMARY KEY AUTO_INCREMENT, rsid VARCHAR(16) NOT NULL, trait VARCHAR(512) NOT NULL, chr VARCHAR(16) NOT NULL, start INT NOT NULL, \
                     end INT NOT NULL, gene VARCHAR(512), vc VARCHAR(16) NOT NULL, assembly VARCHAR(16) NOT NULL, pubmed VARCHAR(512) NOT NULL, allele VARCHAR(512) NOT NULL, \
                     allele_is_reference BOOLEAN NOT NULL, inheritance VARCHAR(16), effect_type VARCHAR(16) NOT NULL, haplotype INT, odds_beta FLOAT NOT NULL, unit VARCHAR(16), \
-                    pval DOUBLE NOT NULL, trait VARCHAR(512) NOT NULL,  interaction VARCHAR(512), intervention VARCHAR(512), gender VARCHAR(16), ancestry VARCHAR(128), \
+                    pval DOUBLE NOT NULL,  interaction VARCHAR(512), intervention VARCHAR(512), gender VARCHAR(16), ancestry VARCHAR(128), \
                     note_generic TEXT, note_effect0 TEXT, note_effect1 TEXT, note_effect2 TEXT)"
 
         # First create columns
