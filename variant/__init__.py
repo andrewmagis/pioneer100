@@ -365,6 +365,7 @@ class Variant(object):
 
         if (self.VariantExistsForTrait(database)):
             print "Variant %s already exists for trait %s"%(self.rsid, self.trait)
+            return
 
         command = "INSERT INTO variant (rsid, chr, start, end, gene, vc, assembly, pubmed, allele, allele_is_reference, inheritance, effect_type, haplotype, " \
                   "odds_beta, unit, pval, trait, interaction, intervention, gender, ancestry, note_generic, note_effect0, note_effect1, note_effect2) VALUES " \
@@ -389,3 +390,4 @@ class Variant(object):
 
         # First create columns
         database.Command(command)
+        database.Commit()
