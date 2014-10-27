@@ -148,7 +148,7 @@ class ParticipantDB(object):
 
             start = end
 
-
+        print x['Username']
         print x['Round1']
         print x['Round2']
         print x['Score']
