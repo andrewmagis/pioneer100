@@ -101,6 +101,10 @@ class ParticipantDB(object):
         data = []
 
         for key in sorted(self.participants.keys()):
+
+            if (self.participants[key].gender != 'M'):
+                continue
+
             result = self.participants[key].MetaboliteTraitCorrelation(trait, measurement)
 
             if (not result is None):
