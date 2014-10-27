@@ -253,8 +253,8 @@ def main(parser):
 
                 entry = None
                 allele_is_reference = None
-                variant = Variant(entry, rsid, chr, start, end, reported_genes, vc, assembly, pubmed, risk_allele, allele_is_reference, inheritance,
-                                  effect_type, haplotype, str(odds_beta), unit, pval, trait, interaction, intervention, gender, ancestry, note_generic,
+                variant = Variant(entry, rsid, trait, chr, start, end, reported_genes, vc, assembly, pubmed, risk_allele, allele_is_reference, inheritance,
+                                  effect_type, haplotype, str(odds_beta), unit, pval, interaction, intervention, gender, ancestry, note_generic,
                                   note_effect0, note_effect1, note_effect2)
 
                 (is_valid, message) = variant.Validate(dbsnp, genome)
