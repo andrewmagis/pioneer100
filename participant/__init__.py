@@ -106,6 +106,8 @@ class ParticipantDB(object):
             if (not result is None):
                 data.append(result)
 
+            print "Processed %s"%(key)
+
         # Build numpy structured array of scores
         x = np.array(data, dtype=[('Username', np.str, 10), ('Round1', float), ('Round2', float), ('Score', float)])
 
