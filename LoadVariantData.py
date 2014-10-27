@@ -87,7 +87,7 @@ def main(parser):
                 journal = tokens[4].strip()
                 link = tokens[5].strip()
                 title = tokens[6].strip()
-                trait = tokens[7].strip().strip('"').strip("'")
+                trait = tokens[7].strip().strip('"').strip("'").replace('"', '').replace("'", '')
                 initial_sample_size = tokens[8].strip()
                 replication_sample_size = tokens[9].strip()
                 region = tokens[10].strip()
