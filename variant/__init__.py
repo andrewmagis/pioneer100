@@ -347,11 +347,24 @@ class Variant(object):
         if (not self.vcf is None):
             self.vcf.Print()
 
+    def VariantExistsForTrait(self, database):
+
+        # Get a result from the database
+        cursor = database.GetCursor();
+        cursor.execute("SELECT * FROM variant WHERE rsid = (%s) AND trait = (%s)", (self.rsid,self.trait))
+
+        for result in cursor:
+            return True
+        return False
+
     def InsertData(self, database):
 
         # Make sure this variant is validated before we do anything with the database
         if (self.allele_is_reference is None):
             raise MyError("[%s] Variant has not been validated"%(self.rsid))
+
+        if (self.VariantExistsForTrait(database)):
+            print "Variant %s already exists for trait %s"%(self.rsid, self.trait)
 
         command = "INSERT INTO variant (rsid, chr, start, end, gene, vc, assembly, pubmed, allele, allele_is_reference, inheritance, effect_type, haplotype, " \
                   "odds_beta, unit, pval, trait, interaction, intervention, gender, ancestry, note_generic, note_effect0, note_effect1, note_effect2) VALUES " \
