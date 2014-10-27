@@ -14,7 +14,7 @@ from errors import MyError
 
 class Variant(object):
 
-    def __init__(self, entry=None, trait=None, rsid=None, chr=None, start=None, end=None, gene=None, vc=None, assembly=None, pubmed=None, allele=None,
+    def __init__(self, entry=None, rsid=None, trait=None, chr=None, start=None, end=None, gene=None, vc=None, assembly=None, pubmed=None, allele=None,
                  allele_is_reference=None, inheritance=None, effect_type=None, haplotype=None, odds_beta=None, unit=None, pval=None,
                  interaction=None, intervention=None, gender=None, ancestry=None, note_generic=None, note_effect0=None, note_effect1=None, note_effect2=None):
 
