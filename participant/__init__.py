@@ -100,7 +100,7 @@ class ParticipantDB(object):
 
         data = []
 
-        for key in self.participants.keys():
+        for key in sorted(self.participants.keys()):
             result = self.participants[key].MetaboliteTraitCorrelation(trait, measurement)
 
             if (not result is None):
