@@ -85,8 +85,8 @@ def main(parser):
     for prt in x['Username']:
 
         # Get the compliance for vitamin D and supplementation level
-        compliance = participants[prt].compliance['vitD_compliance']
-        supplementation = participants[prt].compliance['vitD_supplementation']
+        compliance = participants.participants[prt].compliance['vitD_compliance']
+        supplementation = participants.participants[prt].compliance['vitD_supplementation']
         print prt, compliance, supplementation
 
 if __name__ == "__main__":
