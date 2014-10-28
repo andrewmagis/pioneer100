@@ -81,6 +81,10 @@ def main(parser):
 
         start = end
 
+    # Now we get the supplementation level for each of these people
+    for username in x['Username']:
+        print username
+
 
 if __name__ == "__main__":
     main(ArgParser())
