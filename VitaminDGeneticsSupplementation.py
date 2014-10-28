@@ -84,14 +84,14 @@ def main(parser):
     data = []
 
     # Now we get the supplementation level for each of these people
-    for prt in x['Username']:
+    for (prt, round1, round2, score) in x:
 
         # Get the compliance for vitamin D and supplementation level
         compliance = participants.participants[prt].compliance['vitD_compliance']
         amount = participants.participants[prt].compliance['vitD_amount']
-        data.append((x[prt]['Username'], prt, compliance, amount))
+        data.append((prt, round1, round2, score, compliance, amount))
 
-    x = np.array(data, dtype=[('Username', np.str, 10), ('Username2', np.str, 10), ('Compliance', float), ('Amount', float)])
+    x = np.array(data, dtype=[('Username', np.str, 10), ('Round1', float), ('Round2', float, 10), ('Compliance', float), ('Amount', float)])
     print x
 
 if __name__ == "__main__":
