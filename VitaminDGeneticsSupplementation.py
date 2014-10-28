@@ -82,9 +82,12 @@ def main(parser):
         start = end
 
     # Now we get the supplementation level for each of these people
-    for username in x['Username']:
-        print username
+    for prt in x['Username']:
 
+        # Get the compliance for vitamin D and supplementation level
+        compliance = self.participants[prt].compliance['vitD_compliance']
+        supplementation = self.participants[prt].compliance['vitD_supplementation']
+        print prt, compliance, supplementation
 
 if __name__ == "__main__":
     main(ArgParser())
