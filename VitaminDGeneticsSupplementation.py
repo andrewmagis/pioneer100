@@ -81,13 +81,18 @@ def main(parser):
 
         start = end
 
+    data = []
+
     # Now we get the supplementation level for each of these people
     for prt in x['Username']:
 
         # Get the compliance for vitamin D and supplementation level
         compliance = participants.participants[prt].compliance['vitD_compliance']
         amount = participants.participants[prt].compliance['vitD_amount']
-        print prt, compliance, amount
+        data.append((prt, compliance, amount))
+
+    x = np.array(data, dtype=[('Username', np.str, 10), ('Compliance', float), ('Round2', float), ('Amount', float)])
+    print x
 
 if __name__ == "__main__":
     main(ArgParser())
