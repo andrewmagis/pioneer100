@@ -104,6 +104,25 @@ def main(parser):
 
     print dat1000.size, dat2000.size, dat3000.size, dat4000.size, dat5000.size, dat6000.size, dat10000.size
 
+    d4000 = []
+
+    # Start with 4000
+    for (prt, round1, round2, score, compliance, amount) in dat4000:
+
+        if (compliance == 0):
+            continue
+        if (np.isnan(round1)):
+            continue
+        if (np.isnan(round2)):
+            continue
+
+        d4000.append((prt, round2-round1, score, amount))
+
+
+    x4000 = np.array(d4000, dtype=[('Username', np.str, 10), ('Diff', float), ('Score', float), ('Amount', float)])
+    print x4000
+
+
 
 if __name__ == "__main__":
     main(ArgParser())
