@@ -2,14 +2,7 @@
 
 # System imports
 import time, sys, argparse
-
-# PDF reports
-from pdf import GeneticsReport
-
-# Import the genetics processing library
-from gwasdb import GwasDB
-from actionabledb import ActionableDB
-from pharmacogenomicsdb import PharmacogenomicsDB
+import numpy as np
 
 # Import genome class
 from genome import Genome
@@ -21,7 +14,7 @@ from clinvar import Clinvar
 # Import the database class
 from database import Database
 
-from trait import Trait
+
 
 # Import the individual participant
 from participant import ParticipantDB
