@@ -50,12 +50,13 @@ def main(parser):
     # Create the participant DB from the database
     participants = ParticipantDB(database, None, None, None, clinvar_db, dbsnp)
 
-    # Load the trait
-    #participants.LoadTrait('Fasting glucose-related traits')
-
     print "Trait: %s"%(parser.trait)
     print "Measurement: %s"%(parser.measurement)
-    participants.MetaboliteTraitCorrelation(parser.trait, parser.measurement)
+
+    # Loop over all the participants, and get the R1 and R2 metabolite + genetic score
+    data = participants.MetaboliteTraitCorrelation('Vitamin D insufficiency', 'VITAMIN_D')
+    print data
+
 
 if __name__ == "__main__":
     main(ArgParser())
