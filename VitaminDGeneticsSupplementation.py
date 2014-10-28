@@ -91,7 +91,7 @@ def main(parser):
         amount = participants.participants[prt].compliance['vitD_amount']
         data.append((prt, compliance, amount))
 
-    x = np.array(data, dtype=[('Username', np.str, 10), ('Compliance', float), ('Round2', float), ('Amount', float)])
+    x = np.array(data, dtype=[('Username', np.str, 10), ('Compliance', float), ('Amount', float)])
     print x
 
 if __name__ == "__main__":
