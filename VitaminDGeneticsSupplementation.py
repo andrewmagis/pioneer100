@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # System imports
-import time, sys, argparse
+import time, sys, argparse, math
 import numpy as np
 
 # Import genome class
