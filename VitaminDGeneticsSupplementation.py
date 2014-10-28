@@ -122,6 +122,8 @@ def main(parser):
     x4000 = np.array(d4000, dtype=[('Username', np.str, 10), ('Diff', float), ('Score', float), ('Amount', float)])
     print x4000
 
+    (R, P) = stats.pearsonr(x4000['Diff'], x4000['Score'])
+    print R, P
 
 
 if __name__ == "__main__":
