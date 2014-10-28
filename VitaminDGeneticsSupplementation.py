@@ -94,8 +94,15 @@ def main(parser):
     x = np.array(data, dtype=[('Username', np.str, 10), ('Round1', float), ('Round2', float), ('Score', float), ('Compliance', float), ('Amount', float)])
 
     # The next is to select subsets of the data based on the supplementation level
+    dat1000 = x[:][x['Amount']==1000]
+    dat2000 = x[:][x['Amount']==2000]
+    dat3000 = x[:][x['Amount']==3000]
+    dat4000 = x[:][x['Amount']==4000]
+    dat5000 = x[:][x['Amount']==5000]
+    dat6000 = x[:][x['Amount']==6000]
     dat10000 = x[:][x['Amount']==10000]
-    print dat10000
+
+    print dat1000.size, dat2000.size, dat3000.size, dat4000.size, dat5000.size, dat6000.size, dat10000.size
 
 
 if __name__ == "__main__":
