@@ -156,12 +156,8 @@ class ParticipantDB(object):
         print x['Round2']
         print x['Score']
 
-        # Build histogram
-        #np.histogram()
-
-        #print round1
-        #print round2
-        #print scores
+        # Return the array
+        return x
 
     def AddActionableVariants(self):
         for key in sorted(self.participants.keys()):
