@@ -86,8 +86,8 @@ def main(parser):
 
         # Get the compliance for vitamin D and supplementation level
         compliance = participants.participants[prt].compliance['vitD_compliance']
-        supplementation = participants.participants[prt].compliance['vitD_supplementation']
-        print prt, compliance, supplementation
+        amount = participants.participants[prt].compliance['vitD_amount']
+        print prt, compliance, amount
 
 if __name__ == "__main__":
     main(ArgParser())
