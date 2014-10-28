@@ -3,6 +3,7 @@
 # System imports
 import time, sys, argparse, math
 import numpy as np
+from scipy import stats
 
 # Import genome class
 from genome import Genome
