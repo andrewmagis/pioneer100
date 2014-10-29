@@ -22,8 +22,8 @@ from participant import ParticipantDB
 
 def ArgParser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-t', '--trait', required=True, default=None, help="Trait")
-    parser.add_argument('-m', '--measurement', required=True, default=None, help="Measurement")
+    parser.add_argument('-t', '--trait', required=True, default="Vitamin D", help="Trait")
+    parser.add_argument('-m', '--measurement', required=True, default="VITAMIN_D", help="Measurement")
     args = parser.parse_args()
     return args
 
