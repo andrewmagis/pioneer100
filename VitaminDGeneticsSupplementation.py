@@ -108,7 +108,7 @@ def main(parser):
     d4000 = []
 
     # Start with 4000
-    for (prt, round1, round2, score, compliance, amount) in dat6000:
+    for (prt, round1, round2, score, compliance, amount) in dat10000:
 
         if (compliance == 0):
             continue
