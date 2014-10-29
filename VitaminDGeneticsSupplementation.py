@@ -48,7 +48,7 @@ def main(parser):
     print "Measurement: %s"%(parser.measurement)
 
     # Loop over all the participants, and get the R1 and R2 metabolite + genetic score
-    x = participants.MetaboliteTraitCorrelation('Vitamin D insufficiency', 'VITAMIN_D')
+    x = participants.MetaboliteTraitCorrelation('Vitamin D', 'VITAMIN_D')
 
     # Generate histogram of the score column
     (probability, bins) = np.histogram(x['Score'], bins=5)
