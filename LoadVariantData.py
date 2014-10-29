@@ -82,6 +82,22 @@ def main(parser):
                     haplotype = None
                 if (len(unit.strip())==0):
                     unit = None
+                if (len(interaction.strip())==0):
+                    interaction = None
+                if (len(intervention.strip())==0):
+                    intervention = None
+                if (len(gender.strip())==0):
+                    gender = None
+                if (len(ancestry.strip())==0):
+                    ancestry = None
+                if (len(note_generic.strip())==0):
+                    note_generic = None
+                if (len(note_effect0.strip())==0):
+                    note_effect0 = None
+                if (len(note_effect1.strip())==0):
+                    note_effect1 = None
+                if (len(note_effect2.strip())==0):
+                    note_effect2 = None
 
                 variant = Variant(entry, rsid, trait, chr, start, end, reported_genes, vc, assembly, pubmed, allele, allele_is_reference, inheritance,
                                   effect_type, haplotype, str(odds_beta), unit, pval, interaction, intervention, gender, ancestry, note_generic,
