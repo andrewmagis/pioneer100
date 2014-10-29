@@ -48,7 +48,7 @@ def main(parser):
                 chr = tokens[2].strip()
                 start = int(tokens[3].strip())
                 end = int(tokens[4].strip())
-                reported_genes = ','.join([x.strip() for x in tokens[13].strip('"').split(',')])
+                reported_genes = ','.join([x.strip() for x in tokens[5].strip('"').split(',')])
                 vc = tokens[6].strip()
                 assembly = tokens[7].strip()
                 pubmed = tokens[8].strip().strip('"')
