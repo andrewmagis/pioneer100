@@ -75,49 +75,6 @@ def main(parser):
                 except:
                     raise MyError("[%s] No odds ratio or beta coefficient"%(rsid))
 
-                # Before we insert, we must validate
-                if (len(confidence95.strip()) == 0):
-                    raise MyError("[%s] No confidence interval"%(rsid))
-
-                tokens = confidence95.split(']')
-                range = tokens[0] + ']'
-                direction = "None"
-
-                if (len(tokens) == 1):
-                    raise MyError("[%s] Invalid confidence interval"%(rsid))
-                elif (len(tokens) == 2):
-                    temp = tokens[1].strip()
-                    if (len(temp) == 0):
-                        unit = None
-                    else:
-                        # Get the unit/direction
-                        unit = tokens[1].strip();
-                else:
-                    raise MyError("[%s] Cannot parse confidence95 field: %s"%(rsid, confidence95))
-
-                # Get the increase or decrease
-                direction = None
-                if (not unit is None):
-
-                    if ("increase" in unit):
-                        direction = 1
-                        unit = unit.strip('increase').strip()
-                    elif ("higher" in unit):
-                        direction = 1
-                        unit = unit.strip('higher').strip()
-                    elif ("decrease" in unit):
-                        direction = -1
-                        unit = unit.strip('decrease').strip()
-                    elif ("lower" in unit):
-                        direction = -1
-                        unit = unit.strip('lower').strip()
-
-                # If this is a beta coefficient but there is no direction
-                if (not unit is None) and (direction is None):
-                    raise MyError("[%s] No direction for beta coefficient: %s"%(rsid, self.confidence95))
-                elif (not unit is None):
-                    odds_beta *= direction
-
                 entry = None
                 allele_is_reference = None
                 variant = Variant(entry, rsid, trait, chr, start, end, reported_genes, vc, assembly, pubmed, risk_allele, allele_is_reference, inheritance,
