@@ -126,6 +126,10 @@ def main(parser):
     (R, P) = stats.pearsonr(x4000['Diff'], x4000['Score'])
     print R, P
 
+    print x4000['Username']
+    print x4000['Diff']
+    print x4000['Score']
+
 
 if __name__ == "__main__":
     main(ArgParser())
