@@ -44,33 +44,30 @@ def main(parser):
                     continue
 
                 rsid = tokens[0].strip()
-                gene = tokens[1].strip().strip('"')
+                trait = tokens[1].strip()
                 chr = tokens[2].strip()
                 start = int(tokens[3].strip())
                 end = int(tokens[4].strip())
-                vc = tokens[5].strip()
-                gmaf = tokens[6].strip()
+                gene = tokens[5].strip().strip('"')
+                vc = tokens[6].strip()
                 assembly = tokens[7].strip()
                 pubmed = tokens[8].strip().strip('"')
                 allele = tokens[9].strip()
-                inheritance = tokens[10].strip()
-                effect_type = tokens[11].strip()
-                blah = tokens[12].strip()
-                risk_aa = tokens[13].strip()
+                allele_is_reference = tokens[10].strip()
+                inheritance = tokens[11].strip()
+                effect_type = tokens[12].strip()
+                haplotype = tokens[13].strip()
                 odds_beta = tokens[14].strip()
                 unit = tokens[15].strip()
                 pval = tokens[16].strip()
-                in_gwas = tokens[17].strip()
-                trait = tokens[18].strip()
-                interaction = tokens[19].strip()
-                intervention = tokens[20].strip()
-                gender = tokens[21].strip()
-                note_generic = tokens[22].strip().strip('"')
-                haplotype = None
-                ancestry = None
-                note_effect0 = None
-                note_effect1 = None
-                note_effect2 = None
+                interaction = tokens[17].strip()
+                intervention = tokens[18].strip()
+                gender = tokens[19].strip()
+                ancestry = tokens[20].strip()
+                note_generic = tokens[21].strip().strip('"')
+                note_effect0 = tokens[22].strip().strip('"')
+                note_effect1 = tokens[23].strip().strip('"')
+                note_effect2 = tokens[24].strip().strip('"')
 
                 # If there is no odds ratio or beta coefficient
                 try:
