@@ -44,7 +44,7 @@ def main(parser):
                     continue
 
                 rsid = tokens[0].strip()
-                trait = tokens[7].strip().strip('"').strip("'").replace('"', '').replace("'", '')
+                trait = tokens[1].strip().strip('"').strip("'").replace('"', '').replace("'", '')
                 chr = tokens[2].strip()
                 start = int(tokens[3].strip())
                 end = int(tokens[4].strip())
