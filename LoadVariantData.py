@@ -80,6 +80,8 @@ def main(parser):
                     allele_is_reference = None
                 if (len(haplotype.strip())==0):
                     haplotype = None
+                if (len(unit.strip())==0):
+                    unit = None
 
                 variant = Variant(entry, rsid, trait, chr, start, end, reported_genes, vc, assembly, pubmed, allele, allele_is_reference, inheritance,
                                   effect_type, haplotype, str(odds_beta), unit, pval, interaction, intervention, gender, ancestry, note_generic,
