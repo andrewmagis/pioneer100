@@ -112,6 +112,8 @@ def main(parser):
 
         if (compliance == 0):
             continue
+        if (np.isnan(amount)):
+            continue
         if (np.isnan(round1)):
             continue
         if (np.isnan(round2)):
