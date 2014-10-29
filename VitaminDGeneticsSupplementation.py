@@ -117,19 +117,17 @@ def main(parser):
         if (np.isnan(round2)):
             continue
 
-        d4000.append((prt, round2-round1, score, amount))
+        d4000.append((prt, round1, round2, round2-round1, score, amount))
 
 
-    x4000 = np.array(d4000, dtype=[('Username', np.str, 10), ('Diff', float), ('Score', float), ('Amount', float)])
+    x4000 = np.array(d4000, dtype=[('Username', np.str, 10), ('Round1', float), ('Round2', float), ('Diff', float), ('Score', float), ('Amount', float)])
     print x4000
 
     (R, P) = stats.pearsonr(x4000['Diff'], x4000['Score'])
     print R, P
 
-    print x4000['Username']
-    print x4000['Diff']
-    print x4000['Score']
-
+    for (username, round1, round2, diff, score, amount) in x4000:
+        print username, round1, round2, diff, score, amount
 
 if __name__ == "__main__":
     main(ArgParser())
