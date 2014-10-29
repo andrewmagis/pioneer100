@@ -44,11 +44,11 @@ def main(parser):
                     continue
 
                 rsid = tokens[0].strip()
-                trait = tokens[1].strip()
+                trait = tokens[7].strip().strip('"').strip("'").replace('"', '').replace("'", '')
                 chr = tokens[2].strip()
                 start = int(tokens[3].strip())
                 end = int(tokens[4].strip())
-                gene = tokens[5].strip().strip('"')
+                reported_genes = ','.join([x.strip() for x in tokens[13].strip('"').split(',')])
                 vc = tokens[6].strip()
                 assembly = tokens[7].strip()
                 pubmed = tokens[8].strip().strip('"')
