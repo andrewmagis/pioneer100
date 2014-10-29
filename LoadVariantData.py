@@ -40,6 +40,9 @@ def main(parser):
             for line in f:
 
                 tokens = line.split('\t')
+                if (tokens[0] == 'rsid'):
+                    continue
+
                 rsid = tokens[0].strip()
                 gene = tokens[1].strip().strip('"')
                 chr = tokens[2].strip()
