@@ -120,7 +120,7 @@ class Participant(object):
     def LoadTrait(self, trait, pvalue, suppress_errors):
 
         # Create the trait and pull the required variants from the database
-        trait_object = Trait(trait)
+        trait_object = Trait(trait, pvalue)
 
         # Pull the required variant information from the database
         trait_object.Load(self.database)
