@@ -30,39 +30,9 @@ def ArgParser():
     parser = argparse.ArgumentParser()
     parser.add_argument('-t', '--trait', required=True, default=None, help="Trait")
     parser.add_argument('-m', '--measurement', required=True, default=None, help="Measurement")
+    parser.add_argument('-p', '--pvalue', required=False, default=1, type=float, help="Pvalue")
     args = parser.parse_args()
     return args
-
-
-class DBSnpEntry:
-    def __init__(self, line):
-        tokens = line.split('\t')
-        self.chr = tokens[0].strip()
-        self.pos = tokens[1].strip()
-        self.dbsnp = tokens[2].strip()
-        self.ref = tokens[3].strip()
-        self.alt = tokens[4].strip()
-
-    def Print(self):
-        print self.chr, self.pos, self.dbsnp, self.ref, self.alt;
-
-
-class Gene:
-    def __init__(self, line):
-        tokens = line.split('\t');
-        self.chr = tokens[0];
-        self.source = tokens[1];
-        self.feature = tokens[2];
-        self.start = int(tokens[3]);
-        self.end = int(tokens[4]);
-        self.strand = tokens[6];
-
-
-def BuildGeneticReports(participants):
-    for key in participants.participants.keys():
-        report = GeneticsReport(participants.participants[key]);
-        report.go();
-
 
 def main(parser):
 
@@ -90,7 +60,7 @@ def main(parser):
 
     print "Trait: %s"%(parser.trait)
     print "Measurement: %s"%(parser.measurement)
-    participants.MetaboliteTraitCorrelation(parser.trait, parser.measurement)
+    participants.MetaboliteTraitCorrelation(parser.trait, parser.measurement, parser.pvalue)
 
     #participants.MetaboliteTraitCorrelation('Fasting glucose-related traits', 'GLUCOSE_QUEST')
     #participants.MetaboliteTraitCorrelation('Homocysteine levels', 'HOMOCYSTEINE_CARDIOVASCULAR_QUEST')
