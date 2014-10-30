@@ -181,10 +181,10 @@ class ParticipantDB(object):
 
             print mean, stderr
 
-        print x['Username']
-        print x['Round1']
-        print x['Round2']
-        print x['Score']
+        #print x['Username']
+        #print x['Round1']
+        #print x['Round2']
+        #print x['Score']
 
         # Return the array
         return x
