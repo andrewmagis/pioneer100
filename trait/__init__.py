@@ -3,7 +3,7 @@ from variant import Variant
 
 class Trait:
 
-    def __init__(self, trait):
+    def __init__(self, trait, pvalue):
         self.trait = trait
         self.variants = {}
         self.scores = []
@@ -13,6 +13,7 @@ class Trait:
         self.counts = []
         self.count = 0
         self.score = None
+        self.pvalue = float(pvalue)
 
     def Load(self, database):
 
@@ -21,7 +22,8 @@ class Trait:
 
         for result in results:
             variant = Variant(*result)
-            self.AddVariant(variant)
+            if (variant.pvalue <= self.pvalue):
+                self.AddVariant(variant)
 
     def AddVariant(self, variant):
 
