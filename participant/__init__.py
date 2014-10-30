@@ -91,7 +91,7 @@ class ParticipantDB(object):
         for key in self.participants.keys():
             self.participants[key].LoadTrait(trait, suppress_errors)
 
-    def MetaboliteTraitCorrelation(self, trait, measurement, suppress_errors=True):
+    def MetaboliteTraitCorrelation(self, trait, measurement, pvalue, suppress_errors=True):
 
         usernames = []
         round1 = []
@@ -102,7 +102,7 @@ class ParticipantDB(object):
 
         for key in sorted(self.participants.keys()):
 
-            result = self.participants[key].MetaboliteTraitCorrelation(trait, measurement)
+            result = self.participants[key].MetaboliteTraitCorrelation(trait, measurement, pvalue)
 
             if (not result is None):
                 data.append(result)
