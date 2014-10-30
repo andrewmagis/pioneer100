@@ -22,8 +22,8 @@ class Trait:
 
         for result in results:
             variant = Variant(*result)
-            #if (float(variant.pval) <= float(self.pvalue)):
-            self.AddVariant(variant)
+            if (float(variant.pval) <= float(self.pvalue)):
+                self.AddVariant(variant)
 
     def AddVariant(self, variant):
 
