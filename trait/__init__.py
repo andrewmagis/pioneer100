@@ -13,7 +13,7 @@ class Trait:
         self.counts = []
         self.count = 0
         self.score = None
-        self.pvalue = float(pvalue)
+        self.pvalue = pvalue
 
     def Load(self, database):
 
@@ -22,7 +22,7 @@ class Trait:
 
         for result in results:
             variant = Variant(*result)
-            if (variant.pvalue <= self.pvalue):
+            if (float(variant.pval) <= float(self.pvalue)):
                 self.AddVariant(variant)
 
     def AddVariant(self, variant):
