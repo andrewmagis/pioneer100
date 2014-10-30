@@ -60,10 +60,10 @@ class Participant(object):
         # Get the compliance data
         self.compliance = self.database.GetCompliance(self.username)
 
-    def MetaboliteTraitCorrelation(self, trait, measurement):
+    def MetaboliteTraitCorrelation(self, trait, measurement, pvalue):
 
         # Load the trait
-        self.LoadTrait(trait, True)
+        self.LoadTrait(trait, pvalue, True)
 
         if (not trait in self.traits):
             return None
