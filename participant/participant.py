@@ -117,7 +117,7 @@ class Participant(object):
         else:
             raise MyError('More than 2 values in measurement')
 
-    def LoadTrait(self, trait, suppress_errors):
+    def LoadTrait(self, trait, pvalue, suppress_errors):
 
         # Create the trait and pull the required variants from the database
         trait_object = Trait(trait)
