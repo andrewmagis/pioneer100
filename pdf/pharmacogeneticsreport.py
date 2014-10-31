@@ -565,11 +565,14 @@ class PharmacogeneticsReport(object):
 
         """
 
+        print "yes"
+
         output_dir = './results';
         output_filename = output_dir + '/' + self.participant.id + '.pharmacogenetics.pdf';
 
         # Only build the report if I haven't found any issues with the data
         if (self.buildme or force):
+            print "doing it"
             doc_template_args = self.theme.doc_template_args()
             doc = SimpleDocTemplate(output_filename, title=self.title, author=self.author, **doc_template_args)
             doc.build(story, onFirstPage=self.myFirstPage, onLaterPages=self.myLaterPages)
