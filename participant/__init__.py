@@ -767,7 +767,6 @@ class ParticipantDB(object):
             if (not force is None):
                 if (force == key):
                     print "Forcing disease report for participant %s"%(key)
-                    self.participants[key].AddGWASVariants()
                     if (self.participants[key].gwas_loaded):
                         report = DiseaseReport(self.participants[key]);
                         report.BuildAlzheimersReport(True)
@@ -775,7 +774,6 @@ class ParticipantDB(object):
             else:
 
                 print "Building disease report for participant %s"%(key)
-                self.participants[key].AddGWASVariants()
                 if (self.participants[key].gwas_loaded):
                     report = DiseaseReport(self.participants[key]);
                     report.BuildAlzheimersReport(True)
