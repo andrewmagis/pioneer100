@@ -50,7 +50,11 @@ def main(parser):
             gstm = tokens[1].strip()
             gstt = tokens[2].strip()
 
-            print username, gstm, gstt
+            # Get the data for cadmium
+            (dates, values, range) = participants.participants[username].GetMeasurement('CADMIUM')
+
+            print username, gstm, gstt, values
+
 
 
     """
