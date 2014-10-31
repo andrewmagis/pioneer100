@@ -15,7 +15,7 @@ from errors import MyError
 class Variant(object):
 
     def __init__(self, entry=None, rsid=None, trait=None, chr=None, start=None, end=None, gene=None, vc=None, assembly=None, pubmed=None, allele=None,
-                 allele_is_reference=None, inheritance=None, effect_type=None, haplotype=None, odds_beta=None, unit=None, pval=None,
+                 reference=None, inheritance=None, effect_type=None, haplotype=None, odds_beta=None, unit=None, pval=None,
                  interaction=None, intervention=None, gender=None, ancestry=None, note_generic=None, note_effect0=None, note_effect1=None, note_effect2=None):
 
         self.rsid = rsid
@@ -27,7 +27,7 @@ class Variant(object):
         self.assembly = assembly
         self.pubmed = pubmed
         self.allele = allele
-        self.allele_is_reference = allele_is_reference
+        self.reference = reference
         self.inheritance = inheritance
         self.effect_type = effect_type
         self.haplotype = haplotype
@@ -49,6 +49,7 @@ class Variant(object):
         self.effect = None
         self.score = None
         self.genotype = None
+        self.allele_is_reference = None
 
     def Genotype(self, vcfobject):
 
@@ -265,7 +266,7 @@ class Variant(object):
 
         # Set the assembly in the genome and get the base at this position
         genome.SetAssembly(self.assembly)
-        self.ref = genome.Sequence(self.chr, self.start, self.end, '+')
+        self.reference = genome.Sequence(self.chr, self.start, self.end, '+')
 
         # If I cannot get the sequence due to some error
         if (len(self.ref)==0):
@@ -283,7 +284,7 @@ class Variant(object):
                 self.gene = ','.join(temp)
 
         # If the risk allele matches what is in dbsnp
-        if (self.allele == self.ref):
+        if (self.allele == self.reference):
             self.allele_is_reference = True
             return (True, 0)
 
@@ -330,7 +331,7 @@ class Variant(object):
                         raise MyError("Unknown risk allele: %s" % (self.risk_allele))
 
                     # If the risk allele matches what is in dbsnp
-                    if (self.allele == self.ref):
+                    if (self.allele == self.reference):
                         self.allele_is_reference = True
                         self.validated = True
                         return (True, 4)
@@ -347,7 +348,7 @@ class Variant(object):
         raise MyError("Error processing variant: %s" % (self.dbsnp))
 
     def Print(self):
-        print "%s\t%s\t%s\t%s\t%s\t%s"%(self.rsid, self.trait, self.allele, self.allele_is_reference, self.effect, str(self.score))
+        print "%s\t%s\t%s\t%s\t%s\t%s"%(self.rsid, self.trait, self.allele, self.reference, self.effect, str(self.score))
         if (not self.vcf is None):
             self.vcf.Print()
 
@@ -371,11 +372,11 @@ class Variant(object):
             print "Variant %s already exists for trait %s"%(self.rsid, self.trait)
             return
 
-        command = "INSERT INTO variant (rsid, trait, chr, start, end, gene, vc, assembly, pubmed, allele, allele_is_reference, inheritance, effect_type, haplotype, " \
+        command = "INSERT INTO variant (rsid, trait, chr, start, end, gene, vc, assembly, pubmed, allele, reference, inheritance, effect_type, haplotype, " \
                   "odds_beta, unit, pval, interaction, intervention, gender, ancestry, note_generic, note_effect0, note_effect1, note_effect2) VALUES " \
                   "(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
 
-        data = (self.rsid, self.trait, self.chr, self.start, self.end, self.gene, self.vc, self.assembly, self.pubmed, self.allele, self.allele_is_reference, self.inheritance, self.effect_type,
+        data = (self.rsid, self.trait, self.chr, self.start, self.end, self.gene, self.vc, self.assembly, self.pubmed, self.allele, self.reference, self.inheritance, self.effect_type,
                 self.haplotype, self.odds_beta, self.unit, self.pval, self.interaction, self.intervention, self.gender, self.ancestry,
                 self.note_generic, self.note_effect0, self.note_effect1, self.note_effect2)
 
@@ -388,7 +389,7 @@ class Variant(object):
         command = ""
         command += "CREATE TABLE variant (entry INT PRIMARY KEY AUTO_INCREMENT, rsid VARCHAR(16) NOT NULL, trait VARCHAR(512) NOT NULL, chr VARCHAR(16) NOT NULL, start INT NOT NULL, \
                     end INT NOT NULL, gene VARCHAR(512), vc VARCHAR(16) NOT NULL, assembly VARCHAR(16) NOT NULL, pubmed VARCHAR(512) NOT NULL, allele VARCHAR(512) NOT NULL, \
-                    allele_is_reference BOOLEAN NOT NULL, inheritance VARCHAR(16), effect_type VARCHAR(16) NOT NULL, haplotype INT, odds_beta FLOAT NOT NULL, unit VARCHAR(16), \
+                    reference VARCHAR(512) NOT NULL, inheritance VARCHAR(16), effect_type VARCHAR(16) NOT NULL, haplotype INT, odds_beta FLOAT NOT NULL, unit VARCHAR(16), \
                     pval DOUBLE NOT NULL,  interaction VARCHAR(512), intervention VARCHAR(512), gender VARCHAR(16), ancestry VARCHAR(128), \
                     note_generic TEXT, note_effect0 TEXT, note_effect1 TEXT, note_effect2 TEXT)"
 
