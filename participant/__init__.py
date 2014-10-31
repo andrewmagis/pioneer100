@@ -792,6 +792,10 @@ class ParticipantDB(object):
         with open('results/DNAlysis.final.txt', 'w') as f:
 
             for key in sorted(self.participants.keys()):
+
+                if (not 'DNAlysis' in self.participants[key].traits):
+                    continue
+
                 f.write("\t%s"%(key))
             f.write('\n')
 
