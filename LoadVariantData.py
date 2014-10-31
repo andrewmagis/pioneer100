@@ -24,7 +24,7 @@ def main(parser):
     database = Database()
 
     # Create the table
-    #Variant().CreateTable(database)
+    Variant().CreateTable(database)
 
     # Load the DBSnp database
     dbsnp = DBSnp(database)
