@@ -26,8 +26,6 @@ from participant import ParticipantDB
 
 def ArgParser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-g', '--gwas', default='./db/Alzheimers.txt', help="GWAS Catalog file")
-    parser.add_argument('-a', '--actionable', default='./db/100i.Actionable.Variants.txt')
     parser.add_argument('-f', '--force', default=None, help="Force comparison report")
     parser.add_argument('-c', '--comparison_reports', action='store_true', help="Create comparison reports")
     parser.add_argument('-p', '--pharmacogenetics_reports', action='store_true', help="Create pharmacogenenetics reports");
@@ -36,36 +34,10 @@ def ArgParser():
     args = parser.parse_args()
     return args
 
-
-class DBSnpEntry:
-    def __init__(self, line):
-        tokens = line.split('\t')
-        self.chr = tokens[0].strip()
-        self.pos = tokens[1].strip()
-        self.dbsnp = tokens[2].strip()
-        self.ref = tokens[3].strip()
-        self.alt = tokens[4].strip()
-
-    def Print(self):
-        print self.chr, self.pos, self.dbsnp, self.ref, self.alt;
-
-
-class Gene:
-    def __init__(self, line):
-        tokens = line.split('\t');
-        self.chr = tokens[0];
-        self.source = tokens[1];
-        self.feature = tokens[2];
-        self.start = int(tokens[3]);
-        self.end = int(tokens[4]);
-        self.strand = tokens[6];
-
-
 def BuildGeneticReports(participants):
     for key in participants.participants.keys():
         report = GeneticsReport(participants.participants[key]);
         report.go();
-
 
 def main(parser):
 
