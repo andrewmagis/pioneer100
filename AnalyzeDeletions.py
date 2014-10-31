@@ -61,14 +61,14 @@ def main(parser):
             # Get the data for cadmium
             (dates, values, range) = participants.participants[username].GetMeasurement('CADMIUM')
 
-            #print username, gstm, gstt, values
-            gstm_del.append(int(gstm))
-            gstt_del.append(int(gstt))
-
             if (values.size < 2):
                 continue
             if (np.isnan(values[0])):
                 continue
+
+            #print username, gstm, gstt, values
+            gstm_del.append(int(gstm))
+            gstt_del.append(int(gstt))
 
             r1.append(values[0])
 
