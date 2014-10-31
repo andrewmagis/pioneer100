@@ -781,7 +781,7 @@ class ParticipantDB(object):
 
         for key in sorted(self.participants.keys()):
 
-            self.participants[key].LoadTrait('DNAlysis')
+            self.participants[key].LoadTrait('DNAlysis', 1, True)
 
 
     def MetaboliteStats(self):
