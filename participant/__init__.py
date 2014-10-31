@@ -752,14 +752,12 @@ class ParticipantDB(object):
             if (not force is None):
                 if (force == key):
                     print "Forcing pharmacogenetics report for participant %s"%(key)
-                    self.participants[key].AddGWASVariants()
                     if (self.participants[key].gwas_loaded):
                         report = PharmacogeneticsReport(self.participants[key]);
                         report.go(True)
             else:
 
                 print "Building pharmacogenetics report for participant %s"%(key)
-                self.participants[key].AddGWASVariants()
                 if (self.participants[key].gwas_loaded):
                     report = PharmacogeneticsReport(self.participants[key]);
                     report.go(True)
