@@ -53,7 +53,7 @@ class Variant(object):
 
     def Genotype(self, vcfobject):
 
-        if (self.effect == self.reference):
+        if (self.allele == self.reference):
             self.allele_is_reference = True
         else:
             self.allele_is_reference = False
