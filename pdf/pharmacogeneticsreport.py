@@ -232,7 +232,7 @@ class PharmacogeneticsReport(object):
         return drawing;
         """
 
-    def ProcessVariantList(self, story, trait):
+    def ProcessVariantList(self, story, title):
 
         variant_table = [['Gene', 'Identifier', 'Effect', 'You', 'Description']] # this is the header row
         variant_style = []
@@ -245,12 +245,12 @@ class PharmacogeneticsReport(object):
         variant_style.append(('BACKGROUND', (0, 0), (-1, 0), self.header))
 
         # Get this variant
-        self.participant.LoadTrait(trait, 1, True)
-        if (not trait in self.participant.traits):
+        self.participant.LoadTrait(title, 1, True)
+        if (not title in self.participant.traits):
             return
-        trait = self.participant.traits[trait]
+        trait = self.participant.traits[title]
 
-        story.append(Paragraph(trait, h2));
+        story.append(Paragraph(title, h2));
         story.append(Spacer(1, 5));
         story.append(MCLine(7.3*inch))
 
