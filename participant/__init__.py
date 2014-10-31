@@ -767,17 +767,15 @@ class ParticipantDB(object):
             if (not force is None):
                 if (force == key):
                     print "Forcing disease report for participant %s"%(key)
-                    if (self.participants[key].gwas_loaded):
-                        report = DiseaseReport(self.participants[key]);
-                        report.BuildAlzheimersReport(True)
-                        report.BuildParkinsonsReport(True)
-            else:
-
-                print "Building disease report for participant %s"%(key)
-                if (self.participants[key].gwas_loaded):
                     report = DiseaseReport(self.participants[key]);
                     report.BuildAlzheimersReport(True)
                     report.BuildParkinsonsReport(True)
+            else:
+
+                print "Building disease report for participant %s"%(key)
+                report = DiseaseReport(self.participants[key]);
+                report.BuildAlzheimersReport(True)
+                report.BuildParkinsonsReport(True)
 
     def MetaboliteStats(self):
 
