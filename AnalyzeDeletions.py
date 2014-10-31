@@ -45,7 +45,13 @@ def main(parser):
     # Load the data
     with open('db/deletions.txt', 'rU') as f:
         for line in f:
-            print line
+            tokens = line.split('\t')
+            username = tokens[0].strip()
+            gstm = tokens[1].strip()
+            gstt = tokens[2].strip()
+
+            print username, gstm, gstt
+
 
     """
     print "Trait: %s"%(parser.trait)
