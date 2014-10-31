@@ -788,8 +788,17 @@ class ParticipantDB(object):
             if (variants is None):
                 variants = self.participants[key].traits['DNAlysis'].variants.keys()
 
-        print variants
+        # Open the output file
+        with open('results/DNALysis.final.txt', 'w') as f:
 
+            for rsid in sorted(variants):
+
+                f.write("%s"%(rsid))
+
+                for key in sorted(self.participants[key].traits['DNAlysis']):
+
+                    f.write("\t%s"(self.participants[key].traits['DNAlysis'].variants[rsid].genotype))
+                f.write('\n')
 
     def MetaboliteStats(self):
 
