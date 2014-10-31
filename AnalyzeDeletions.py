@@ -52,8 +52,8 @@ def main(parser):
         for line in f:
             tokens = line.split('\t')
             username = tokens[0].strip()
-            gstm = int(tokens[1].strip())
-            gstt = int(tokens[2].strip())
+            gstm = tokens[1].strip()
+            gstt = tokens[2].strip()
 
             if (not username in participants.participants):
                 continue
@@ -62,8 +62,8 @@ def main(parser):
             (dates, values, range) = participants.participants[username].GetMeasurement('CADMIUM')
 
             #print username, gstm, gstt, values
-            gstm_del.append(gstm)
-            gstt_del.append(gstt)
+            gstm_del.append(int(gstm))
+            gstt_del.append(int(gstt))
 
             if (values.size < 2):
                 continue
