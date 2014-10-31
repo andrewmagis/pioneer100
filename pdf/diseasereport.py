@@ -334,18 +334,16 @@ class DiseaseReport(object):
             variant = trait.variants[key]
             variant.Print()
 
-            notes = "Nothing"
             if (variant.effect == 0):
-                notes = "You do not have any copies of the A allele. You are at normal risk for Parkinson's disease"
+                variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.allele, variant.genotype, Paragraph(notes_effect0, h2)])
             elif (variant.effect == 1):
-                notes = "You have a single copy of the A allele. You are at increased risk for Parkinson's disease"
-                print notes
+                variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.allele, variant.genotype, Paragraph(notes_effect1, h2)])
+                print "EFFECT 1"
             elif (variant.effect == 2):
-                notes = "You have two copies of the A allele. You are at increased risk for Parkinson's disease"
+                variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.allele, variant.genotype, Paragraph(notes_effect2, h2)])
+                print "EFFECT 2"
             else:
                 raise MyError('Invalid effect')
-
-            variant_table.append([Paragraph(variant.reported_genes, h2), variant.dbsnp, variant.risk_allele, variant.genotype, Paragraph(notes, h2)])
 
         table = Table(variant_table, [75, 60, 30, 25, 350], hAlign='CENTER', style=variant_style)
         story.append(table)
