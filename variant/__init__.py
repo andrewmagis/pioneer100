@@ -48,16 +48,17 @@ class Variant(object):
         self.vcf = None
         self.effect = None
         self.score = None
+        self.genotype = None
 
     def Genotype(self, vcfobject):
-
-        print "In genotype"
 
         # Store the vcf
         self.vcf = vcfobject
 
         # I am homozygous reference
         if (vcfobject is None):
+
+            self.genotype = "REF"
 
             # If this variant's effect allele is the reference, then I am homozygous for the effect allele
             if (self.allele_is_reference):
@@ -79,8 +80,7 @@ class Variant(object):
         # I am not homozygous reference
         else:
 
-            # Save the VCF for this element in case we need it later
-            self.vcf = vcfobject
+            self.genotype = self.vcf.genotype
 
             # If this variant's effect allele is the reference
             if (self.allele_is_reference):
