@@ -789,10 +789,11 @@ class ParticipantDB(object):
                 variants = self.participants[key].traits['DNAlysis'].variants.keys()
 
         # Open the output file
-        with open('results/DNALysis.final.txt', 'w') as f:
+        with open('results/DNAlysis.final.txt', 'w') as f:
 
             for key in sorted(self.participants.keys()):
                 f.write("\t%s"%(key))
+            f.write('\n')
 
             for rsid in sorted(variants):
 
