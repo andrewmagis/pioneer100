@@ -777,6 +777,13 @@ class ParticipantDB(object):
                 report.BuildAlzheimersReport(True)
                 report.BuildParkinsonsReport(True)
 
+    def BuildDNAlysis(self):
+
+        for key in sorted(self.participants.keys()):
+
+            self.participants[key].LoadTrait('DNAlysis')
+
+
     def MetaboliteStats(self):
 
         usernames = []
