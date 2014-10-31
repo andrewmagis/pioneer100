@@ -42,6 +42,11 @@ def main(parser):
     # Create the participant DB from the database
     participants = ParticipantDB(database, None, None, None, clinvar_db, dbsnp)
 
+    gstm_del = []
+    gstt_del = []
+    r1 = []
+    r2 = []
+
     # Load the data
     with open('db/deletions.txt', 'rU') as f:
         for line in f:
@@ -56,7 +61,24 @@ def main(parser):
             # Get the data for cadmium
             (dates, values, range) = participants.participants[username].GetMeasurement('CADMIUM')
 
-            print username, gstm, gstt, values
+            #print username, gstm, gstt, values
+            gstm_del.append(gstm)
+            gstt_del.append(gstt)
+
+            if (values.size < 2):
+                continue
+            if (np.isnan(values[0])):
+                continue
+
+            r1.append(values[0])
+
+    gstm_del = np.array(gstm_del)
+    gstt_del = np.array(gstt_del)
+    r1 = np.array(r1)
+
+    print gstm_del
+    print gstt_del
+    print r1
 
 
 
