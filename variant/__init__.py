@@ -51,6 +51,8 @@ class Variant(object):
 
     def Genotype(self, vcfobject):
 
+        print "In genotype"
+
         # Store the vcf
         self.vcf = vcfobject
 
