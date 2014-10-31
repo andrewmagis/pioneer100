@@ -269,7 +269,7 @@ class Variant(object):
         self.reference = genome.Sequence(self.chr, self.start, self.end, '+')
 
         # If I cannot get the sequence due to some error
-        if (len(self.ref)==0):
+        if (len(self.reference)==0):
             return (False, "Invalid sequence for variant")
 
         # If there is no gene
