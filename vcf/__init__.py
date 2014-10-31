@@ -98,8 +98,6 @@ class VCFObject(object):
         else:
             self.vc = "MNV"
 
-        self.genotype = '/'.join(self.alleles)
-
     def Print(self):
         print self.chr, self.start, self.end, self.ref, self.alt, self.vc, self.quality, self.genotype, self.alleles
 
