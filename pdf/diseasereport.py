@@ -145,6 +145,9 @@ class DiseaseReport(object):
 
         genotype = None
 
+        for key in self.trait.variants.keys():
+            trait.variants[key].Print()
+
         # We can just do the calculation here for now. Later we will have
         # some analysis code to do this in a general way
         if (trait.variants['rs7412'].effect == 0):
