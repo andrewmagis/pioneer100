@@ -141,7 +141,7 @@ class DiseaseReport(object):
         self.participant.LoadTrait("APOE Status for Alzheimers", 1, True)
         if (not title in self.participant.traits):
             return
-        trait = self.participants.traits[title]
+        trait = self.participant.traits[title]
 
         genotype = None
 
