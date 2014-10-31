@@ -50,6 +50,9 @@ def main(parser):
             gstm = tokens[1].strip()
             gstt = tokens[2].strip()
 
+            if (not username in participants.participants):
+                continue
+
             # Get the data for cadmium
             (dates, values, range) = participants.participants[username].GetMeasurement('CADMIUM')
 
