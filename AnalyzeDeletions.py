@@ -52,8 +52,8 @@ def main(parser):
         for line in f:
             tokens = line.split('\t')
             username = tokens[0].strip()
-            gstm = tokens[1].strip()
-            gstt = tokens[2].strip()
+            gstm = int(tokens[1].strip())
+            gstt = int(tokens[2].strip())
 
             if (not username in participants.participants):
                 continue
