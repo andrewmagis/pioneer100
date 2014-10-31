@@ -95,7 +95,7 @@ class PharmacogeneticsReport(object):
         canvas.saveState()
 
         canvas.setFont('Helvetica',14)
-        canvas.drawString(4.0*inch, 11.4*inch, "%s"%(self.participant.id));
+        canvas.drawString(4.0*inch, 11.4*inch, "%s"%(self.participant.username));
         #canvas.drawString(0.5*inch, 11.2*inch, "Gender: %s"%(self.gender));
         #canvas.drawString(0.5*inch, 11.0*inch, "DOB: %s"%(self.dob));
 
@@ -113,7 +113,7 @@ class PharmacogeneticsReport(object):
         canvas.saveState()
 
         canvas.setFont('Helvetica',14)
-        canvas.drawString(4.0*inch, 11.4*inch, "%s"%(self.participant.id));
+        canvas.drawString(4.0*inch, 11.4*inch, "%s"%(self.participant.username));
         #canvas.drawString(0.5*inch, 11.2*inch, "Gender: %s"%(self.gender));
         #canvas.drawString(0.5*inch, 11.0*inch, "DOB: %s"%(self.dob));
 
