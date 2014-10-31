@@ -244,6 +244,12 @@ class PharmacogeneticsReport(object):
         variant_style.append(('LINEAFTER',(0,0),(-1,0),0.5,colors.black))
         variant_style.append(('BACKGROUND', (0, 0), (-1, 0), self.header))
 
+        # Get this variant
+        self.participant.LoadTrait(trait, 1)
+        if (not trait in self.participant.traits):
+            return
+        trait = self.participant.traits[trait]
+
         count = 1
         for key in trait.variants.keys():
             variant = trait.variants[key]
@@ -386,10 +392,12 @@ class PharmacogeneticsReport(object):
 
         story.append(Spacer(1,0.25*inch))
 
-        title = "Adverse response to aromatase inhibitors"
-        self.ProcessTrait(story, title)
+        title = "Adverse response to abacavir in HIV treatment"
+        self.ProcessVariantList(story, title)
 
         story.append(Spacer(1,0.5*inch))
+
+        """
 
         title = "Adverse response to radiation therapy"
         self.ProcessTrait(story, title)
@@ -498,24 +506,6 @@ class PharmacogeneticsReport(object):
         title = "Response to clopidogrel therapy"
         self.ProcessTrait(story, title)
 
-        """
-        story.append(Spacer(1,0.5*inch))
-
-        title = "Response to fenofibrate (VLDL Particle Size)"
-        self.ProcessTrait(story, title)
-
-        story.append(Spacer(1,0.5*inch))
-
-        title = "Response to fenofibrate (LDL Particle Size)"
-        self.ProcessTrait(story, title)
-
-        story.append(PageBreak())
-        story.append(Spacer(1,0.5*inch))
-
-        title = "Response to fenofibrate (HDL Particle Size)"
-        self.ProcessTrait(story, title)
-        """
-
         story.append(Spacer(1,0.5*inch))
 
         title = "Response to statin therapy (Pravastatin)"
@@ -573,6 +563,7 @@ class PharmacogeneticsReport(object):
             title = "Warfarin maintenance dose (Caucasians)"
             self.ProcessTrait(story, title)
 
+        """
 
         output_dir = './results';
         output_filename = output_dir + '/' + self.participant.id + '.pharmacogenetics.pdf';
