@@ -791,6 +791,9 @@ class ParticipantDB(object):
         # Open the output file
         with open('results/DNALysis.final.txt', 'w') as f:
 
+            for key in sorted(self.participants.keys()):
+                f.write("\t%s"%(key))
+
             for rsid in sorted(variants):
 
                 f.write("%s"%(rsid))
