@@ -786,9 +786,7 @@ class ParticipantDB(object):
             self.participants[key].LoadTrait('DNAlysis', 1, True)
 
             if (variants is None):
-                variants = set()
-                for key in self.participants[key].traits['DNAlysis']:
-                    variants.add(key)
+                variants = self.participants[key].traits['DNAlysis'].variants.keys()
 
         print variants
 
