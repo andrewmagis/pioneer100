@@ -352,6 +352,8 @@ class PharmacogeneticsReport(object):
 
     def go(self, force=False):
 
+        print "starting"
+
         #if (not self.generate):
         #    print "*** Skipping %s ***"%(self.id)
         #    return
