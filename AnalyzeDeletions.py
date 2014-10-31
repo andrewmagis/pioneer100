@@ -59,7 +59,7 @@ def main(parser):
                 continue
 
             # Get the data for cadmium
-            (dates, values, range) = participants.participants[username].GetMeasurement('CADMIUM')
+            (dates, values, range) = participants.participants[username].GetMeasurement('LEAD')
 
             if (values.size < 2):
                 continue
