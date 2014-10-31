@@ -352,7 +352,7 @@ class Variant(object):
         raise MyError("Error processing variant: %s" % (self.dbsnp))
 
     def Print(self):
-        print "%s\t%s\t%s\t%s\t%s\t%s"%(self.rsid, self.trait, self.allele, self.reference, self.effect, str(self.score))
+        print "%s\t%s\t%s\t%s\t%s\t%s\t%s"%(self.rsid, self.trait, self.allele, self.reference, self.effect, str(self.score), self.genotype)
         if (not self.vcf is None):
             self.vcf.Print()
 
