@@ -59,7 +59,7 @@ class Variant(object):
         # I am homozygous reference
         if (vcfobject is None):
 
-            self.genotype = self.effect + '/' + self.effect
+            self.genotype = self.reference + '/' + self.reference
 
             # If this variant's effect allele is the reference, then I am homozygous for the effect allele
             if (self.allele_is_reference):
