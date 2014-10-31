@@ -98,6 +98,12 @@ def main(parser):
                     note_effect1 = None
                 if (len(note_effect2.strip())==0):
                     note_effect2 = None
+                if (len(chr.strip())==0):
+                    chr = None
+                if (len(start.strip())==0):
+                    start = None
+                if (len(end.strip())==0):
+                    end = None
 
                 variant = Variant(entry, rsid, trait, chr, start, end, reported_genes, vc, assembly, pubmed, allele, allele_is_reference, inheritance,
                                   effect_type, haplotype, str(odds_beta), unit, pval, interaction, intervention, gender, ancestry, note_generic,
