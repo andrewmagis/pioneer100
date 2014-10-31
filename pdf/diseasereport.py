@@ -145,7 +145,7 @@ class DiseaseReport(object):
 
         genotype = None
 
-        for key in self.trait.variants.keys():
+        for key in trait.variants.keys():
             trait.variants[key].Print()
 
         # We can just do the calculation here for now. Later we will have
