@@ -245,7 +245,7 @@ class PharmacogeneticsReport(object):
         variant_style.append(('BACKGROUND', (0, 0), (-1, 0), self.header))
 
         # Get this variant
-        self.participant.LoadTrait(trait, 1)
+        self.participant.LoadTrait(trait, 1, True)
         if (not trait in self.participant.traits):
             return
         trait = self.participant.traits[trait]
