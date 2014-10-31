@@ -31,6 +31,7 @@ def ArgParser():
     parser.add_argument('-p', '--pharmacogenetics_reports', action='store_true', help="Create pharmacogenenetics reports");
     parser.add_argument('-r', '--genetic_reports', action='store_true', help='Create genetics reports')
     parser.add_argument('-d', '--disease_reports', action='store_true', help='Create disease reports')
+    parser.add_argument('-a', '--DNAlysis_reports', action='store_true', help='Create DNALysis output file')
     args = parser.parse_args()
     return args
 
@@ -69,6 +70,8 @@ def main(parser):
     elif (parser.disease_reports):
         participants.BuildDiseaseReports(parser.force)
         return
+    elif (parser.DNAlysis_reports):
+        participants.BuildDNAlysis()
     else:
         print "Unknown report option"
 
