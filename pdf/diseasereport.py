@@ -137,30 +137,31 @@ class DiseaseReport(object):
         story.append(Spacer(1,0.25*inch))
 
         # Get my APOE haplotype
-        trait = self.participant.ProcessPharmacogeneticsTrait("APOE Status")
-        #for key in trait.variants.keys():
-        #    print key
-        #    trait.variants[key].Print();
+        title = "APOE Status for Alzheimers"
+        self.participant.ProcessTrait("APOE Status for Alzheimers")
+        if (not title in self.participants.traits):
+            return
+        trait = self.participants.traits[title]
 
         genotype = None
 
         # We can just do the calculation here for now. Later we will have
         # some analysis code to do this in a general way
-        if (trait.variants['rs7412_C'].effect == 0):
+        if (trait.variants['rs7412'].effect == 0):
 
-            if (trait.variants['rs429358_C'].effect == 0):
+            if (trait.variants['rs429358'].effect == 0):
 
                 # rs7412(T) and rs429358(T) <- E2
                 # rs7412(T) and rs429358(T) <- E2
                 genotype = "ApoE2/ApoE2"
 
-            elif (trait.variants['rs429358_C'].effect == 1):
+            elif (trait.variants['rs429358'].effect == 1):
 
                 # rs7412(T) and rs429358(C) <- unobserved haplotype
                 # rs7412(T) and rs429358(T) <- E2
                 raise MyError('This is a previously unobserved haplotype')
 
-            elif (trait.variants['rs429358_C'].effect == 2):
+            elif (trait.variants['rs429358'].effect == 2):
 
                 # rs7412(T) and rs429358(C) <- unobserved haplotype
                 # rs7412(T) and rs429358(C) <- unobserved haplotype
@@ -169,14 +170,14 @@ class DiseaseReport(object):
             else:
                 raise MyError("Unknown haplotype for APOE")
 
-        elif (trait.variants['rs7412_C'].effect == 1):
-            if (trait.variants['rs429358_C'].effect == 0):
+        elif (trait.variants['rs7412'].effect == 1):
+            if (trait.variants['rs429358'].effect == 0):
 
                 # rs7412(C) and rs429358(T) <- E3
                 # rs7412(T) and rs429358(T) <- E2
                 genotype = "ApoE2/ApoE3"
 
-            elif (trait.variants['rs429358_C'].effect == 1):
+            elif (trait.variants['rs429358'].effect == 1):
 
                 # Remember that
                 # rs7412(T) and rs429358(C) is not observed, so the
@@ -187,7 +188,7 @@ class DiseaseReport(object):
                 # rs7412(T) and rs429358(T) <- E2
                 genotype = "ApoE2/ApoE4"
 
-            elif (trait.variants['rs429358_C'].effect == 2):
+            elif (trait.variants['rs429358'].effect == 2):
 
                 # rs7412(C) and rs429358(C) <- E4
                 # rs7412(T) and rs429358(C) <- unobserved haplotype
@@ -196,20 +197,20 @@ class DiseaseReport(object):
             else:
                 raise MyError("Unknown haplotype for APOE")
 
-        elif (trait.variants['rs7412_C'].effect == 2):
-            if (trait.variants['rs429358_C'].effect == 0):
+        elif (trait.variants['rs7412'].effect == 2):
+            if (trait.variants['rs429358'].effect == 0):
 
                 # rs7412(C) and rs429358(T) <- E3
                 # rs7412(C) and rs429358(T) <- E3
                 genotype = "ApoE3/ApoE3"
 
-            elif (trait.variants['rs429358_C'].effect == 1):
+            elif (trait.variants['rs429358'].effect == 1):
 
                 # rs7412(C) and rs429358(C) <- E4
                 # rs7412(C) and rs429358(T) <- E3
                 genotype = "ApoE3/ApoE4"
 
-            elif (trait.variants['rs429358_C'].effect == 2):
+            elif (trait.variants['rs429358'].effect == 2):
 
                 # rs7412(C) and rs429358(C) <- E4
                 # rs7412(C) and rs429358(C) <- E4
