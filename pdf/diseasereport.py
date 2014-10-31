@@ -335,7 +335,7 @@ class DiseaseReport(object):
             variant.Print()
 
             if (variant.effect == 0):
-                variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.allele, variant.genotype, Paragraph(note_effect0, h2)])
+                variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.allele, variant.genotype, Paragraph(variant.note_effect0, h2)])
             elif (variant.effect == 1):
                 variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.allele, variant.genotype, Paragraph(note_effect1, h2)])
                 print "EFFECT 1"
