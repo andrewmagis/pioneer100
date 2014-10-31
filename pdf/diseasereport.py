@@ -313,7 +313,7 @@ class DiseaseReport(object):
         story.append(Spacer(1,0.25*inch))
 
         # Get my APOE haplotype
-        title = "Parkinsons diseease"
+        title = "Parkinsons disease"
         self.participant.LoadTrait(title, 1, True)
         if (not title in self.participant.traits):
             return
@@ -332,6 +332,7 @@ class DiseaseReport(object):
         count = 1
         for key in trait.variants.keys():
             variant = trait.variants[key]
+            variant.Print()
 
             notes = "Nothing"
             if (variant.effect == 0):
