@@ -254,7 +254,7 @@ class PharmacogeneticsReport(object):
         for key in trait.variants.keys():
             variant = trait.variants[key]
 
-            variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.effect, variant.vcf.genotype, Paragraph(variant.note_generic, h2)])
+            variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.effect, variant.genotype, Paragraph(variant.note_generic, h2)])
 
             variant_style.append(('VALIGN', (0,count), (-1,count), 'MIDDLE'))
             variant_style.append(('ALIGN',(0,count),(-1,count),'CENTER'))
