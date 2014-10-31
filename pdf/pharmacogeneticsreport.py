@@ -250,6 +250,10 @@ class PharmacogeneticsReport(object):
             return
         trait = self.participant.traits[trait]
 
+        story.append(Paragraph(trait, h2));
+        story.append(Spacer(1, 5));
+        story.append(MCLine(7.3*inch))
+
         count = 1
         for key in trait.variants.keys():
             variant = trait.variants[key]
