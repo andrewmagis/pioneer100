@@ -95,7 +95,7 @@ class DiseaseReport(object):
         canvas.saveState()
 
         canvas.setFont('Helvetica',14)
-        canvas.drawString(4.0*inch, 11.4*inch, "%s"%(self.participant.id))
+        canvas.drawString(4.0*inch, 11.4*inch, "%s"%(self.participant.username))
         #canvas.drawString(0.5*inch, 11.2*inch, "Gender: %s"%(self.gender))
         #canvas.drawString(0.5*inch, 11.0*inch, "DOB: %s"%(self.dob))
 
@@ -113,7 +113,7 @@ class DiseaseReport(object):
         canvas.saveState()
 
         canvas.setFont('Helvetica',14)
-        canvas.drawString(4.0*inch, 11.4*inch, "%s"%(self.participant.id))
+        canvas.drawString(4.0*inch, 11.4*inch, "%s"%(self.participant.username))
         #canvas.drawString(0.5*inch, 11.2*inch, "Gender: %s"%(self.gender))
         #canvas.drawString(0.5*inch, 11.0*inch, "DOB: %s"%(self.dob))
 
@@ -282,7 +282,7 @@ class DiseaseReport(object):
         story.append(Paragraph("Lastly, research suggests a connection between exposure to certain environmental toxins and pesticides and development of Alzheimer's disease.  While we don't know if avoiding pesticide exposure reduces risk, it seems prudent for people at increased genetic risk to focus on minimizing exposure through consuming organically grown foods and avoiding home and occupational exposure to toxins.", h2))
 
         output_dir = './results'
-        output_filename = output_dir + '/' + self.participant.id + '.alzheimers.pdf'
+        output_filename = output_dir + '/' + self.participant.username + '.alzheimers.pdf'
 
         # Only build the report if I haven't found any issues with the data
         if (self.buildme or force):
@@ -290,7 +290,7 @@ class DiseaseReport(object):
             doc = SimpleDocTemplate(output_filename, title=self.title, author=self.author, **doc_template_args)
             doc.build(story, onFirstPage=self.myFirstPage, onLaterPages=self.myLaterPages)
         else:
-            print "Skipping report for %s"%(self.participant.id)
+            print "Skipping report for %s"%(self.participant.username)
 
     def BuildParkinsonsReport(self, force=False):
 
@@ -393,7 +393,7 @@ class DiseaseReport(object):
         story.append(Paragraph("<strong>Drugs:</strong> Once Parkinson's has been diagnosed, conventional medical therapy using a variety of pharmaceutical approaches is advised.  A physician who specializes in treating Parkinson's disease should advise on the best course of treatment for each individual.", h2))
 
         output_dir = './results'
-        output_filename = output_dir + '/' + self.participant.id + '.parkinsons.pdf'
+        output_filename = output_dir + '/' + self.participant.username + '.parkinsons.pdf'
 
         # Only build the report if I haven't found any issues with the data
         if (self.buildme or force):
@@ -401,4 +401,4 @@ class DiseaseReport(object):
             doc = SimpleDocTemplate(output_filename, title=self.title, author=self.author, **doc_template_args)
             doc.build(story, onFirstPage=self.myFirstPage, onLaterPages=self.myLaterPages)
         else:
-            print "Skipping report for %s"%(self.participant.id)
+            print "Skipping report for %s"%(self.participant.username)
