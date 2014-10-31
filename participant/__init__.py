@@ -795,7 +795,7 @@ class ParticipantDB(object):
 
                 f.write("%s"%(rsid))
 
-                for key in sorted(self.participants[key].traits['DNAlysis'].variants.keys()):
+                for key in sorted(self.participants.keys()):
                     f.write("\t%s"(self.participants[key].traits['DNAlysis'].variants[rsid].genotype))
                 f.write('\n')
 
