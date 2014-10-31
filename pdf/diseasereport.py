@@ -335,12 +335,12 @@ class DiseaseReport(object):
             variant.Print()
 
             if (variant.effect == 0):
-                variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.allele, variant.genotype, Paragraph(notes_effect0, h2)])
+                variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.allele, variant.genotype, Paragraph(note_effect0, h2)])
             elif (variant.effect == 1):
-                variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.allele, variant.genotype, Paragraph(notes_effect1, h2)])
+                variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.allele, variant.genotype, Paragraph(note_effect1, h2)])
                 print "EFFECT 1"
             elif (variant.effect == 2):
-                variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.allele, variant.genotype, Paragraph(notes_effect2, h2)])
+                variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.allele, variant.genotype, Paragraph(note_effect2, h2)])
                 print "EFFECT 2"
             else:
                 raise MyError('Invalid effect')
