@@ -81,24 +81,8 @@ def main(parser):
     # Open connection to Clinvar database
     clinvar_db = Clinvar(database)
 
-    # Load the genome class
-    genome = Genome()
-    genome.Load()
-
-    # Load the actionable database
-    actionable_db = ActionableDB(dbsnp, genome)
-    #actionable_db.Load(parser.actionable)
-
-    # Now load the GWAS database
-    gwas_db = GwasDB(dbsnp, genome)
-    gwas_db.Load(parser.gwas)
-
-    # Load the pharmacogenomics database
-    pharm_db = PharmacogenomicsDB(dbsnp, genome)
-    pharm_db.Load()
-
     # Create the participant DB from the database
-    participants = ParticipantDB(database, actionable_db, gwas_db, pharm_db, clinvar_db)
+    participants = ParticipantDB(database, None, None, None, clinvar_db, dbsnp)
 
     # Build the comparison reports if requested, and do nothing else
     if (parser.comparison_reports):
