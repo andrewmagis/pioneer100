@@ -80,6 +80,11 @@ def main(parser):
     print gstt_del
     print r1
 
+    (rvalue1, pvalue_corr1) = stats.pearsonr(r1, gstm_del)
+    (rvalue2, pvalue_corr2) = stats.pearsonr(r1, gstt_del)
+    print rvalue1, pvalue_corr1
+    print rvalue2, pvalue_corr2
+
 
 
     """
