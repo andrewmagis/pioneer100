@@ -138,7 +138,7 @@ class DiseaseReport(object):
 
         # Get my APOE haplotype
         title = "APOE Status for Alzheimers"
-        self.participant.LoadTrait("APOE Status for Alzheimers", 1, True)
+        self.participant.LoadTrait(title, 1, True)
         if (not title in self.participant.traits):
             return
         trait = self.participant.traits[title]
@@ -307,9 +307,12 @@ class DiseaseReport(object):
         story.append(MCLine(7.3*inch))
         story.append(Spacer(1,0.25*inch))
 
-        trait = self.participant.ProcessPharmacogeneticsTrait("Parkinson's Status")
-        #for key in trait.variants.keys():
-        #    trait.variants[key].Print();
+        # Get my APOE haplotype
+        title = "Parkinsons diseease"
+        self.participant.LoadTrait(title, 1, True)
+        if (not title in self.participant.traits):
+            return
+        trait = self.participant.traits[title]
 
         variant_table = [['Gene', 'Identifier', 'Effect', 'You', 'Description']] # this is the header row
         variant_style = []
