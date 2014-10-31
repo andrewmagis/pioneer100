@@ -139,7 +139,7 @@ class DiseaseReport(object):
         # Get my APOE haplotype
         title = "APOE Status for Alzheimers"
         self.participant.LoadTrait("APOE Status for Alzheimers", 1, True)
-        if (not title in self.participants.traits):
+        if (not title in self.participant.traits):
             return
         trait = self.participants.traits[title]
 
