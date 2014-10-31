@@ -51,6 +51,19 @@ class Variant(object):
         self.genotype = None
         self.allele_is_reference = None
 
+    def GetNote(self):
+        if (self.effect is None):
+            raise MyError("[%s] No effect for this variant. Genotype it first"%(self.rsid))
+
+        if (self.effect == 0):
+            return self.note_effect0
+        elif (self.effect == 1):
+            return self.note_effect1
+        elif (self.effect == 2):
+            return self.note_effect2
+        else:
+            raise MyError("[%s] Unknown effect: %s"%(self.rsid, self.effect))
+
     def Genotype(self, vcfobject):
 
         if (self.allele == self.reference):
