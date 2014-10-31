@@ -53,7 +53,7 @@ def main(parser):
                 assembly = tokens[7].strip()
                 pubmed = tokens[8].strip().strip('"')
                 allele = tokens[9].strip()
-                allele_is_reference = tokens[10].strip()
+                reference = None
                 inheritance = tokens[11].strip()
                 effect_type = tokens[12].strip()
                 haplotype = tokens[13].strip()
@@ -105,7 +105,7 @@ def main(parser):
                 if (len(end.strip())==0):
                     end = None
 
-                variant = Variant(entry, rsid, trait, chr, start, end, reported_genes, vc, assembly, pubmed, allele, allele_is_reference, inheritance,
+                variant = Variant(entry, rsid, trait, chr, start, end, reported_genes, vc, assembly, pubmed, allele, reference, inheritance,
                                   effect_type, haplotype, str(odds_beta), unit, pval, interaction, intervention, gender, ancestry, note_generic,
                                   note_effect0, note_effect1, note_effect2)
 
@@ -295,8 +295,8 @@ def main(parser):
                     odds_beta *= direction
 
                 entry = None
-                allele_is_reference = None
-                variant = Variant(entry, rsid, trait, chr, start, end, reported_genes, vc, assembly, pubmed, risk_allele, allele_is_reference, inheritance,
+                reference = None
+                variant = Variant(entry, rsid, trait, chr, start, end, reported_genes, vc, assembly, pubmed, risk_allele, reference, inheritance,
                                   effect_type, haplotype, str(odds_beta), unit, pval, interaction, intervention, gender, ancestry, note_generic,
                                   note_effect0, note_effect1, note_effect2)
 
