@@ -24,7 +24,7 @@ def main(parser):
     database = Database()
 
     # Create the table
-    Variant().CreateTable(database)
+    #Variant().CreateTable(database)
 
     # Load the DBSnp database
     dbsnp = DBSnp(database)
@@ -76,8 +76,6 @@ def main(parser):
                     raise MyError("[%s] No odds ratio or beta coefficient"%(rsid))
 
                 entry = None
-                if (len(allele_is_reference.strip())==0):
-                    allele_is_reference = None
                 if (len(haplotype.strip())==0):
                     haplotype = None
                 if (len(unit.strip())==0):
