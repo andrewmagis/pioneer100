@@ -779,9 +779,18 @@ class ParticipantDB(object):
 
     def BuildDNAlysis(self):
 
-        for key in sorted(self.participants.keys()):
+        variants = None
 
+        for key in sorted(self.participants.keys()):
+            print "Loading %s"%(key)
             self.participants[key].LoadTrait('DNAlysis', 1, True)
+
+            if (variants is None):
+                variants = set()
+                for key in self.participants[key].traits['DNAlysis']:
+                    variants.add(key)
+
+        print variants
 
 
     def MetaboliteStats(self):
