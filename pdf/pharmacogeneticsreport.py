@@ -257,7 +257,7 @@ class PharmacogeneticsReport(object):
             # Based on the effect value, set the colors
             if (variant.effect == 2):
 
-                variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.effect, variant.genotype, Paragraph(variant.note_effect2, h2)])
+                variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.allele, variant.genotype, Paragraph(variant.note_effect2, h2)])
 
                 variant_style.append(('VALIGN', (0,count), (-1,count), 'MIDDLE'))
                 variant_style.append(('ALIGN',(0,count),(-1,count),'CENTER'))
@@ -279,7 +279,7 @@ class PharmacogeneticsReport(object):
 
             elif (variant.effect == 1):
 
-                variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.effect, variant.genotype, Paragraph(variant.note_effect1, h2)])
+                variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.allele, variant.genotype, Paragraph(variant.note_effect1, h2)])
 
                 variant_style.append(('VALIGN', (0,count), (-1,count), 'MIDDLE'))
                 variant_style.append(('ALIGN',(0,count),(-1,count),'CENTER'))
@@ -301,7 +301,7 @@ class PharmacogeneticsReport(object):
 
             else:
 
-                variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.effect, variant.genotype, Paragraph(variant.note_effect0, h2)])
+                variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.allele, variant.genotype, Paragraph(variant.note_effect0, h2)])
 
                 variant_style.append(('VALIGN', (0,count), (-1,count), 'MIDDLE'))
                 variant_style.append(('ALIGN',(0,count),(-1,count),'CENTER'))
@@ -419,7 +419,7 @@ class PharmacogeneticsReport(object):
         title = "Adverse response to amitriptyline therapy"
         self.ProcessVariantList(story, title)
 
-        story.append(PageBreak())
+        #story.append(PageBreak())
         story.append(Spacer(1,0.5*inch))
 
         # Header section
@@ -436,7 +436,7 @@ class PharmacogeneticsReport(object):
         title = "Response to PEG-interferon-alpha treatment"
         self.ProcessVariantList(story, title)
 
-        story.append(PageBreak())
+        #story.append(PageBreak())
         story.append(Spacer(1,0.5*inch))
 
         # Header section
@@ -462,7 +462,7 @@ class PharmacogeneticsReport(object):
         title = "Adverse response to capecitabine"
         self.ProcessVariantList(story, title)
 
-        story.append(PageBreak())
+        #story.append(PageBreak())
         story.append(Spacer(1,0.5*inch))
 
         # Header section
@@ -484,7 +484,7 @@ class PharmacogeneticsReport(object):
         title = "Adverse response to clopidogrel therapy"
         self.ProcessVariantList(story, title)
 
-        story.append(PageBreak())
+        #story.append(PageBreak())
         story.append(Spacer(1,0.5*inch))
 
         # Header section
@@ -522,7 +522,7 @@ class PharmacogeneticsReport(object):
         title = "Adverse response to mercaptopurine"
         self.ProcessVariantList(story, title)
 
-        story.append(PageBreak())
+        #story.append(PageBreak())
         story.append(Spacer(1,0.5*inch))
 
         # Header section
