@@ -566,7 +566,7 @@ class PharmacogeneticsReport(object):
         """
 
         output_dir = './results';
-        output_filename = output_dir + '/' + self.participant.id + '.pharmacogenetics.pdf';
+        output_filename = output_dir + '/' + self.participant.username + '.pharmacogenetics.pdf';
 
         # Only build the report if I haven't found any issues with the data
         if (self.buildme or force):
@@ -574,7 +574,7 @@ class PharmacogeneticsReport(object):
             doc = SimpleDocTemplate(output_filename, title=self.title, author=self.author, **doc_template_args)
             doc.build(story, onFirstPage=self.myFirstPage, onLaterPages=self.myLaterPages)
         else:
-            print "Skipping report for %s"%(self.participant.id);
+            print "Skipping report for %s"%(self.participant.username);
 
         """
         trait = "Insulin Resistance/Type 2 Diabetes"
