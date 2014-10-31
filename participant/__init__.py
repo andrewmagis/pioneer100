@@ -775,7 +775,7 @@ class ParticipantDB(object):
                 print "Building disease report for participant %s"%(key)
                 report = DiseaseReport(self.participants[key]);
                 report.BuildAlzheimersReport(True)
-                report.BuildParkinsonsReport(True)
+                #report.BuildParkinsonsReport(True)
 
     def MetaboliteStats(self):
 
