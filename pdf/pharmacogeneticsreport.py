@@ -386,7 +386,7 @@ class PharmacogeneticsReport(object):
         story.append(Spacer(1,0.5*inch))
 
         # Header section
-        story.append(Paragraph("CHEMOTHERAPY/RADIATION TREATMENT RESPONSE", h1));
+        story.append(Paragraph("HEADER NAME HERE", h1));
         story.append(Spacer(1, 5));
         story.append(MCLine(7.3*inch))
 
@@ -397,37 +397,36 @@ class PharmacogeneticsReport(object):
 
         story.append(Spacer(1,0.5*inch))
 
+        title = "Adverse response to amitriptyline therapy"
+        self.ProcessVariantList(story, title)
+
+        story.append(PageBreak())
+        story.append(Spacer(1,0.5*inch))
+
+        # Header section
+        story.append(Paragraph("HEADER NAME HERE", h1));
+        story.append(Spacer(1, 5));
+        story.append(MCLine(7.3*inch))
+        story.append(Spacer(1,0.25*inch))
+
+        title = "Adverse response to azathioprine"
+        self.ProcessVariantList(story, title)
+
+        story.append(Spacer(1,0.5*inch))
+
+        title = "Response to PEG-interferon-alpha treatment"
+        self.ProcessVariantList(story, title)
+
+        story.append(PageBreak())
+        story.append(Spacer(1,0.5*inch))
+
+        # Header section
+        story.append(Paragraph("HEADER TITLE HERE", h1));
+        story.append(Spacer(1, 5));
+        story.append(MCLine(7.3*inch))
+        story.append(Spacer(1,0.25*inch))
+
         """
-
-        title = "Adverse response to radiation therapy"
-        self.ProcessTrait(story, title)
-
-        story.append(PageBreak())
-        story.append(Spacer(1,0.5*inch))
-
-        # Header section
-        story.append(Paragraph("RISK FOR DRUG-INDUCED LIVER INJURY", h1));
-        story.append(Spacer(1, 5));
-        story.append(MCLine(7.3*inch))
-        story.append(Spacer(1,0.25*inch))
-
-        title = "Drug-induced liver injury (amoxicillin-clavulanate)"
-        self.ProcessTrait(story, title)
-
-        story.append(Spacer(1,0.5*inch))
-
-        title = "Drug-induced liver injury (flucloxacillin)"
-        self.ProcessTrait(story, title)
-
-        story.append(PageBreak())
-        story.append(Spacer(1,0.5*inch))
-
-        # Header section
-        story.append(Paragraph("RESPONSE TO HYPERTENSIVE MEDICATIONS", h1));
-        story.append(Spacer(1, 5));
-        story.append(MCLine(7.3*inch))
-        story.append(Spacer(1,0.25*inch))
-
         if (self.participant.race == "black or african-american"):
 
             title = "Response to angiotensin II receptor blocker therapy (African-Americans)"
@@ -437,35 +436,12 @@ class PharmacogeneticsReport(object):
 
             title = "Response to angiotensin II receptor blocker therapy (Caucasians)"
             self.ProcessTrait(story, title)
+        """
 
         story.append(Spacer(1,0.5*inch))
 
-        title = "Response to diuretic therapy"
-        self.ProcessTrait(story, title)
-
-        if (self.participant.race == "black or african-american"):
-
-            story.append(Spacer(1,0.5*inch))
-
-            title = "Thiazide-induced adverse metabolic effects in hypertensive patients (Glucose/African-Americans)"
-            self.ProcessTrait(story, title)
-
-            story.append(Spacer(1,0.5*inch))
-
-            title = "Thiazide-induced adverse metabolic effects in hypertensive patients (Triglycerides/African-Americans)"
-            self.ProcessTrait(story, title)
-
-        else:
-
-            story.append(Spacer(1,0.5*inch))
-
-            title = "Thiazide-induced adverse metabolic effects in hypertensive patients (Glucose/Caucasians)"
-            self.ProcessTrait(story, title)
-
-            story.append(Spacer(1,0.5*inch))
-
-            title = "Thiazide-induced adverse metabolic effects in hypertensive patients (Triglycerides/Caucasians)"
-            self.ProcessTrait(story, title)
+        title = "Adverse response to capecitabine"
+        self.ProcessVariantList(story, title)
 
         story.append(PageBreak())
         story.append(Spacer(1,0.5*inch))
@@ -476,94 +452,115 @@ class PharmacogeneticsReport(object):
         story.append(MCLine(7.3*inch))
         story.append(Spacer(1,0.25*inch))
 
-        title = "Response to antidepressant treatment"
-        self.ProcessTrait(story, title)
+        title = "Adverse response to carbamazepine"
+        self.ProcessVariantList(story, title)
 
         story.append(Spacer(1,0.5*inch))
 
-        title = "Increased risk of suicidal thoughts with antidepressant treatment"
-        self.ProcessTrait(story, title)
+        title = "Adverse response to desipramine therapy"
+        self.ProcessVariantList(story, title)
 
         story.append(Spacer(1,0.5*inch))
 
-        title = "Side effects from antidepressant treatment (citalopram)"
-        self.ProcessTrait(story, title)
+        title = "Adverse response to clopidogrel therapy"
+        self.ProcessVariantList(story, title)
 
         story.append(PageBreak())
         story.append(Spacer(1,0.5*inch))
 
         # Header section
-        story.append(Paragraph("RESPONSE TO LIPID-LOWERING AND CARDIOVASCULAR DRUGS", h1));
+        story.append(Paragraph("HEADER TITLE HERE", h1));
         story.append(Spacer(1, 5));
         story.append(MCLine(7.3*inch))
         story.append(Spacer(1,0.25*inch))
 
-        title = "Response to antiplatelet therapy"
-        self.ProcessTrait(story, title)
+        title = "Efficacy of codeine treatment"
+        self.ProcessVariantList(story, title)
 
         story.append(Spacer(1,0.5*inch))
 
-        title = "Response to clopidogrel therapy"
-        self.ProcessTrait(story, title)
+        title = "Adverse response to desipramine therapy"
+        self.ProcessVariantList(story, title)
 
         story.append(Spacer(1,0.5*inch))
 
-        title = "Response to statin therapy (Pravastatin)"
-        self.ProcessTrait(story, title)
+        title = "Adverse response to doxepin therapy"
+        self.ProcessVariantList(story, title)
 
         story.append(Spacer(1,0.5*inch))
 
-        title = "Response to statin therapy (Lipitor)"
-        self.ProcessTrait(story, title)
+        title = "Adverse response to fluorouracil"
+        self.ProcessVariantList(story, title)
 
         story.append(PageBreak())
         story.append(Spacer(1,0.5*inch))
 
-        title = "Response to statin therapy (LDL-C, percent)"
-        self.ProcessTrait(story, title)
+        title = "Adverse response to  imipramine therapy"
+        self.ProcessVariantList(story, title)
 
         story.append(Spacer(1,0.5*inch))
 
-        title = "Response to statin therapy (LDL-C, mg/dL)"
-        self.ProcessTrait(story, title)
+        title = "Adverse response to mercaptopurine"
+        self.ProcessVariantList(story, title)
 
         story.append(PageBreak())
         story.append(Spacer(1,0.5*inch))
 
         # Header section
-        story.append(Paragraph("OTHER DRUG RESPONSES", h1));
+        story.append(Paragraph("TITLE HERE", h1));
         story.append(Spacer(1, 5));
         story.append(MCLine(7.3*inch))
         story.append(Spacer(1,0.25*inch))
 
-        title = "Response to cholinesterase inhibitors in Alzheimer's disease"
-        self.ProcessTrait(story, title)
+        title = "Adverse response to nortriptyline therapy"
+        self.ProcessVariantList(story, title)
 
         story.append(Spacer(1,0.5*inch))
 
-        title = "Response to metformin"
-        self.ProcessTrait(story, title)
+        title = "Response to PEG-interferon-alpha-2a treatment"
+        self.ProcessVariantList(story, title)
 
         story.append(Spacer(1,0.5*inch))
 
-        title = "Asthma treatment response"
-        self.ProcessTrait(story, title)
+        title = "Response to PEG-interferon-alpha-2b treatment"
+        self.ProcessVariantList(story, title)
 
-        if (self.participant.race == "black or african-american"):
+        story.append(Spacer(1,0.5*inch))
 
-            story.append(Spacer(1,0.5*inch))
+        title = "Response to PEG-interferon-alpha treatment"
+        self.ProcessVariantList(story, title)
 
-            title = "Warfarin maintenance dose (African-Americans)"
-            self.ProcessTrait(story, title)
+        story.append(Spacer(1,0.5*inch))
 
-        else:
+        title = "Adverse response to simvastatin"
+        self.ProcessVariantList(story, title)
 
-            story.append(Spacer(1,0.5*inch))
+        story.append(Spacer(1,0.5*inch))
 
-            title = "Warfarin maintenance dose (Caucasians)"
-            self.ProcessTrait(story, title)
+        title = "Adverse response to tegafur"
+        self.ProcessVariantList(story, title)
 
-        """
+        story.append(Spacer(1,0.5*inch))
+
+        title = "Response to telaprevir treatment"
+        self.ProcessVariantList(story, title)
+
+        story.append(Spacer(1,0.5*inch))
+
+        title = "Adverse response to thioguanine"
+        self.ProcessVariantList(story, title)
+
+        story.append(Spacer(1,0.5*inch))
+
+        title = "Adverse response to trimipramine therapy"
+        self.ProcessVariantList(story, title)
+
+        story.append(Spacer(1,0.5*inch))
+
+        title = "Response to warfarin treatment"
+        self.ProcessVariantList(story, title)
+
+        story.append(Spacer(1,0.5*inch))
 
         output_dir = './results';
         output_filename = output_dir + '/' + self.participant.username + '.pharmacogenetics.pdf';
