@@ -796,6 +796,10 @@ class ParticipantDB(object):
                 f.write("%s"%(rsid))
 
                 for key in sorted(self.participants.keys()):
+
+                    if (not 'DNAlysis' in self.participants[key].traits):
+                        continue
+
                     f.write("\t%s"%(self.participants[key].traits['DNAlysis'].variants[rsid].genotype))
                 f.write('\n')
 
