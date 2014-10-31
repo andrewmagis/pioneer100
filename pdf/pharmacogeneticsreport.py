@@ -254,43 +254,62 @@ class PharmacogeneticsReport(object):
         for key in trait.variants.keys():
             variant = trait.variants[key]
 
-            variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.effect, variant.genotype, Paragraph(variant.note_generic, h2)])
-
-            variant_style.append(('VALIGN', (0,count), (-1,count), 'MIDDLE'))
-            variant_style.append(('ALIGN',(0,count),(-1,count),'CENTER'))
-            variant_style.append(('LINEABOVE',(0,count),(-1,count),0.5,colors.black))
-            variant_style.append(('LINEBELOW',(0,count),(-1,count),0.5,colors.black))
-            variant_style.append(('LINEBEFORE',(0,count),(-1,count),0.5,colors.black))
-            variant_style.append(('LINEAFTER',(0,count),(-1,count),0.5,colors.black))
-
             # Based on the effect value, set the colors
             if (variant.effect == 2):
 
+                variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.effect, variant.genotype, Paragraph(variant.note_effect2, h2)])
+
+                variant_style.append(('VALIGN', (0,count), (-1,count), 'MIDDLE'))
+                variant_style.append(('ALIGN',(0,count),(-1,count),'CENTER'))
+                variant_style.append(('LINEABOVE',(0,count),(-1,count),0.5,colors.black))
+                variant_style.append(('LINEBELOW',(0,count),(-1,count),0.5,colors.black))
+                variant_style.append(('LINEBEFORE',(0,count),(-1,count),0.5,colors.black))
+                variant_style.append(('LINEAFTER',(0,count),(-1,count),0.5,colors.black))
+
                 # If the variant is protective
-                if (variant.risk_type == "protective"):
+                if (variant.effect_type == "protective"):
                     variant_style.append(('BACKGROUND', (0, count), (-1, count), self.strong_effect_protective))
-                elif (variant.risk_type == "risk"):
+                elif (variant.effect_type == "risk"):
                     variant_style.append(('BACKGROUND', (0, count), (-1, count), self.strong_effect_risk))
-                elif (variant.risk_type == "response"):
+                elif (variant.effect_type == "response"):
                     variant_style.append(('BACKGROUND', (0, count), (-1, count), self.no_effect))
                 else:
-                    print "Warning, unknown risk value: %s"%(variant.risk_type)
+                    print "Warning, unknown risk value: %s"%(variant.effect_type)
                     variant_style.append(('BACKGROUND', (0, count), (-1, count), self.bad_variant))
 
             elif (variant.effect == 1):
 
+                variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.effect, variant.genotype, Paragraph(variant.note_effect1, h2)])
+
+                variant_style.append(('VALIGN', (0,count), (-1,count), 'MIDDLE'))
+                variant_style.append(('ALIGN',(0,count),(-1,count),'CENTER'))
+                variant_style.append(('LINEABOVE',(0,count),(-1,count),0.5,colors.black))
+                variant_style.append(('LINEBELOW',(0,count),(-1,count),0.5,colors.black))
+                variant_style.append(('LINEBEFORE',(0,count),(-1,count),0.5,colors.black))
+                variant_style.append(('LINEAFTER',(0,count),(-1,count),0.5,colors.black))
+
                 # If the variant is protective
-                if (variant.risk_type == "protective"):
+                if (variant.effect_type == "protective"):
                     variant_style.append(('BACKGROUND', (0, count), (-1, count), self.weak_effect_protective))
-                elif (variant.risk_type == "risk"):
+                elif (variant.effect_type == "risk"):
                     variant_style.append(('BACKGROUND', (0, count), (-1, count), self.weak_effect_risk))
-                elif (variant.risk_type == "response"):
+                elif (variant.effect_type == "response"):
                     variant_style.append(('BACKGROUND', (0, count), (-1, count), self.no_effect))
                 else:
-                    print "Warning, unknown risk value: %s"%(variant.risk_type)
+                    print "Warning, unknown risk value: %s"%(variant.effect_type)
                     variant_style.append(('BACKGROUND', (0, count), (-1, count), self.bad_variant))
 
             else:
+
+                variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.effect, variant.genotype, Paragraph(variant.note_effect0, h2)])
+
+                variant_style.append(('VALIGN', (0,count), (-1,count), 'MIDDLE'))
+                variant_style.append(('ALIGN',(0,count),(-1,count),'CENTER'))
+                variant_style.append(('LINEABOVE',(0,count),(-1,count),0.5,colors.black))
+                variant_style.append(('LINEBELOW',(0,count),(-1,count),0.5,colors.black))
+                variant_style.append(('LINEBEFORE',(0,count),(-1,count),0.5,colors.black))
+                variant_style.append(('LINEAFTER',(0,count),(-1,count),0.5,colors.black))
+
                 variant_style.append(('BACKGROUND', (0, count), (-1, count), self.no_effect))
             count += 1
 
