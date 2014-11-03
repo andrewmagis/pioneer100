@@ -79,7 +79,12 @@ def main(parser):
             r2.append(values[1])
             """
 
-            print username, gstm, gstt, values[0], values[1]
+            if (values.size == 2):
+                print username, gstm, gstt, values[0], values[1]
+            elif (dates == 1):
+                print username, gstm, gstt, values, "None"
+            elif (dates == 2):
+                print username, gstm, gstt, "None", values
 
     gstm_del = np.array(gstm_del)
     gstt_del = np.array(gstt_del)
