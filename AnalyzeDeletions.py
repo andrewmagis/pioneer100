@@ -46,6 +46,7 @@ def main(parser):
     gstt_del = []
     r1 = []
     r2 = []
+    usernames = []
 
     # Load the data
     with open('db/deletions.txt', 'rU') as f:
@@ -59,18 +60,24 @@ def main(parser):
                 continue
 
             # Get the data for cadmium
-            (dates, values, range) = participants.participants[username].GetMeasurement('LEAD')
+            (dates, values, range) = participants.participants[username].GetMeasurement('MERCURY')
 
             if (values.size < 2):
                 continue
             if (np.isnan(values[0])):
                 continue
+            if (np.isnan(values[1])):
+                continue
 
             #print username, gstm, gstt, values
+            usernames.append(username)
             gstm_del.append(int(gstm))
             gstt_del.append(int(gstt))
 
             r1.append(values[0])
+            r2.append(values[1])
+
+            print username, gstm, gstt, values[0], values[1]
 
     gstm_del = np.array(gstm_del)
     gstt_del = np.array(gstt_del)
