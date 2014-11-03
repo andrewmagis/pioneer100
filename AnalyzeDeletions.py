@@ -62,6 +62,7 @@ def main(parser):
             # Get the data for cadmium
             (dates, values, range) = participants.participants[username].GetMeasurement('MERCURY')
 
+            """
             if (values.size < 2):
                 continue
             if (np.isnan(values[0])):
@@ -76,6 +77,7 @@ def main(parser):
 
             r1.append(values[0])
             r2.append(values[1])
+            """
 
             print username, gstm, gstt, values[0], values[1]
 
