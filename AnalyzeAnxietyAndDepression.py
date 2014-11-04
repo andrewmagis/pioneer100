@@ -6,6 +6,7 @@ import numpy as np
 from scipy import stats
 
 # Import the database class
+from dbsnp import DBSnp
 from database import Database
 
 # Import the individual participant
