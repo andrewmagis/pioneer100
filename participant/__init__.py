@@ -120,7 +120,7 @@ class ParticipantDB(object):
         x = np.sort(x, axis=-1, kind='quicksort', order=['Score'])
 
         # Generate histogram of the score column
-        (probability, bins) = np.histogram(x['Score'], bins=3)
+        (probability, bins) = np.histogram(x['Score'], bins=5)
 
         print probability
         print bins
