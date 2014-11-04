@@ -44,6 +44,7 @@ def main(parser):
     for (prt, round1, round2, score) in x:
 
         # Get the compliance for vitamin D and supplementation level
+        gender = participants.partcipants[prt].gender
         anxiety = participants.participants[prt].compliance['anxiety']
         depression = participants.participants[prt].compliance['depression']
         stress = participants.participants[prt].compliance['chronic_stress']
@@ -57,12 +58,12 @@ def main(parser):
         if (stress is None):
             stress = 0
 
-        data.append((prt, round1, round2, score, anxiety, depression, stress))
+        data.append((prt, gender, round1, round2, score, anxiety, depression, stress))
 
-    x = np.array(data, dtype=[('Username', np.str, 10), ('Round1', float), ('Round2', float), ('Score', float), ('Anxiety', float), ('Depression', float), ('Stress', 'float')])
+    x = np.array(data, dtype=[('Username', np.str, 10), ('Gender', np.str, 1), ('Round1', float), ('Round2', float), ('Score', float), ('Anxiety', float), ('Depression', float), ('Stress', 'float')])
 
-    for (username, round1, round2, score, anxiety, depression, stress) in x:
-        print username, round1, round2, score, anxiety, depression, stress
+    for (username, gender, round1, round2, score, anxiety, depression, stress) in x:
+        print username, gender, round1, round2, score, anxiety, depression, stress
 
 if __name__ == "__main__":
     main(ArgParser())
