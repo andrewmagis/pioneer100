@@ -31,7 +31,7 @@ def main(parser):
     dbsnp = DBSnp(database)
 
     # Create the participant DB from the database
-    participants = ParticipantDB(database, None, None, None, clinvar_db, dbsnp)
+    participants = ParticipantDB(database, None, None, None, None, dbsnp)
 
     print "Trait: %s"%(parser.trait)
     print "Measurement: %s"%(parser.measurement)
