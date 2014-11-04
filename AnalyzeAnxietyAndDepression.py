@@ -40,7 +40,7 @@ def main(parser):
     data = participants.MetaboliteTraitCorrelation('Homocysteine levels', 'HOMOCYSTEINE_CARDIOVASCULAR_QUEST', 1)
 
     # Now we get the supplementation level for each of these people
-    for (prt, round1, round2, score) in x:
+    for (prt, round1, round2, score) in data:
 
         # Get the compliance for vitamin D and supplementation level
         anxiety = participants.participants[prt].compliance['anxiety']
