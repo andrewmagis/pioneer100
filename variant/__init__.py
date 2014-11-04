@@ -208,15 +208,15 @@ class Variant(object):
 
             # We take the log of the odds ratio so they can be summed
             try:
-                #self.score = self.effect * math.log(float(self.odds_beta)) * -math.log(float(self.pval))
-                self.score = self.effect * math.log(float(self.odds_beta))
+                self.score = self.effect * math.log(float(self.odds_beta)) * -math.log(float(self.pval))
+                #self.score = self.effect * math.log(float(self.odds_beta))
             except:
                 self.score = 0.0
 
         # If this is a beta coefficient
         else:
-            #self.score = self.effect * float(self.odds_beta) * -math.log(float(self.pval))
-            self.score = self.effect * float(self.odds_beta)
+            self.score = self.effect * float(self.odds_beta) * -math.log(float(self.pval))
+            #self.score = self.effect * float(self.odds_beta)
 
     def Validate(self, dbsnp, genome):
 
