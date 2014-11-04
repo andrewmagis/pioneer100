@@ -5,17 +5,8 @@ import time, sys, argparse, math
 import numpy as np
 from scipy import stats
 
-# Import genome class
-from genome import Genome
-
-# Import DBSnp class
-from dbsnp import DBSnp
-from clinvar import Clinvar
-
 # Import the database class
 from database import Database
-
-
 
 # Import the individual participant
 from participant import ParticipantDB
@@ -38,9 +29,6 @@ def main(parser):
     # Load the DBSnp database
     dbsnp = DBSnp(database)
 
-    # Open connection to Clinvar database
-    clinvar_db = Clinvar(database)
-
     # Create the participant DB from the database
     participants = ParticipantDB(database, None, None, None, clinvar_db, dbsnp)
 
@@ -48,7 +36,10 @@ def main(parser):
     print "Measurement: %s"%(parser.measurement)
 
     # Loop over all the participants, and get the R1 and R2 metabolite + genetic score
-    x = participants.MetaboliteTraitCorrelation('Vitamin D 2', 'VITAMIN_D')
+    data = participants.MetaboliteTraitCorrelation('Homocysteine levels', 'HOMOCYSTEINE_CARDIOVASCULAR_QUEST')
+
+    print data
+    return
 
     # Generate histogram of the score column
     (probability, bins) = np.histogram(x['Score'], bins=5)
