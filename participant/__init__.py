@@ -180,8 +180,7 @@ class ParticipantDB(object):
             sd = np.nanstd(subset)
             stderr = sd / math.sqrt(len(subset))
 
-            print end, mean, sd
-
+            print subset
             print mean, stderr
 
         print x['Username']
