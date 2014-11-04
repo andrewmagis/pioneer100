@@ -47,6 +47,8 @@ def main(parser):
         depression = participants.participants[prt].compliance['depression']
         stress = participants.participants[prt].compliance['chronic_stress']
 
+        print anxiety, depression, stress
+
         if (np.isnan(anxiety)):
             anxiety = 0
         if (np.isnan(depression)):
