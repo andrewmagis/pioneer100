@@ -174,10 +174,13 @@ class ParticipantDB(object):
             subset = x['Round2'][indices]
             subind = x['Score'][indices]
 
+
             # Calculate the mean and stdev of these values
             mean = np.nanmean(subset)
             sd = np.nanstd(subset)
             stderr = sd / math.sqrt(len(subset))
+
+            print end, mean, sd
 
             print mean, stderr
 
