@@ -49,11 +49,11 @@ def main(parser):
 
         print anxiety, depression, stress
 
-        if (np.isnan(anxiety)):
+        if (anxiety is None):
             anxiety = 0
-        if (np.isnan(depression)):
+        if (depression is None):
             depression = 0
-        if (np.isnan(stress)):
+        if (stress is None):
             stress = 0
 
         data.append((prt, round1, round2, score, anxiety, depression, stress))
