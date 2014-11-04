@@ -37,14 +37,14 @@ def main(parser):
     print "Measurement: %s"%(parser.measurement)
 
     # Loop over all the participants, and get the R1 and R2 metabolite + genetic score
-    x = participants.MetaboliteTraitCorrelation('COMT', 'HOMOCYSTEINE_CARDIOVASCULAR_QUEST', 1)
+    x = participants.MetaboliteTraitCorrelation('COMT', 'HOMOCYSTEINE_CARDIOVASCULAR_QUEST', 1e-50)
     data = []
 
     # Now we get the supplementation level for each of these people
     for (prt, round1, round2, score) in x:
 
         # Get the compliance for vitamin D and supplementation level
-        gender = participants.partcipants[prt].gender
+        gender = participants.participants[prt].gender
         anxiety = participants.participants[prt].compliance['anxiety']
         depression = participants.participants[prt].compliance['depression']
         stress = participants.participants[prt].compliance['chronic_stress']
