@@ -37,7 +37,7 @@ def main(parser):
     print "Measurement: %s"%(parser.measurement)
 
     # Loop over all the participants, and get the R1 and R2 metabolite + genetic score
-    data = participants.MetaboliteTraitCorrelation('Homocysteine levels', 'HOMOCYSTEINE_CARDIOVASCULAR_QUEST')
+    data = participants.MetaboliteTraitCorrelation('Homocysteine levels', 'HOMOCYSTEINE_CARDIOVASCULAR_QUEST', 1)
 
     print data
     return
