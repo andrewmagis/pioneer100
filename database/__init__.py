@@ -91,6 +91,9 @@ class Database(object):
             else:
                 result = zip(result, row)
 
+        if (result is None):
+            return {}
+
         if (len(result)==0):
             return {}
 
