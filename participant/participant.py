@@ -211,7 +211,7 @@ class Participant(object):
         if (not measurement in self.data):
             #raise MyError('Unknown measurement %s'%(measurement))
             print 'Unknown measurement %s'%(measurement)
-            return (np.array([0]), np.array([0]), [0])
+            return (np.array([1]), np.array([0]), [0])
 
         range = []
         dates = self.data['ROUND']
