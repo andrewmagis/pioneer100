@@ -110,7 +110,7 @@ class ParticipantDB(object):
             print "Processed %s"%(key)
 
         # Build numpy structured array of scores
-        x = np.array(data, dtype=[('Username', np.str, 10), ('Round1', float), ('Round2', float), ('Score', float)])
+        x = np.array(data, dtype=[('Username', np.str, 10), ('Gender', np.str, 1), ('Round1', float), ('Round2', float), ('Score', float)])
 
         # Start by calculating the correlation
         (R, P) = stats.pearsonr(x['Round1'], x['Score'])
@@ -151,7 +151,6 @@ class ParticipantDB(object):
             stderr = sd / math.sqrt(len(subset))
 
             print mean, stderr
-
             start = end
 
         print

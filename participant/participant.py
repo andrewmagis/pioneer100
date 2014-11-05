@@ -99,9 +99,9 @@ class Participant(object):
             if (np.isnan(values)):
                 return None
             elif (dates == 1):
-                return (self.username, values, np.nan, self.traits[trait].score)
+                return (self.username, self.gender, values, np.nan, self.traits[trait].score)
             elif (dates == 2):
-                return (self.username, np.nan, values, self.traits[trait].score)
+                return (self.username, self.gender, np.nan, values, self.traits[trait].score)
             else:
                 raise MyError('More than 2 values in measurement')
 
@@ -110,11 +110,11 @@ class Participant(object):
             if (np.isnan(values[0])) and (np.isnan(values[1])):
                 return None
             elif (np.isnan(values[0])):
-                return (self.username, np.nan, values[1], self.traits[trait].score)
+                return (self.username, self.gender, np.nan, values[1], self.traits[trait].score)
             elif (np.isnan(values[1])):
-                return (self.username, values[0], np.nan, self.traits[trait].score)
+                return (self.username, self.gender, values[0], np.nan, self.traits[trait].score)
             else:
-                return (self.username, values[0], values[1], self.traits[trait].score)
+                return (self.username, self.gender, values[0], values[1], self.traits[trait].score)
 
         else:
             raise MyError('More than 2 values in measurement')
