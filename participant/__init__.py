@@ -183,6 +183,7 @@ class ParticipantDB(object):
 
 
         print x['Username']
+        print x['Gender']
         print x['Round1']
         print x['Round2']
         print x['Score']
