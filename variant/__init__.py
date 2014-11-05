@@ -230,8 +230,8 @@ class Variant(object):
         except:
             return (False, "Invalid Pvalue")
 
-        if (self.pval > 1e-6):
-            return (False, "Pvalue is not significant")
+        #if (self.pval > 1e-6):
+        #    return (False, "Pvalue is not significant")
 
         # Get the dbsnp variant from the database
         #TODO: Install dbSNP GRCh38 and update
