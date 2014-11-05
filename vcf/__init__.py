@@ -46,7 +46,7 @@ class VCFObject(object):
             elif (self.chr == 'M'):
                 pass
             else:
-                print "[%s] Warning, irregular genotype %s" % (self.rsid, temp)
+                print "Warning, irregular genotype %s"%(temp)
 
         self.alleles = set()
         for e in genotype:
