@@ -288,7 +288,7 @@ def main(parser):
 
                 # If this is a beta coefficient but there is no direction
                 if (not unit is None) and (direction is None):
-                    raise MyError("[%s] No direction for beta coefficient: %s"%(rsid, self.confidence95))
+                    raise MyError("[%s] No direction for beta coefficient: %s"%(rsid, confidence95))
                 elif (not unit is None):
                     odds_beta *= direction
 
