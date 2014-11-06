@@ -62,6 +62,7 @@ class Trait:
                 else:
                     raise MyError('Found multiple variants at using rsid=%s in VCF file %s'%(key, vcf.filename))
 
+                print key
                 #self.variants[key].Print()
                 if (key == 'rs2187668'):
                     self.variants[key].Print()
