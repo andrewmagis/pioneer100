@@ -292,6 +292,13 @@ def main(parser):
                 elif (not unit is None):
                     odds_beta *= direction
 
+                if (len(chr.strip())==0):
+                    chr = None
+                if (len(start.strip())==0):
+                    start = None
+                if (len(end.strip())==0):
+                    end = None
+
                 entry = None
                 reference = None
                 variant = Variant(entry, rsid, trait, chr, start, end, reported_genes, vc, assembly, pubmed, risk_allele, reference, inheritance,
