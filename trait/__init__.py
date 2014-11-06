@@ -63,6 +63,8 @@ class Trait:
                     raise MyError('Found multiple variants at using rsid=%s in VCF file %s'%(key, vcf.filename))
 
                 #self.variants[key].Print()
+                if (key == 'rs2187668'):
+                    self.variants[key].Print()
 
                 # Accumulate the score for this trait
                 self.score += self.variants[key].score
