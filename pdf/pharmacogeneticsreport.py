@@ -113,7 +113,7 @@ class PharmacogeneticsReport(object):
 
         canvas.setFont('Helvetica',14)
         canvas.drawString(4.0*inch, 11.4*inch, "%s"%(self.participant.username));
-        canvas.drawString(0.5*inch, 11.2*inch, "Drug responses");
+        canvas.drawString(0.5*inch, 11.4*inch, "Drug responses");
 
         #canvas.drawString(6.5*inch, 11.4*inch, self.title)
         #canvas.drawString(6.5*inch, 11.2*inch, self.author)
@@ -152,83 +152,6 @@ class PharmacogeneticsReport(object):
         table = Table(variant_table, [500], hAlign='CENTER', style=variant_style)
         story.append(table)
 
-    def AddGraph(self, value, unit, min_value, max_value, width=75):
-
-        drawing = Drawing(0, 20)
-        chart = HorizontalBarChart()
-        chart.x = 0
-        chart.y = 0
-        chart.width = 150
-        chart.height = 20
-
-        chart.valueAxis.valueMin = min_value
-        chart.valueAxis.valueMax = max_value
-        #chart.valueAxis.valueStep = round((max_value-min_value) / 5);
-
-        #self.title.fontName = 'Helvetica-Bold'
-        #self.title.fontSize = 12
-
-        chart.data = [[value]]
-
-        chart.barLabels.fontName = "Helvetica"
-        chart.barLabels.fontSize = 10
-        chart.barLabels.fillColor = colors.black;
-        chart.barLabelFormat = '%.1f'
-        chart.barLabels.nudge = 15
-        chart.bars[(0,0)].fillColor = colors.black;
-
-        chart.categoryAxis.labels.boxAnchor = 'ne'
-        chart.categoryAxis.labels.fontSize = 8;
-        chart.categoryAxis.labels.dx = 0;
-        chart.categoryAxis.labels.dy = -30;
-        chart.categoryAxis.labels.angle = 0;
-        chart.categoryAxis.categoryNames = [unit];
-
-        drawing.add(chart);
-        return drawing;
-
-        """
-        drawing = Drawing(150, 150)
-        #drawing.add(String(400, 500, title), name="title")
-        chart = HorizontalBarChart()
-
-        CHART_WIDTH=width;
-        CHART_HEIGHT=100
-
-        chart.height = CHART_HEIGHT;
-        chart.width = CHART_WIDTH;
-        chart.data = [value];
-        chart.strokeColor = colors.black;
-        chart.valueAxis.valueMin = min_value
-        chart.valueAxis.valueMax = max_value
-        #chart.valueAxis.valueStep = round((range[1]-range[0]) / 5);
-        #chart.valueAxis.valueSteps = [min_value, max_value];
-        #chart.valueAxis.tickRight = CHART_WIDTH;
-        chart.valueAxis.strokeWidth = 0.1;
-
-        #drawing.title.x = 20 + chart.width/2;
-        #drawing.title.y = 10 + chart.height + 5;
-        #drawing.title.textAnchor ='middle'
-        #drawing.title.fontSize = 10
-
-        chart.categoryAxis.labels.boxAnchor = 'ne'
-        chart.categoryAxis.labels.fontSize = 8;
-        chart.categoryAxis.labels.dx = 12;
-        chart.categoryAxis.labels.dy = -2;
-        chart.categoryAxis.labels.angle = 0;
-        #chart.categoryAxis.categoryNames = ["Draw"+str(x) for x in dates];
-
-        chart.bars.strokeWidth = 1.0;
-
-        chart.barLabels.fontName = "Helvetica"
-        chart.barLabels.fontSize = 10
-        chart.barLabels.fillColor = colors.black;
-        chart.barLabelFormat = '%.1f'
-        chart.barLabels.nudge = 7
-
-        drawing.add(chart);
-        return drawing;
-        """
 
     def ProcessVariantList(self, story, title):
 
