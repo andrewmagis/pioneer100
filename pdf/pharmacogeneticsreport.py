@@ -74,7 +74,7 @@ class PharmacogeneticsReport(object):
         self.participant = participant
 
         self.theme = MyTheme
-        self.title = "Beta Genetics Report"
+        self.title = "Research results - Drug responses"
         self.author = "Do not distribute"
         self.buildme = False
 
@@ -99,12 +99,12 @@ class PharmacogeneticsReport(object):
         #canvas.drawString(0.5*inch, 11.2*inch, "Gender: %s"%(self.gender));
         #canvas.drawString(0.5*inch, 11.0*inch, "DOB: %s"%(self.dob));
 
-        #canvas.drawString(6.5*inch, 11.4*inch, self.title)
+        canvas.drawString(6.5*inch, 11.4*inch, self.title)
         #canvas.drawString(6.5*inch, 11.2*inch, self.author)
 
         canvas.setFont('Helvetica',8)
         #canvas.drawString(0.25*inch, 0.25*inch, "Page %d"%(doc.page))
-        canvas.drawString(2.5*inch, 0.20*inch, u"\u00A9 2014 Institute for Systems Biology. All Rights Reserved.")
+        canvas.drawString(2.5*inch, 0.20*inch, u"\u00A9 2014 Hundred Person Wellness Project. All Rights Reserved.")
 
         canvas.restoreState()
 
@@ -117,12 +117,12 @@ class PharmacogeneticsReport(object):
         #canvas.drawString(0.5*inch, 11.2*inch, "Gender: %s"%(self.gender));
         #canvas.drawString(0.5*inch, 11.0*inch, "DOB: %s"%(self.dob));
 
-        #canvas.drawString(6.5*inch, 11.4*inch, self.title)
+        canvas.drawString(6.5*inch, 11.4*inch, self.title)
         #canvas.drawString(6.5*inch, 11.2*inch, self.author)
 
         canvas.setFont('Helvetica',8)
         canvas.drawString(7.75*inch, 0.25*inch, "%d"%(doc.page))
-        canvas.drawString(2.5*inch, 0.25*inch, u"\u00A9 2014 Institute for Systems Biology. All Rights Reserved.")
+        canvas.drawString(2.5*inch, 0.25*inch, u"\u00A9 2014 Hundred Person Wellness Project. All Rights Reserved.")
 
         canvas.restoreState();
 
@@ -409,181 +409,116 @@ class PharmacogeneticsReport(object):
         story.append(Spacer(1,0.5*inch))
 
         # Header section
-        story.append(Paragraph("HEADER NAME HERE", h1));
+        story.append(Paragraph("RESPONSE TO ANTI-CANCER DRUGS", h1));
         story.append(Spacer(1, 5));
         story.append(MCLine(7.3*inch))
-
         story.append(Spacer(1,0.25*inch))
 
-        title = "Adverse response to abacavir in HIV treatment"
+        title = "Capecitabine"
         self.ProcessVariantList(story, title)
-
         story.append(Spacer(1,0.5*inch))
 
-        title = "Adverse response to amitriptyline therapy"
+        title = "Fluorouracil"
         self.ProcessVariantList(story, title)
+        story.append(Spacer(1,0.5*inch))
 
-        #story.append(PageBreak())
+        title = "Tegafur"
+        self.ProcessVariantList(story, title)
+        story.append(Spacer(1,0.5*inch))
+
+        title = "Mercaptopurine or thioguanine"
+        self.ProcessVariantList(story, title)
         story.append(Spacer(1,0.5*inch))
 
         # Header section
-        story.append(Paragraph("HEADER NAME HERE", h1));
+        story.append(Paragraph("RESPONSE TO ANTIDEPRESSANTS AND MOOD STABILIZERS", h1));
         story.append(Spacer(1, 5));
         story.append(MCLine(7.3*inch))
         story.append(Spacer(1,0.25*inch))
 
-        title = "Adverse response to azathioprine"
+        title = "Carbamazepine"
         self.ProcessVariantList(story, title)
-
         story.append(Spacer(1,0.5*inch))
 
-        title = "Response to PEG-interferon-alpha treatment"
+        title = "Tricyclic antidepressants"
         self.ProcessVariantList(story, title)
-
-        #story.append(PageBreak())
         story.append(Spacer(1,0.5*inch))
 
         # Header section
-        story.append(Paragraph("HEADER TITLE HERE", h1));
+        story.append(Paragraph("RESPONSE TO CARDIOVASCULAR AND ANTI-CLOTTING DRUGS", h1));
         story.append(Spacer(1, 5));
         story.append(MCLine(7.3*inch))
         story.append(Spacer(1,0.25*inch))
 
-        """
-        if (self.participant.race == "black or african-american"):
-
-            title = "Response to angiotensin II receptor blocker therapy (African-Americans)"
-            self.ProcessTrait(story, title)
-
-        else:
-
-            title = "Response to angiotensin II receptor blocker therapy (Caucasians)"
-            self.ProcessTrait(story, title)
-        """
-
+        title = "Simvastatin"
+        self.ProcessVariantList(story, title)
         story.append(Spacer(1,0.5*inch))
 
-        title = "Adverse response to capecitabine"
+        title = "Clopidogrel"
         self.ProcessVariantList(story, title)
+        story.append(Spacer(1,0.5*inch))
 
-        #story.append(PageBreak())
+        title = "Warfarin"
+        self.ProcessVariantList(story, title)
         story.append(Spacer(1,0.5*inch))
 
         # Header section
-        story.append(Paragraph("RESPONSE TO ANTIDEPRESSANTS", h1));
+        story.append(Paragraph("RESPONSE TO HEPATITIS C MEDICATIONS", h1));
         story.append(Spacer(1, 5));
         story.append(MCLine(7.3*inch))
         story.append(Spacer(1,0.25*inch))
 
-        title = "Adverse response to carbamazepine"
+        title = "PEG-interferon-alpha"
         self.ProcessVariantList(story, title)
-
         story.append(Spacer(1,0.5*inch))
 
-        title = "Adverse response to desipramine therapy"
+        title = "PEG-interferon-alpha-2a"
         self.ProcessVariantList(story, title)
-
         story.append(Spacer(1,0.5*inch))
 
-        title = "Adverse response to clopidogrel therapy"
+        title = "PEG-interferon-alpha-2b"
         self.ProcessVariantList(story, title)
+        story.append(Spacer(1,0.5*inch))
 
-        #story.append(PageBreak())
+        title = "Telaprevir"
+        self.ProcessVariantList(story, title)
         story.append(Spacer(1,0.5*inch))
 
         # Header section
-        story.append(Paragraph("HEADER TITLE HERE", h1));
+        story.append(Paragraph("RESPONSE TO HIV MEDICATIONS", h1));
         story.append(Spacer(1, 5));
         story.append(MCLine(7.3*inch))
         story.append(Spacer(1,0.25*inch))
 
-        title = "Efficacy of codeine treatment"
+        title = "Abacavir"
         self.ProcessVariantList(story, title)
-
         story.append(Spacer(1,0.5*inch))
 
-        title = "Adverse response to desipramine therapy"
+        title = "Azathioprine"
         self.ProcessVariantList(story, title)
-
         story.append(Spacer(1,0.5*inch))
 
-        title = "Adverse response to doxepin therapy"
-        self.ProcessVariantList(story, title)
+        # Header section
+        story.append(Paragraph("RESPONSE TO PAIN MEDICATIONS", h1));
+        story.append(Spacer(1, 5));
+        story.append(MCLine(7.3*inch))
+        story.append(Spacer(1,0.25*inch))
 
+        title = "Codeine"
+        self.ProcessVariantList(story, title)
         story.append(Spacer(1,0.5*inch))
 
         title = "Adverse response to fluorouracil"
         self.ProcessVariantList(story, title)
-
-        story.append(PageBreak())
-        story.append(Spacer(1,0.5*inch))
-
-        title = "Adverse response to  imipramine therapy"
-        self.ProcessVariantList(story, title)
-
-        story.append(Spacer(1,0.5*inch))
-
-        title = "Adverse response to mercaptopurine"
-        self.ProcessVariantList(story, title)
-
-        #story.append(PageBreak())
         story.append(Spacer(1,0.5*inch))
 
         # Header section
-        story.append(Paragraph("TITLE HERE", h1));
+        story.append(Paragraph("RISK FOR MALIGNANT HYPOTHERMIA", h1));
         story.append(Spacer(1, 5));
         story.append(MCLine(7.3*inch))
         story.append(Spacer(1,0.25*inch))
 
-        title = "Adverse response to nortriptyline therapy"
-        self.ProcessVariantList(story, title)
-
-        story.append(Spacer(1,0.5*inch))
-
-        title = "Response to PEG-interferon-alpha-2a treatment"
-        self.ProcessVariantList(story, title)
-
-        story.append(Spacer(1,0.5*inch))
-
-        title = "Response to PEG-interferon-alpha-2b treatment"
-        self.ProcessVariantList(story, title)
-
-        story.append(Spacer(1,0.5*inch))
-
-        title = "Response to PEG-interferon-alpha treatment"
-        self.ProcessVariantList(story, title)
-
-        story.append(Spacer(1,0.5*inch))
-
-        title = "Adverse response to simvastatin"
-        self.ProcessVariantList(story, title)
-
-        story.append(Spacer(1,0.5*inch))
-
-        title = "Adverse response to tegafur"
-        self.ProcessVariantList(story, title)
-
-        story.append(Spacer(1,0.5*inch))
-
-        title = "Response to telaprevir treatment"
-        self.ProcessVariantList(story, title)
-
-        story.append(Spacer(1,0.5*inch))
-
-        title = "Adverse response to thioguanine"
-        self.ProcessVariantList(story, title)
-
-        story.append(Spacer(1,0.5*inch))
-
-        title = "Adverse response to trimipramine therapy"
-        self.ProcessVariantList(story, title)
-
-        story.append(Spacer(1,0.5*inch))
-
-        title = "Response to warfarin treatment"
-        self.ProcessVariantList(story, title)
-
-        story.append(Spacer(1,0.5*inch))
+        #story.append(PageBreak())
 
         output_dir = './results';
         output_filename = output_dir + '/' + self.participant.username + '.pharmacogenetics.pdf';
