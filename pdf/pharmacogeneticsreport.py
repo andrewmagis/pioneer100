@@ -248,13 +248,16 @@ class PharmacogeneticsReport(object):
             return
         trait = self.participant.traits[title]
 
-        story.append(Paragraph(variant.note_generic, h2));
-        story.append(Spacer(1, 5));
-        story.append(MCLine(7.3*inch))
-
         count = 1
+        header = False
         for key in trait.variants.keys():
             variant = trait.variants[key]
+
+            if (not header):
+                story.append(Paragraph(variant.note_generic, h2));
+                story.append(Spacer(1, 5));
+                story.append(MCLine(7.3*inch))
+                header = True
 
             # Based on the effect value, set the colors
             if (variant.effect == 2):
