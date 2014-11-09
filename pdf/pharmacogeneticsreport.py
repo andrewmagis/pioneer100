@@ -96,10 +96,9 @@ class PharmacogeneticsReport(object):
 
         canvas.setFont('Helvetica',14)
         canvas.drawString(4.0*inch, 11.4*inch, "%s"%(self.participant.username));
-        #canvas.drawString(0.5*inch, 11.2*inch, "Gender: %s"%(self.gender));
-        #canvas.drawString(0.5*inch, 11.0*inch, "DOB: %s"%(self.dob));
+        canvas.drawString(0.5*inch, 11.2*inch, "Drug responses");
 
-        canvas.drawString(6.5*inch, 11.4*inch, self.title)
+        #canvas.drawString(6.5*inch, 11.4*inch, self.title)
         #canvas.drawString(6.5*inch, 11.2*inch, self.author)
 
         canvas.setFont('Helvetica',8)
@@ -114,10 +113,9 @@ class PharmacogeneticsReport(object):
 
         canvas.setFont('Helvetica',14)
         canvas.drawString(4.0*inch, 11.4*inch, "%s"%(self.participant.username));
-        #canvas.drawString(0.5*inch, 11.2*inch, "Gender: %s"%(self.gender));
-        #canvas.drawString(0.5*inch, 11.0*inch, "DOB: %s"%(self.dob));
+        canvas.drawString(0.5*inch, 11.2*inch, "Drug responses");
 
-        canvas.drawString(6.5*inch, 11.4*inch, self.title)
+        #canvas.drawString(6.5*inch, 11.4*inch, self.title)
         #canvas.drawString(6.5*inch, 11.2*inch, self.author)
 
         canvas.setFont('Helvetica',8)
@@ -250,7 +248,7 @@ class PharmacogeneticsReport(object):
             return
         trait = self.participant.traits[title]
 
-        story.append(Paragraph(title, h2));
+        story.append(Paragraph(variant.note_generic, h2));
         story.append(Spacer(1, 5));
         story.append(MCLine(7.3*inch))
 
