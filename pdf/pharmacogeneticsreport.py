@@ -96,7 +96,7 @@ class PharmacogeneticsReport(object):
 
         canvas.setFont('Helvetica',14)
         canvas.drawString(4.0*inch, 11.4*inch, "%s"%(self.participant.username));
-        canvas.drawString(0.5*inch, 11.2*inch, "Drug responses");
+        canvas.drawString(0.5*inch, 11.4*inch, "Drug responses");
 
         #canvas.drawString(6.5*inch, 11.4*inch, self.title)
         #canvas.drawString(6.5*inch, 11.2*inch, self.author)
@@ -506,10 +506,6 @@ class PharmacogeneticsReport(object):
         story.append(Spacer(1,0.25*inch))
 
         title = "Codeine"
-        self.ProcessVariantList(story, title)
-        story.append(Spacer(1,0.5*inch))
-
-        title = "Adverse response to fluorouracil"
         self.ProcessVariantList(story, title)
         story.append(Spacer(1,0.5*inch))
 
