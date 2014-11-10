@@ -438,6 +438,33 @@ class PharmacogeneticsReport(object):
         story.append(MCLine(7.3*inch))
         story.append(Spacer(1,0.25*inch))
 
+
+        variant_table = [['Gene', 'Identifier', 'Effect', 'You', 'Description']] # this is the header row
+        variant_style = []
+        variant_style.append(('VALIGN', (0,0), (-1,-1), 'MIDDLE'))
+        variant_style.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
+        variant_style.append(('LINEABOVE',(0,0),(-1,0),0.5,colors.black))
+        variant_style.append(('LINEBELOW',(0,0),(-1,0),1.0,colors.black))
+        variant_style.append(('LINEBEFORE',(0,0),(-1,0),0.5,colors.black))
+        variant_style.append(('LINEAFTER',(0,0),(-1,0),0.5,colors.black))
+        variant_style.append(('BACKGROUND', (0, 0), (-1, 0), self.header))
+
+        story.append(Paragraph("Malignant hyperthermia is a rare, life-threatening inherited condition that causes a fast rise in body temperature and  severe muscle contractions when the affected person gets certain drugs for general anesthesia.  When exposed to these drugs, affected individuals will experience circulatory collapse and death if not treated quickly.", h2));
+        story.append(Spacer(1, 5));
+        story.append(MCLine(7.3*inch))
+        header = True
+
+        variant_table.append([Paragraph("RYR1, CACNA1S", h2), '-', '-', '-', Paragraph("You do not have any known variants associated with malignant hypothermia", h2)])
+
+        variant_style.append(('VALIGN', (0,count), (-1,count), 'MIDDLE'))
+        variant_style.append(('ALIGN',(0,count),(-1,count),'CENTER'))
+        variant_style.append(('LINEABOVE',(0,count),(-1,count),0.5,colors.black))
+        variant_style.append(('LINEBELOW',(0,count),(-1,count),0.5,colors.black))
+        variant_style.append(('LINEBEFORE',(0,count),(-1,count),0.5,colors.black))
+        variant_style.append(('LINEAFTER',(0,count),(-1,count),0.5,colors.black))
+
+        variant_style.append(('BACKGROUND', (0, count), (-1, count), self.no_effect))
+
         #story.append(PageBreak())
 
         output_dir = './results';
