@@ -372,7 +372,7 @@ class Clinvar(object):
             result = self.acmg_variants[disorder]
 
             for variant in result:
-                records = vcf.Query(variant.chr, variant.pos, suppress_errors)
+                records = vcf.Query(variant.rsid, suppress_errors)
 
                 for record in records:
 
