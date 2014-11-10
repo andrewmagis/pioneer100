@@ -99,7 +99,7 @@ def main(parser):
     #pharm_db.Load()
 
     # Create the participant DB from the database
-    participants = ParticipantDB(database, actionable_db, gwas_db, pharm_db, clinvar_db)
+    participants = ParticipantDB(database, actionable_db, gwas_db, pharm_db, clinvar_db, dbsnp)
 
     # Load clinvar variants
     #clinvar_db.LoadVCF()
