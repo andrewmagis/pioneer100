@@ -158,6 +158,10 @@ class VCF(object):
 
         vcfs = []
 
+        if (dbsnp_entry is None):
+            print "[%s] not found in dbsnp database"%(rsid)
+            return vcfs
+
         # Perform a tabix query on the VCF file
         records = self.tb.query(dbsnp_entry.chr, int(dbsnp_entry.pos)-1, int(dbsnp_entry.pos)+1)
 
