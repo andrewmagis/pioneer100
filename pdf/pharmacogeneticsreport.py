@@ -352,6 +352,9 @@ class PharmacogeneticsReport(object):
         self.ProcessVariantList(story, title)
         story.append(Spacer(1,0.5*inch))
 
+        story.append(PageBreak())
+        story.append(Spacer(1,0.25*inch))
+
         # Header section
         story.append(Paragraph("RESPONSE TO ANTIDEPRESSANTS AND MOOD STABILIZERS", h1));
         story.append(Spacer(1, 5));
