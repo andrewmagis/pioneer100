@@ -453,6 +453,7 @@ class PharmacogeneticsReport(object):
         story.append(Spacer(1, 5));
         story.append(MCLine(7.3*inch))
         header = True
+        count = 0
 
         variant_table.append([Paragraph("RYR1, CACNA1S", h2), '-', '-', '-', Paragraph("You do not have any known variants associated with malignant hypothermia", h2)])
 
