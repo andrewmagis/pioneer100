@@ -102,10 +102,10 @@ def main(parser):
     participants = ParticipantDB(database, actionable_db, gwas_db, pharm_db, clinvar_db)
 
     # Load clinvar variants
-    clinvar_db.LoadVCF()
+    #clinvar_db.LoadVCF()
 
     # Analyze participants for the ACMG variants
-    #participants.AnalyzeACMG()
+    participants.AnalyzeACMG()
 
     # Analyze the participants for the (filtered) set of ClinVar variants
     #participants.AnalyzeClinVar()
