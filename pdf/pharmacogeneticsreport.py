@@ -143,9 +143,9 @@ class PharmacogeneticsReport(object):
         variant_table.append(['Your genotype for this variant is associated with a protective effect'])
         variant_style.append(('BACKGROUND', (0, 2), (-1, 2), self.strong_effect_protective))
         variant_table.append(['Your genotype for this variant is associated with a weak risk'])
-        variant_style.append(('BACKGROUND', (0, 4), (-1, 4), self.weak_effect_risk))
+        variant_style.append(('BACKGROUND', (0, 3), (-1, 4), self.weak_effect_risk))
         variant_table.append(['Your genotype for this variant is associated with a risk'])
-        variant_style.append(('BACKGROUND', (0, 5), (-1, 5), self.strong_effect_risk))
+        variant_style.append(('BACKGROUND', (0, 4), (-1, 5), self.strong_effect_risk))
 
         table = Table(variant_table, [500], hAlign='CENTER', style=variant_style)
         story.append(table)
