@@ -26,7 +26,7 @@ def main(parser):
     qs = QS(database)
 
     # Load the participants
-    participants = ParticipantDB(database, None, None, None, None)
+    participants = ParticipantDB(database, None, None, None, None, None)
 
     # Pull Fitbit data via the API
     if (parser.fitbit):
