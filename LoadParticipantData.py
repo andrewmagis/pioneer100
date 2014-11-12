@@ -18,7 +18,7 @@ def main(parser):
     database = Database()
 
     # If necessary, build the data table
-    #database.CreateDataTable()
+    database.CreateDataTable()
 
     # Load the data <- allocate some time to do this! It takes a while!
     #genova_files = ["./db/GenovaSpreadsheets/Genova.3.09232014/Hood.Nutreval.Binary.9.15.14 C.txt",
