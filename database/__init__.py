@@ -12,7 +12,8 @@ from range import Range
 
 from errors import MyError
 
-FIRST_BLOOD_DRAW=datetime.datetime(2014, 06, 24);
+FIRST_BLOOD_DRAW=datetime.datetime(2014, 6, 24)
+SECOND_BLOOD_DRAW=datetime.datetime(2014, 9, 30)
 
 class Database(object):
 
@@ -372,8 +373,10 @@ class Database(object):
                 date_ordered = datetime.datetime.strptime(submitted_date, "%m/%d/%Y");
                 if (date_ordered <= FIRST_BLOOD_DRAW):
                     round = 1
-                else:
+                elif (date_ordered <= SECOND_BLOOD_DRAW):
                     round = 2
+                else:
+                    round = 3
 
                 # Get the value for this date and round
                 result = self.GetMeasurementByRound('DATE', username, round);
@@ -434,8 +437,10 @@ class Database(object):
                     date_ordered = datetime.datetime.strptime(data['DATE ORDERED'], "%m/%d/%y");
                     if (date_ordered <= FIRST_BLOOD_DRAW):
                         round = 1
-                    else:
+                    elif (date_ordered <= SECOND_BLOOD_DRAW):
                         round = 2
+                    else:
+                        round = 3
 
                     # Get the value for this date and round
                     result = self.GetMeasurementByRound('DATE', username, round);
