@@ -90,10 +90,10 @@ class QS(object):
         for (username, date, heartrate) in cursor:
             if (start_date is None) or (date < start_date):
                 start_date = date
-                start_weight = weight
+                start_weight = heartrate
             if (end_date is None) or (date > end_date):
                 end_date = date
-                end_weight = weight
+                end_weight = heartrate
 
         if (end_date is None):
             return (None, None, None, None)
