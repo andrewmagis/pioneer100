@@ -101,6 +101,9 @@ class Database(object):
         if (len(result)==0):
             return {}
 
+        print columns
+        print result
+
         # Now convert each value into a numpy array
         final = {}
         for key, values in zip(columns, result):
