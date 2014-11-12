@@ -42,6 +42,10 @@ def main(parser):
     # Open connection to MySQL database
     database = Database()
 
+    result = database.GetData('7890752')
+    print result
+    return
+
     # Load the DBSnp database
     dbsnp = DBSnp(database)
 
@@ -57,10 +61,6 @@ def main(parser):
 
     # Load the trait
     #participants.LoadTrait('Fasting glucose-related traits')
-
-    result = database.GetData('7890752')
-    print result
-    return
 
     print "Trait: %s"%(parser.trait)
     print "Measurement: %s"%(parser.measurement)
