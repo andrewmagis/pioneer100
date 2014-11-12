@@ -23,7 +23,7 @@ def main(parser):
     qs = QS(database)
 
     # Load the participants
-    participants = ParticipantDB(database, None, None, None, None)
+    participants = ParticipantDB(database, None, None, None, None, None)
 
     qs.AnalyzeQS(participants)
 
