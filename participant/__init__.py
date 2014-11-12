@@ -44,6 +44,7 @@ class ParticipantDB(object):
         for prt in sorted(self.participants.keys()):
 
             (dates, values, range) = self.participants[prt].GetMeasurement(measurement);
+            print dates, values, range
 
             if (values.size == 1):
                 if (not np.isnan(values)):
