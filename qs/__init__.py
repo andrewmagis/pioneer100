@@ -78,6 +78,31 @@ class QS(object):
 
         return (start_date, end_date, start_weight, end_weight)
 
+    def GetHeartRateIndividuals(self, username):
+
+        cursor = self.database.Get('heartrate', 'username', username, ['USERNAME', 'DATE', 'HEARTRATE'], 'DATE')
+
+        start_date = None
+        end_date = None
+        start_hr = None
+        end_hr = None
+
+        for (username, date, heartrate) in cursor:
+            if (start_date is None) or (date < start_date):
+                start_date = date
+                start_weight = weight
+            if (end_date is None) or (date > end_date):
+                end_date = date
+                end_weight = weight
+
+        if (end_date is None):
+            return (None, None, None, None)
+        if (start_date is None):
+            return (None, None, None, None)
+
+        return (start_date, end_date, start_weight, end_weight)
+
+
     def AnalyzeQS(self, participants):
 
         for prt in participants.participants.keys():
@@ -86,7 +111,8 @@ class QS(object):
 
             (dates, values, range) = participants.participants[prt].GetMeasurement('AGE')
 
-            (start_range, end_range, start_weight, end_weight) = self.GetWeightLossIndividuals(prt)
+            #(start_range, end_range, start_weight, end_weight) = self.GetWeightLossIndividuals(prt)
+            (start_range, end_range, start_weight, end_weight) = self.GetHeartRateIndividuals(prt)
 
             if (start_range is None):
                 continue
