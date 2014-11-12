@@ -411,15 +411,15 @@ class Database(object):
 
                 # Load the headers, removing the final 9 columns
                 if (titles is None):
-                    titles = line.split('\t')[:-9]
+                    titles = line.strip().split('\t')[:-9]
 
                 # Next load the identifiers, removing the final 9 columns
                 elif (headers is None):
-                    headers = line.split('\t')[:-9]
+                    headers = line.strip().split('\t')[:-9]
 
                 # Finally, load the data, removing the final 9 columns
                 else:
-                    tokens = line.split('\t')[:-9]
+                    tokens = line.strip().split('\t')[:-9]
 
                     # Convert into dictionary
                     data = dict(zip([x.strip().upper() for x in headers], [x.strip().upper() for x in tokens]))
