@@ -463,7 +463,7 @@ class Database(object):
         ranges = self.LoadRanges();
 
         command = ""
-        command += "CREATE TABLE data3 (ENTRY INT PRIMARY KEY AUTO_INCREMENT, USERNAME VARCHAR(16) NOT NULL, DATE DATETIME, ROUND INT NOT NULL"
+        command += "CREATE TABLE data4 (ENTRY INT PRIMARY KEY AUTO_INCREMENT, USERNAME VARCHAR(16) NOT NULL, DATE DATETIME, ROUND INT NOT NULL"
         count = 0
 
         for key in sorted(ranges.keys()):
