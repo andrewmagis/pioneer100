@@ -83,7 +83,7 @@ class Database(object):
         # Get the cursor
         cursor = self.db.cursor();
 
-        cursor.execute("SELECT * FROM data3 WHERE username = (%s) ORDER BY ROUND", (username,))
+        cursor.execute("SELECT * FROM data4 WHERE username = (%s) ORDER BY ROUND", (username,))
         result = None
         columns = [d[0] for d in cursor.description]
 
@@ -150,7 +150,7 @@ class Database(object):
     def GetMeasurementByRound(self, measurement, username, round):
 
         cursor = self.db.cursor()
-        cursor.execute("SELECT " + measurement + " FROM data3 WHERE USERNAME = (%s) and ROUND = (%s)", (username,round))
+        cursor.execute("SELECT " + measurement + " FROM data4 WHERE USERNAME = (%s) and ROUND = (%s)", (username,round))
         results = [];
         for row in cursor:
             results.append(row)
@@ -169,7 +169,7 @@ class Database(object):
     def GetMeasurementByDate(self, measurement, username, date):
 
         cursor = self.db.cursor()
-        cursor.execute("SELECT " + measurement + " FROM data3 WHERE USERNAME = (%s) and DATE = (%s)", (username,date))
+        cursor.execute("SELECT " + measurement + " FROM data4 WHERE USERNAME = (%s) and DATE = (%s)", (username,date))
         results = [];
         for row in cursor:
             results.append(row)
@@ -268,7 +268,7 @@ class Database(object):
             # If this is None or update = True, we can set the value
             if (original_value is None) or (update):
 
-                command = "UPDATE data3 SET %s = '%s' WHERE USERNAME = '%s' AND DATE = '%s'"%(mapping[key], new_value, username, db_date)
+                command = "UPDATE data4 SET %s = '%s' WHERE USERNAME = '%s' AND DATE = '%s'"%(mapping[key], new_value, username, db_date)
                 self.Command(command);
 
             """
@@ -283,14 +283,14 @@ class Database(object):
         # Finally, update the date so we don't repeat ourselves
         # TODO: I'm not sure how this will affect Quest additions, so leave it off for now.
         if (update):
-            command = "UPDATE data3 SET %s = '%s' WHERE USERNAME = '%s' AND DATE = '%s'"%('DATE', date_ordered, username, db_date)
+            command = "UPDATE data4 SET %s = '%s' WHERE USERNAME = '%s' AND DATE = '%s'"%('DATE', date_ordered, username, db_date)
             #print command
             #self.Command(command);
 
     def InsertData(self, username, round, date_ordered, data, mapping):
 
         # Build the insertion statement
-        command = "INSERT INTO data3 (USERNAME,ROUND,DATE";
+        command = "INSERT INTO data4 (USERNAME,ROUND,DATE";
         for key in data.keys():
 
             if (not key in mapping):
