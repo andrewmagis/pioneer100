@@ -427,6 +427,9 @@ class Database(object):
                     # Get username from this row
                     username = data["LAST NAME"]
 
+                    print tokens
+                    print username
+
                     # Get date from this row
                     date_ordered = datetime.datetime.strptime(data['DATE ORDERED'], "%m/%d/%y");
                     if (date_ordered <= FIRST_BLOOD_DRAW):
