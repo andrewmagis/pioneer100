@@ -560,10 +560,9 @@ class TransitionsReport(object):
         story.append(Spacer(1,0.5*inch));
 
         # Get the values from the participant for a particular metabolite
-        blurb = "<font color='#db881e'><strong>TOTAL LOW-DENSITY LIPOPROTEIN (LDL)</strong></font> cholesterol is often called the 'bad' \
-        cholesterol as it can carry fat molecules into artery walls leading to fat build up and \
-        inflammation. Accumulation of fatty deposits in your arteries (atherosclerosis) increases \
-        your risk for cardiovascular disease.";
+        blurb = "<font color='#db881e'><strong>TOTAL HIGH DENSITY LIPOPROTEIN (HDL)</strong></font> cholesterol is considered the 'good' \
+         cholesterol as it acts like a cholesterol scavenger, removing 'bad' cholesterol in your bloodstream and bringing it to the liver \
+         for break down. In general people with high HDL are at lower risk for cardiovascular disease.";
 
         drawing = self.AddGraph('HDL_CHOLESTEROL', 'HDL-Cholesterol');
         if (not drawing is None):
@@ -599,10 +598,9 @@ class TransitionsReport(object):
             self.DrawingBlurb(story, [drawing], blurb);
         
         # Get the values from the participant for a particular metabolite
-        blurb = "<font color='#db881e'><strong>ZINC</strong></font> is a mineral that is an important nutritional cofactor in many body systems. \
-        Maintaining optimal levels of zinc is crucial for immune health, skin health, male reproductive \
-        health, DNA synthesis, wound healing and sense of taste and smell. Foods that are rich in zinc \
-        include red meat, poultry, shellfish, spinach, mushrooms, and tofu.";
+        blurb = "<font color='#db881e'><strong>GLUTATHIONE</strong></font> is a natural substance produced by the liver and obtained \
+        by the food we eat. It acts as a powerful antioxidant and detoxification molecule making it a crucial component in healthy \
+        maintenance of our cells.  Raw fruits and vegetables are great sources of glutathione."
         
         drawing = self.AddGraph('GLUTATHIONE', 'Glutathione');
         if (not drawing is None):
