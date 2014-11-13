@@ -556,6 +556,17 @@ class TransitionsReport(object):
         drawing = self.AddPattern('LDL_PATTERN_QUEST', 'LDL Pattern');
         if (not drawing is None):
             self.DrawingBlurb(story, [drawing], blurb);
+
+
+        drawing = self.AddGraph('HDL_CHOLESTEROL', 'HDL-Cholesterol');
+        if (not drawing is None):
+            self.DrawingBlurb(story, [drawing], blurb);
+
+        # Get the values from the participant for a particular metabolite
+        blurb = "<font color='#db881e'><strong>TRIGLYCERIDES</strong></font> are a type of fat in the blood that your body uses for energy. \
+        Triglycerides are the main constituents of vegetable oil and animal fat. High triglyceride \
+        levels may contribute to hardening of the arteries or thickening of the artery walls - \
+        increasing your risk for heart disease and metabolic syndrome.";
         
         story.append(PageBreak())
         
