@@ -642,9 +642,9 @@ class TransitionsReport(object):
         bacterial invasions, and cancerous cells. Extended signaling from these small proteins lead to \
         chronic and harmful inflammation within the body.";
         
-        drawing1 = self.AddGraph('INTERLEUKIN_IL_6', 'IL-6', 75);
-        drawing2 = self.AddGraph('INTERLEUKIN_IL_8', 'IL-8', 75);
-        drawing3 = self.AddGraph('TNFALPHA', 'TNF-'+u'\u03B1', 75);
+        drawing1 = self.AddGraph('INTERLEUKIN_IL_6', 'IL-6', 60);
+        drawing2 = self.AddGraph('INTERLEUKIN_IL_8', 'IL-8', 60);
+        drawing3 = self.AddGraph('TNFALPHA', 'TNF-'+u'\u03B1', 60);
 
         final = [];
         if (not drawing1 is None):
