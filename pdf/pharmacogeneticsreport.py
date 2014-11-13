@@ -384,6 +384,7 @@ class PharmacogeneticsReport(object):
         story.append(Spacer(1, 0.25*inch))
         story.append(Paragraph(blurb, h4))
 
+        story.append(Spacer(1, 0.25*inch))
         story.append(Paragraph("The Right Medicine, The Right Dose", h0))
         story.append(Spacer(1, 0.25*inch))
 
@@ -398,6 +399,11 @@ class PharmacogeneticsReport(object):
         more than 30 types of medications, including anti-depressants, chemotherapy drugs and heart medications. Some people, because of their \
         genetic makeup, aren't able to break down these medications fast enough. This means the medications build up in the body and can cause \
         severe side effects. Conversely, some people break down these medications too quickly - before they have a chance to work."
+
+        story.append(Spacer(1, 0.25*inch))
+        story.append(Paragraph(blurb, h4))
+
+        blurb = "<strong>Thus, an individual can experience 'adverse effects' due to either too rapid or too slow metabolism of a drug.</strong>"
 
         story.append(Spacer(1, 0.25*inch))
         story.append(Paragraph(blurb, h4))
