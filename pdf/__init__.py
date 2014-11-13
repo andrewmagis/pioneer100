@@ -93,7 +93,7 @@ class TransitionsReport(object):
         canvas.saveState()
         
         canvas.setFont('Helvetica',14)
-        canvas.drawString(4.0*inch, 11.4*inch, "%s"%(self.participant.id));
+        canvas.drawString(4.0*inch, 11.4*inch, "%s"%(self.participant.username));
         #canvas.drawString(0.5*inch, 11.2*inch, "Gender: %s"%(self.gender));
         #canvas.drawString(0.5*inch, 11.0*inch, "DOB: %s"%(self.dob));
                 
@@ -111,7 +111,7 @@ class TransitionsReport(object):
         canvas.saveState()
         
         canvas.setFont('Helvetica',14)
-        canvas.drawString(4.0*inch, 11.4*inch, "%s"%(self.participant.id));
+        canvas.drawString(4.0*inch, 11.4*inch, "%s"%(self.participant.username));
         #canvas.drawString(0.5*inch, 11.2*inch, "Gender: %s"%(self.gender));
         #canvas.drawString(0.5*inch, 11.0*inch, "DOB: %s"%(self.dob));
         
@@ -177,23 +177,23 @@ class TransitionsReport(object):
             return None;
 
         if (values[1] == 0):
-            print "%s is missing second round %s: %s"%(self.participant.id, header, ','.join([str(x) for x in values]))
+            print "%s is missing second round %s: %s"%(self.participant.username, header, ','.join([str(x) for x in values]))
             self.buildme = False;
             return None
 
         # Sanity check on the data
         if (values[0] == None):
-            print "%s is missing first round %s: %s"%(self.participant.id, header, ','.join([str(x) for x in values]))
+            print "%s is missing first round %s: %s"%(self.participant.username, header, ','.join([str(x) for x in values]))
             return None
         if (np.isnan(values[0])):
-            print "%s is missing first round %s: %s"%(self.participant.id, header, ','.join([str(x) for x in values]))
+            print "%s is missing first round %s: %s"%(self.participant.username, header, ','.join([str(x) for x in values]))
             return None
         if (values[1] == None):
-            print "%s is missing second round %s: %s"%(self.participant.id, header, ','.join([str(x) for x in values]))
+            print "%s is missing second round %s: %s"%(self.participant.username, header, ','.join([str(x) for x in values]))
             self.buildme = False;
             return None
         if (np.isnan(values[1])):
-            print "%s is missing second round %s: %s"%(self.participant.id, header, ','.join([str(x) for x in values]))
+            print "%s is missing second round %s: %s"%(self.participant.username, header, ','.join([str(x) for x in values]))
             self.buildme = False;
             return None
 
@@ -272,10 +272,10 @@ class TransitionsReport(object):
 
         # Sanity check on the data
         if (values[0] == None):
-            print "%s is missing first round %s: %s"%(self.participant.id, header, ','.join([str(x) for x in values]))
+            print "%s is missing first round %s: %s"%(self.participant.username, header, ','.join([str(x) for x in values]))
             return None
         if (values[1] == None):
-            print "%s is missing second round %s: %s"%(self.participant.id, header, ','.join([str(x) for x in values]))
+            print "%s is missing second round %s: %s"%(self.participant.username, header, ','.join([str(x) for x in values]))
             self.buildme = False;
             return None
 
@@ -590,7 +590,7 @@ circulatory system - may already be starting.");
             self.DrawingBlurb(story, [drawing], blurb);
 
         output_dir = './results';
-        output_filename = output_dir + '/' + self.participant.id + '.comparisons.1.pdf';
+        output_filename = output_dir + '/' + self.participant.username + '.comparisons.1.pdf';
 
         # Only build the report if I haven't found any issues with the data
         if (self.buildme or force):
@@ -598,7 +598,7 @@ circulatory system - may already be starting.");
             doc = SimpleDocTemplate(output_filename, title=self.title, author=self.author, **doc_template_args)
             doc.build(story, onFirstPage=self.myFirstPage, onLaterPages=self.myLaterPages)
         else:
-            print "Skipping report for %s"%(self.participant.id);
+            print "Skipping report for %s"%(self.participant.username);
         
 class GeneticsReport(object):
 
@@ -627,7 +627,7 @@ class GeneticsReport(object):
         canvas.saveState()
         
         canvas.setFont('Helvetica',10)
-        canvas.drawString(0.5*inch, 11.4*inch, "Name: %s"%(self.participant.id));
+        canvas.drawString(0.5*inch, 11.4*inch, "Name: %s"%(self.participant.username));
         #canvas.drawString(0.5*inch, 11.2*inch, "Gender: %s"%(self.gender));
         #canvas.drawString(0.5*inch, 11.0*inch, "DOB: %s"%(self.dob));
         
@@ -644,7 +644,7 @@ class GeneticsReport(object):
         canvas.saveState()
         
         canvas.setFont('Helvetica',10)
-        canvas.drawString(0.5*inch, 11.4*inch, "Name: %s"%(self.participant.id));
+        canvas.drawString(0.5*inch, 11.4*inch, "Name: %s"%(self.participant.username));
         #canvas.drawString(0.5*inch, 11.2*inch, "Gender: %s"%(self.gender));
         #canvas.drawString(0.5*inch, 11.0*inch, "DOB: %s"%(self.dob));
         
@@ -1165,7 +1165,7 @@ tendinopathy.", h2));
         #story.append(Paragraph('Last heading', h1))
         
         output_dir = './results';
-        output_filename = output_dir + '/' + self.participant.id + '.report.pdf';
+        output_filename = output_dir + '/' + self.participant.username + '.report.pdf';
         
         doc_template_args = self.theme.doc_template_args()
         doc = SimpleDocTemplate(output_filename, title=self.title, author=self.author, **doc_template_args)
