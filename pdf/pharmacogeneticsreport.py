@@ -349,7 +349,7 @@ class PharmacogeneticsReport(object):
         - <font color='#db881e'><strong>HIV</strong></font><br/> \
         - <font color='#db881e'><strong>Immunosuppression</strong></font><br/> \
         - <font color='#db881e'><strong>Malignant hypothermia</strong></font><br/> \
-        - <font color='#db881e'><strong>Pain</strong></font><br/> \ "
+        - <font color='#db881e'><strong>Pain</strong></font><br/> "
 
         story.append(Paragraph(blurb, h2))
 
