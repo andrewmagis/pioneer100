@@ -139,6 +139,8 @@ class Participant(object):
         # Genotype the trait from this participant's VCF file
         if (trait_object.ProcessVCF(self.vcf, suppress_errors)):
             self.traits[trait] = trait_object
+            return trait_object
+        return None
 
     def Correlations(self):
 
