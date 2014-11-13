@@ -25,7 +25,7 @@ def main(parser):
     # Load the participants
     participants = ParticipantDB(database, None, None, None, None, None)
 
-    qs.AnalyzeQS(participants)
+    qs.AnalyzeQS(participants, 'Exercise Responsiveness')
 
 
 if __name__ == "__main__":
