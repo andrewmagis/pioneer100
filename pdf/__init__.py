@@ -176,6 +176,11 @@ class TransitionsReport(object):
             self.buildme = False;
             return None;
 
+        if (np.isnan(values[0])) and (np.isnan(values[1]) and np.isnan(values[2])):
+            print "%s is missing three rounds %s: %s"%(self.participant.username, header, ','.join([str(x) for x in values]))
+            return None
+
+        """
         # Sanity check on the data
         if (values[0] == None):
             print "%s is missing first round %s: %s"%(self.participant.username, header, ','.join([str(x) for x in values]))
@@ -199,6 +204,7 @@ class TransitionsReport(object):
             print "%s is missing third round %s: %s"%(self.participant.username, header, ','.join([str(x) for x in values]))
             self.buildme = False;
             return None
+        """
 
         CHART_WIDTH=width;
         CHART_HEIGHT=100 
