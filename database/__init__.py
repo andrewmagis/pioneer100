@@ -93,7 +93,7 @@ class Database(object):
             if (result is None):
                 result = row
             else:
-                result = zip(result, row)
+                result = zip(*result, row)
 
         if (result is None):
             return {}
