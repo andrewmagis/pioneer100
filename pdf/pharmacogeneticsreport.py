@@ -372,6 +372,12 @@ class PharmacogeneticsReport(object):
 
         story.append(Paragraph(blurb, h4))
 
+        blurb = "There is considerable research underway looking to match specific gene variations with responses to particular medications. " \
+                "Using this kind of information allows doctors to tailor treatments to individuals. This is the science of <strong>pharmacogenetics.</strong>"
+
+        story.append(Spacer(1, 0.25*inch))
+        story.append(Paragraph(blurb, h4))
+
         # Header section
         story.append(Paragraph("RESPONSE TO ANTI-CANCER DRUGS", h1));
         story.append(Spacer(1, 5));
