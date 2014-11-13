@@ -94,6 +94,8 @@ class Database(object):
                 result = row
             else:
                 result = zip(result, row)
+
+            result = [list(a) for a in result]
             print "BLAH BLAH BLAH"
             print result
 
