@@ -51,6 +51,7 @@ h2 = PS(name = 'Heading2',
 
 h4 = PS(name = 'Heading4',
     fontFace = 'Helvetica',
+    fontColor = '#00467E',
     fontSize = 15,
     leading = 14)
 
