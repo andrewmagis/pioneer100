@@ -332,12 +332,6 @@ class PharmacogeneticsReport(object):
         img.hAlign = "CENTER";
         story.append(img)
 
-        story.append(PageBreak())
-
-        story.append(Spacer(1,0.5*inch))
-        self.LogoHeader(story, './images/cardiovascular.png', "<font color='#002060'><strong>CARDIOVASCULAR HEALTH</strong></font>", "The following selected measurements are related to your cardiovascular health.");
-        #story.append(MCLine(6.0*inch));
-
         # Get the values from the participant for a particular metabolite
         blurb = "<font color='#db881e'><strong>TOTAL CHOLESTEROL</strong></font> is a sum of your blood's cholesterol content. Cholesterol \
         is an essential molecule needed for the integrity of all our cells. High concentrations \
@@ -345,6 +339,10 @@ class PharmacogeneticsReport(object):
         because these molecules stick to the arteries and cause buildups (plaques). If your total \
         cholesterol levels are high it is important to know your LDL cholesterol and HDL cholesterol \
         levels before deciding on your action.";
+
+        story.append(Paragraph(blurb, h2))
+
+        story.append(PageBreak())
 
         story.append(Spacer(1,0.5*inch))
 
