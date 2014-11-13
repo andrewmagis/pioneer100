@@ -356,8 +356,9 @@ class PharmacogeneticsReport(object):
         - <font color='#db881e'><strong>Malignant hypothermia</strong></font><br/> \
         - <font color='#db881e'><strong>Pain</strong></font><br/> "
 
-        """
         story.append(Paragraph(blurb, h4))
+
+        """
 
         story.append(PageBreak())
 
