@@ -467,7 +467,7 @@ class TransitionsReport(object):
         health, DNA synthesis, wound healing and sense of taste and smell. Foods that are rich in zinc \
         include red meat, poultry, shellfish, spinach, mushrooms, and tofu.";
         
-        drawing = self.AddGraph('ZINC', 'Zinc');
+        drawing = self.AddGraph('GLUTATHIONE', 'Glutathione');
         if (not drawing is None):
             self.DrawingBlurb(story, [drawing], blurb);
         
