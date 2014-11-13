@@ -370,8 +370,6 @@ class PharmacogeneticsReport(object):
         Differences in response to medications are common and are influenced by age, lifestyle and health.  But your genes also play \
         an important role in influencing your response to medications."
 
-        """
-
         story.append(Paragraph(blurb, h4))
 
         blurb = "There is considerable research underway looking to match specific gene variations with responses to particular medications. " \
@@ -379,52 +377,6 @@ class PharmacogeneticsReport(object):
 
         story.append(Spacer(1, 0.25*inch))
         story.append(Paragraph(blurb, h4))
-
-        blurb = "This is a very exciting new field because pharmacogenetics offers the promise of predicting whether a medication is likely \
-        to be beneficial or harmful - before you ever take it."
-
-        story.append(Spacer(1, 0.25*inch))
-        story.append(Paragraph(blurb, h4))
-
-        story.append(Paragraph("The Right Medicine, The Right Dose", h0))
-        story.append(Spacer(1, 0.25*inch))
-
-        blurb = "Every person is genetically and biochemically unique.  This means that your body's reaction to many things in your environment \
-        - including foods, toxins, and medications - is unique to you. Pharmacogenetics looks at how you are able to metabolize medications based \
-        on your genetic makeup."
-
-        story.append(Spacer(1, 0.25*inch))
-        story.append(Paragraph(blurb, h4))
-
-
-        blurb = "For example, one pharmacogenetic test looks at a group of enzymes that are responsible for breaking down and eliminating \
-        more than 30 types of medications, including anti-depressants, chemotherapy drugs and heart medications. Some people, because of their \
-        genetic makeup, aren't able to break down these medications fast enough. This means the medications build up in the body and can cause \
-        severe side effects. Conversely, some people break down these medications too quickly — before they have a chance to work."
-
-        story.append(Spacer(1, 0.25*inch))
-        story.append(Paragraph(blurb, h4))
-
-        blurb = "<strong>Thus, an individual can experience 'adverse effects' due to either too rapid or too slow metabolism of a drug.</strong> \
-        Knowing your genetic makeup, your doctor can determine the best dose of medication for you -- or whether a different medication \
-        altogether may be more appropriate."
-
-        story.append(Spacer(1, 0.25*inch))
-        story.append(Paragraph(blurb, h4))
-
-        blurb = "Although pharmacogenetics has much promise, it's still in its early stages. Millions of genetic variations exist, \
-        and identifying them could take many years. Research is under way, however, and pharmacogenetics may someday soon be part of \
-        routine medical care."
-
-        story.append(Spacer(1, 0.25*inch))
-        story.append(Paragraph(blurb, h4))
-
-        blurb = "For more information please visit: <a href='http://www.genome.gov/27530645'>http://www.genome.gov/27530645</a>."
-
-        story.append(Spacer(1, 0.25*inch))
-        story.append(Paragraph(blurb, h4))
-
-        """
 
         story.append(PageBreak())
 
