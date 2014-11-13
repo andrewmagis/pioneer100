@@ -165,7 +165,7 @@ class TransitionsReport(object):
             
     def AddGraph(self, header, title, width=100):
     
-        (dates, values, range) = self.participant.GetMeasurement(header);
+        (dates, values, ranges) = self.participant.GetMeasurement(header);
 
         drawing = Drawing(150, 150)
         drawing.add(String(400, 500, title), name="title")
