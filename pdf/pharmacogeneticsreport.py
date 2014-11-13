@@ -375,6 +375,8 @@ class PharmacogeneticsReport(object):
         blurb = "There is considerable research underway looking to match specific gene variations with responses to particular medications. " \
                 "Using this kind of information allows doctors to tailor treatments to individuals. This is the science of <strong>pharmacogenetics.</strong>"
 
+        """
+
         story.append(Spacer(1, 0.25*inch))
         story.append(Paragraph(blurb, h4))
 
@@ -387,14 +389,13 @@ class PharmacogeneticsReport(object):
         story.append(Paragraph("The Right Medicine, The Right Dose", h0))
         story.append(Spacer(1, 0.25*inch))
 
-        """
         blurb = "Every person is genetically and biochemically unique.  This means that your body's reaction to many things in your environment \
         - including foods, toxins, and medications - is unique to you. Pharmacogenetics looks at how you are able to metabolize medications based \
         on your genetic makeup."
 
         story.append(Spacer(1, 0.25*inch))
         story.append(Paragraph(blurb, h4))
-        """
+
 
         blurb = "For example, one pharmacogenetic test looks at a group of enzymes that are responsible for breaking down and eliminating \
         more than 30 types of medications, including anti-depressants, chemotherapy drugs and heart medications. Some people, because of their \
@@ -422,6 +423,8 @@ class PharmacogeneticsReport(object):
 
         story.append(Spacer(1, 0.25*inch))
         story.append(Paragraph(blurb, h4))
+
+        """
 
         story.append(PageBreak())
 
