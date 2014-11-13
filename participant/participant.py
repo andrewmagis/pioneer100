@@ -114,6 +114,13 @@ class Participant(object):
             else:
                 return (self.username, self.gender, values[0], values[1], self.traits[trait].score)
 
+        elif (values.size == 3):
+
+            if (np.isnan(values[0])) and (np.isnan(values[1])) and (np.isnan(values[2])):
+                return None
+            else:
+                return (self.username, self.gender, values[0], values[1], values[2], self.traits[trait].score)
+
         else:
             raise MyError('More than 2 values in measurement')
 
