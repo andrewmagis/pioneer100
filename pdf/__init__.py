@@ -220,7 +220,8 @@ class TransitionsReport(object):
             mid_value = max_value;
             max_value = ranges[2];
 
-        if (max_value == float("inf")):
+        #if (max_value == float("inf")):
+        if (max_value > 10000):
             max_value = max(values) + max(values)*0.5;
         
         chart.height = CHART_HEIGHT;
