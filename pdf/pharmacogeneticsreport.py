@@ -378,6 +378,12 @@ class PharmacogeneticsReport(object):
         story.append(Spacer(1, 0.25*inch))
         story.append(Paragraph(blurb, h4))
 
+        blurb = "This is a very exciting new field because pharmacogenetics offers the promise of predicting whether a medication is likely \
+        to be beneficial or harmful - before you ever take it."
+
+        story.append(Spacer(1, 0.25*inch))
+        story.append(Paragraph(blurb, h4))
+
         story.append(PageBreak())
 
         # Header section
