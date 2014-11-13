@@ -355,7 +355,7 @@ class PharmacogeneticsReport(object):
         - <font color='#db881e'><strong>HIV</strong></font><br/> \
         - <font color='#db881e'><strong>Immunosuppression</strong></font><br/> \
         - <font color='#db881e'><strong>Malignant hypothermia</strong></font><br/> \
-        - <font color='#db881e'><strong>Pain</strong></font><br/> "
+        - <font color='#db881e'><strong>Pain</strong></font><br/>"
 
         story.append(Paragraph(blurb, h4))
 
@@ -424,6 +424,36 @@ class PharmacogeneticsReport(object):
 
         story.append(PageBreak())
 
+        story.append(Spacer(1,0.5*inch))
+
+        story.append(Paragraph("YOUR REPORT", h0))
+        story.append(Spacer(1, 0.5*inch))
+
+        blurb = "In your report, you will see tests for a number of common variants related to drug response that have been \
+        evaluated and validated by a group called The Clinical Pharmacogenetics Implementation Consortium (CPIC). CPIC's goal \
+        is to address some of the barriers to implementation of pharmacogenetic tests into clinical practice."
+
+        story.append(Paragraph(blurb, h4))
+
+        blurb = "In general, the results in your report fall into two categories: <br/><br/> \
+        1. <font color='#db881e'><strong>Increased (or decreased) risk for side effects due to a certain medication, or</strong></font><br/> \
+        2. <font color='#db881e'><strong>Increased (or decreased) ability to metabolize a medication, leading to potential need for your \
+        physician to adjust the dosage to avoid side effects or optimize drug effectiveness.</strong></font><br/>"
+
+        story.append(Spacer(1, 0.25*inch))
+        story.append(Paragraph(blurb, h4))
+
+        blurb = "IMPORTANT: This report is for research purposes only and should not be construed as clinical/medical information. \
+        You should never stop taking prescription medication, or change the amount you are taking, without the advice of your doctor. \
+        If you have questions about this information, please discuss them with a qualified healthcare provider."
+
+        story.append(Spacer(1, 0.25*inch))
+        story.append(Paragraph(blurb, h4))
+
+        self.Legend(story)
+
+        story.append(PageBreak())
+
         # Header section
         story.append(Paragraph("RESPONSE TO ANTI-CANCER DRUGS", h1));
         story.append(Spacer(1, 5));
@@ -450,20 +480,6 @@ class PharmacogeneticsReport(object):
         story.append(Spacer(1,0.25*inch))
 
         # Header section
-        story.append(Paragraph("RESPONSE TO ANTIDEPRESSANTS AND MOOD STABILIZERS", h1));
-        story.append(Spacer(1, 5));
-        story.append(MCLine(7.3*inch))
-        story.append(Spacer(1,0.25*inch))
-
-        title = "Carbamazepine"
-        self.ProcessVariantList(story, title)
-        story.append(Spacer(1,0.5*inch))
-
-        title = "Tricyclic antidepressants"
-        self.ProcessVariantList(story, title)
-        story.append(Spacer(1,0.5*inch))
-
-        # Header section
         story.append(Paragraph("RESPONSE TO CARDIOVASCULAR AND ANTI-CLOTTING DRUGS", h1));
         story.append(Spacer(1, 5));
         story.append(MCLine(7.3*inch))
@@ -480,6 +496,21 @@ class PharmacogeneticsReport(object):
         title = "Warfarin"
         self.ProcessVariantList(story, title)
         story.append(Spacer(1,0.5*inch))
+
+        # Header section
+        story.append(Paragraph("RESPONSE TO ANTIDEPRESSANTS AND MOOD STABILIZERS", h1));
+        story.append(Spacer(1, 5));
+        story.append(MCLine(7.3*inch))
+        story.append(Spacer(1,0.25*inch))
+
+        title = "Carbamazepine"
+        self.ProcessVariantList(story, title)
+        story.append(Spacer(1,0.5*inch))
+
+        title = "Tricyclic antidepressants"
+        self.ProcessVariantList(story, title)
+        story.append(Spacer(1,0.5*inch))
+
 
         # Header section
         story.append(Paragraph("RESPONSE TO HEPATITIS C MEDICATIONS", h1));
@@ -513,17 +544,13 @@ class PharmacogeneticsReport(object):
         self.ProcessVariantList(story, title)
         story.append(Spacer(1,0.5*inch))
 
-        title = "Azathioprine"
-        self.ProcessVariantList(story, title)
-        story.append(Spacer(1,0.5*inch))
-
         # Header section
-        story.append(Paragraph("RESPONSE TO PAIN MEDICATIONS", h1));
+        story.append(Paragraph("RESPONSE TO IMMUNOSUPPRESSANT DRUGS", h1));
         story.append(Spacer(1, 5));
         story.append(MCLine(7.3*inch))
         story.append(Spacer(1,0.25*inch))
 
-        title = "Codeine"
+        title = "Azathioprine"
         self.ProcessVariantList(story, title)
         story.append(Spacer(1,0.5*inch))
 
@@ -562,6 +589,16 @@ class PharmacogeneticsReport(object):
         variant_style.append(('BACKGROUND', (0, count), (-1, count), self.no_effect))
         table = Table(variant_table, [75, 60, 30, 25, 350], hAlign='CENTER', style=variant_style)
         story.append(table)
+
+        # Header section
+        story.append(Paragraph("RESPONSE TO PAIN MEDICATIONS", h1));
+        story.append(Spacer(1, 5));
+        story.append(MCLine(7.3*inch))
+        story.append(Spacer(1,0.25*inch))
+
+        title = "Codeine"
+        self.ProcessVariantList(story, title)
+        story.append(Spacer(1,0.5*inch))
 
         #story.append(PageBreak())
 
