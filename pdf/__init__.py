@@ -216,7 +216,7 @@ class TransitionsReport(object):
         min_value = ranges[0];
         mid_value = None;
         max_value = ranges[1];
-        if (len(range)>2):
+        if (len(ranges)>2):
             mid_value = max_value;
             max_value = ranges[2];
 
