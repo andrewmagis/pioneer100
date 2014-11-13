@@ -92,26 +92,14 @@ class Database(object):
         result = []
         for row in cursor:
             result.append(row)
-        result = zip(*result)
-        print result
-
-        """
-        # Concatenate all the tuples together
-        for row in cursor:
-            if (result is None):
-                result = (row)
-            else:
-                result = zip(*result, row)
-        """
+        if (len(result)>0):
+            result = zip(*result)
 
         if (result is None):
             return {}
 
         if (len(result)==0):
             return {}
-
-        print columns
-        print result
 
         # Now convert each value into a numpy array
         final = {}
