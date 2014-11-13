@@ -90,13 +90,8 @@ class Database(object):
 
         # Concatenate all the tuples together
         for row in cursor:
-            if (result is None):
-                result = row
-            else:
-                result = zip(result, row)
-                result = [list(a) for a in result]
-            print "BLAH BLAH BLAH"
-            print result
+            print row
+
 
         """
         # Concatenate all the tuples together
