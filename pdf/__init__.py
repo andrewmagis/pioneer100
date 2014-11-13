@@ -296,8 +296,12 @@ class TransitionsReport(object):
 
         if (values[0] == 0):
             pattern0 = 'A'
-        else:
+        elif (np.isnan(values[0])):
+            pattern0 = ' '
+        elif (values[0] == 1):
             pattern0 = 'B'
+        else:
+            print "Unknown pattern: %d"%(values[0])
 
         drawing.add(String(400, 500, pattern0), name="pattern1")
         drawing.pattern1.x = 20+CHART_WIDTH*0.15;
@@ -318,10 +322,40 @@ class TransitionsReport(object):
 
         if (values[1] == 0):
             pattern1 = 'A'
-        else:
+        elif (np.isnan(values[1])):
+            pattern1 = ' '
+        elif (values[1] == 1):
             pattern1 = 'B'
+        else:
+            print "Unknown pattern: %d"%(values[1])
 
         drawing.add(String(400, 500, pattern1), name="pattern2")
+        drawing.pattern2.x = 20+CHART_WIDTH*0.50;
+        drawing.pattern2.y = 10+CHART_HEIGHT*0.75;
+        drawing.pattern2.textAnchor = 'middle';
+        drawing.pattern2.fontSize = 32;
+
+        if (values[1] == range[0]):
+            drawing.pattern2.fillColor = colors.green;
+        else:
+            drawing.pattern2.fillColor = colors.red;
+
+        drawing.add(String(400, 500, "Draw"+str(dates[1])), name="range2")
+        drawing.range2.x = 20+CHART_WIDTH*0.50;
+        drawing.range2.y = 10+CHART_HEIGHT*0.6;
+        drawing.range2.textAnchor = 'middle';
+        drawing.range2.fontSize = 8;
+
+        if (values[2] == 0):
+            pattern2 = 'A'
+        elif (np.isnan(values[2])):
+            pattern2 = ' '
+        elif (values[2] == 1):
+            pattern2 = 'B'
+        else:
+            print "Unknown pattern: %d"%(values[2])
+
+        drawing.add(String(400, 500, pattern2), name="pattern2")
         drawing.pattern2.x = 20+CHART_WIDTH*0.80;
         drawing.pattern2.y = 10+CHART_HEIGHT*0.75;
         drawing.pattern2.textAnchor = 'middle';
@@ -337,6 +371,7 @@ class TransitionsReport(object):
         drawing.range2.y = 10+CHART_HEIGHT*0.6;
         drawing.range2.textAnchor = 'middle';
         drawing.range2.fontSize = 8;
+
 
         # Drop the Drawing onto the page.
         return drawing;
