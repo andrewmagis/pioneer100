@@ -206,6 +206,10 @@ class TransitionsReport(object):
             return None
         """
 
+        for index in range(0, values.size):
+            if (np.isnan(values[index])):
+                values[index] = 0
+
         CHART_WIDTH=width;
         CHART_HEIGHT=100 
         
@@ -366,7 +370,7 @@ class TransitionsReport(object):
         else:
             drawing.pattern2.fillColor = colors.red;
 
-        drawing.add(String(400, 500, "Draw"+str(dates[1])), name="range2")
+        drawing.add(String(400, 500, "Draw"+str(dates[2])), name="range2")
         drawing.range2.x = 20+CHART_WIDTH*0.85;
         drawing.range2.y = 10+CHART_HEIGHT*0.6;
         drawing.range2.textAnchor = 'middle';
