@@ -593,7 +593,7 @@ circulatory system - may already be starting.");
             self.DrawingBlurb(story, [drawing], blurb);
 
         output_dir = './results';
-        output_filename = output_dir + '/' + self.participant.username + '.comparisons.1.pdf';
+        output_filename = output_dir + '/' + self.participant.username + '.comparisons.2.pdf';
 
         # Only build the report if I haven't found any issues with the data
         if (self.buildme or force):
