@@ -362,6 +362,7 @@ class PharmacogeneticsReport(object):
 
         story.append(Spacer(1,0.5*inch))
 
+        """
         story.append(Paragraph("OVERVIEW", h0))
         story.append(Spacer(1, 0.25*inch))
 
@@ -371,8 +372,9 @@ class PharmacogeneticsReport(object):
         an important role in influencing your response to medications."
 
 
-
         story.append(Paragraph(blurb, h4))
+
+        """
 
         # Header section
         story.append(Paragraph("RESPONSE TO ANTI-CANCER DRUGS", h1));
