@@ -172,14 +172,9 @@ class TransitionsReport(object):
         chart = VerticalBarChart()
 
         # If there are not two values for each, then do not build
-        if (values.size < 2):
+        if (values.size < 3):
             self.buildme = False;
             return None;
-
-        if (values[1] == 0):
-            print "%s is missing second round %s: %s"%(self.participant.username, header, ','.join([str(x) for x in values]))
-            self.buildme = False;
-            return None
 
         # Sanity check on the data
         if (values[0] == None):
@@ -194,6 +189,14 @@ class TransitionsReport(object):
             return None
         if (np.isnan(values[1])):
             print "%s is missing second round %s: %s"%(self.participant.username, header, ','.join([str(x) for x in values]))
+            self.buildme = False;
+            return None
+        if (values[2] == None):
+            print "%s is missing third round %s: %s"%(self.participant.username, header, ','.join([str(x) for x in values]))
+            self.buildme = False;
+            return None
+        if (np.isnan(values[2])):
+            print "%s is missing third round %s: %s"%(self.participant.username, header, ','.join([str(x) for x in values]))
             self.buildme = False;
             return None
 
