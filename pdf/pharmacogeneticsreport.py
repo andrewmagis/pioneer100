@@ -574,6 +574,7 @@ class PharmacogeneticsReport(object):
         variant_style.append(('BACKGROUND', (0, count), (-1, count), self.no_effect))
         table = Table(variant_table, [75, 60, 30, 25, 350], hAlign='CENTER', style=variant_style)
         story.append(table)
+        story.append(Spacer(1,0.5*inch))
 
         # Header section
         story.append(Paragraph("RESPONSE TO PAIN MEDICATIONS", h1));
@@ -583,7 +584,6 @@ class PharmacogeneticsReport(object):
 
         title = "Codeine"
         self.ProcessVariantList(story, title)
-        story.append(Spacer(1,0.5*inch))
 
         #story.append(PageBreak())
 
