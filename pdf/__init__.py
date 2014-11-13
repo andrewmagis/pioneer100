@@ -267,7 +267,7 @@ class TransitionsReport(object):
 
     def AddPattern(self, header, title):
 
-        CHART_WIDTH = 75;
+        CHART_WIDTH = 100;
         CHART_HEIGHT = 100;
 
         (dates, values, range) = self.participant.GetMeasurement(header);
