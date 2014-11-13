@@ -339,17 +339,17 @@ class PharmacogeneticsReport(object):
         to medications and thus avoid adverse events and optimize drug dosage."
 
         story.append(Paragraph(blurb, h2))
-        story.append(Spacer(1,0.5*inch))
+        story.append(Spacer(1,0.25*inch))
 
-        blurb = "This report includes analysis of drug responses related to the following conditions: <br/><br/> \
-        - <font color='#db881e'><strong>Cancer</strong></font><br/><br/> \
-        - <font color='#db881e'><strong>Cardiovascular/anti-clotting</strong></font><br/><br/> \
-        - <font color='#db881e'><strong>Depression/mood stabilization</strong></font><br/><br/> \
-        - <font color='#db881e'><strong>Hepatitis C</strong></font><br/><br/> \
-        - <font color='#db881e'><strong>HIV</strong></font><br/><br/> \
-        - <font color='#db881e'><strong>Immunosuppression</strong></font><br/><br/> \
-        - <font color='#db881e'><strong>Malignant hypothermia</strong></font><br/><br/> \
-        - <font color='#db881e'><strong>Pain</strong></font><br/><br/> \ "
+        blurb = "This report includes analysis of drug responses related to the following conditions: <br/> \
+        - <font color='#db881e'><strong>Cancer</strong></font><br/> \
+        - <font color='#db881e'><strong>Cardiovascular/anti-clotting</strong></font><br/> \
+        - <font color='#db881e'><strong>Depression/mood stabilization</strong></font><br/> \
+        - <font color='#db881e'><strong>Hepatitis C</strong></font><br/> \
+        - <font color='#db881e'><strong>HIV</strong></font><br/> \
+        - <font color='#db881e'><strong>Immunosuppression</strong></font><br/> \
+        - <font color='#db881e'><strong>Malignant hypothermia</strong></font><br/> \
+        - <font color='#db881e'><strong>Pain</strong></font><br/> \ "
 
         story.append(Paragraph(blurb, h2))
 
