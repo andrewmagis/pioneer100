@@ -92,6 +92,7 @@ class Database(object):
         result = []
         for row in cursor:
             result.append(row)
+
         if (len(result)>0):
             result = zip(*result)
 
