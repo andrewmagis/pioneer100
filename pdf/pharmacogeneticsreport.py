@@ -346,7 +346,7 @@ class PharmacogeneticsReport(object):
         story.append(Paragraph(blurb, h4))
         story.append(Spacer(1,0.25*inch))
 
-        blurb = "This report includes analysis of drug responses related to the following conditions: <br/></br> \
+        blurb = "This report includes analysis of drug responses related to the following conditions: <br/><br/> \
         - <font color='#db881e'><strong>Cancer</strong></font><br/> \
         - <font color='#db881e'><strong>Cardiovascular/anti-clotting</strong></font><br/> \
         - <font color='#db881e'><strong>Depression/mood stabilization</strong></font><br/> \
@@ -357,8 +357,6 @@ class PharmacogeneticsReport(object):
         - <font color='#db881e'><strong>Pain</strong></font><br/> "
 
         story.append(Paragraph(blurb, h4))
-
-        """
 
         story.append(PageBreak())
 
@@ -372,10 +370,7 @@ class PharmacogeneticsReport(object):
         Differences in response to medications are common and are influenced by age, lifestyle and health.  But your genes also play \
         an important role in influencing your response to medications."
 
-
         story.append(Paragraph(blurb, h4))
-
-        """
 
         # Header section
         story.append(Paragraph("RESPONSE TO ANTI-CANCER DRUGS", h1));
