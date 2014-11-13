@@ -89,10 +89,11 @@ class Database(object):
         columns = [d[0] for d in cursor.description]
 
         # Concatenate all the tuples together
+        result = []
         for row in cursor:
-            print row
+            result.append(row)
 
-        result = zip(columns, *row)
+        result = zip(columns, *result)
         print result
 
         """
