@@ -264,7 +264,84 @@ class TransitionsReport(object):
         
         drawing.add(chart);
         return drawing;
-        
+
+    def AddPattern(self, header, title):
+
+        CHART_WIDTH = 75;
+        CHART_HEIGHT = 100;
+
+        (dates, values, range) = self.participant.GetMeasurement(header);
+
+        drawing = Drawing(150, 150)
+
+        # If there are not two values for each, then do not build
+        if (values.size < 2):
+            self.buildme = False;
+            return None;
+
+        # Sanity check on the data
+        if (values[0] == None):
+            print "%s is missing first round %s: %s"%(self.participant.username, header, ','.join([str(x) for x in values]))
+            return None
+        if (values[1] == None):
+            print "%s is missing second round %s: %s"%(self.participant.username, header, ','.join([str(x) for x in values]))
+            self.buildme = False;
+            return None
+
+        drawing.add(String(400, 500, title), name="title")
+        drawing.title.x = 20 + CHART_WIDTH/2;
+        drawing.title.y = 10 + CHART_HEIGHT + 5;
+        drawing.title.textAnchor = 'middle';
+        drawing.title.fontSize = 10;
+
+        if (values[0] == 0):
+            pattern = 'A'
+        else:
+            pattern0 = 'B'
+
+        drawing.add(String(400, 500, pattern0), name="pattern1")
+        drawing.pattern1.x = 20+CHART_WIDTH*0.15;
+        drawing.pattern1.y = 10+CHART_HEIGHT*0.75;
+        drawing.pattern1.textAnchor = 'middle';
+        drawing.pattern1.fontSize = 32;
+
+        if (values[0] == range[0]):
+            drawing.pattern1.fillColor = colors.green;
+        else:
+            drawing.pattern1.fillColor = colors.red;
+
+        drawing.add(String(400, 500, "Draw"+str(dates[0])), name="range1")
+        drawing.range1.x = 20+CHART_WIDTH*0.15;
+        drawing.range1.y = 10+CHART_HEIGHT*0.6;
+        drawing.range1.textAnchor = 'middle';
+        drawing.range1.fontSize = 8;
+
+        if (values[1] == 0):
+            pattern1 = 'A'
+        else:
+            pattern1 = 'B'
+
+        drawing.add(String(400, 500, pattern1), name="pattern2")
+        drawing.pattern2.x = 20+CHART_WIDTH*0.80;
+        drawing.pattern2.y = 10+CHART_HEIGHT*0.75;
+        drawing.pattern2.textAnchor = 'middle';
+        drawing.pattern2.fontSize = 32;
+
+        if (values[1] == range[1]):
+            drawing.pattern2.fillColor = colors.green;
+        else:
+            drawing.pattern2.fillColor = colors.red;
+
+        drawing.add(String(400, 500, "Draw"+str(dates[1])), name="range2")
+        drawing.range2.x = 20+CHART_WIDTH*0.80;
+        drawing.range2.y = 10+CHART_HEIGHT*0.6;
+        drawing.range2.textAnchor = 'middle';
+        drawing.range2.fontSize = 8;
+
+        # Drop the Drawing onto the page.
+        return drawing;
+
+    """
     def AddPattern(self, header, title):
     
         CHART_WIDTH = 75;
@@ -333,6 +410,7 @@ class TransitionsReport(object):
     
         # Drop the Drawing onto the page.
         return drawing;
+    """
         
     def LogoHeader(self, story, src, blurb, subblurb=""):
     
