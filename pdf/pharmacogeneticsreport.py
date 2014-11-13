@@ -417,6 +417,11 @@ class PharmacogeneticsReport(object):
         story.append(Spacer(1, 0.25*inch))
         story.append(Paragraph(blurb, h4))
 
+        blurb = "For more information please visit: <a href='http://www.genome.gov/27530645'>http://www.genome.gov/27530645</a>."
+
+        story.append(Spacer(1, 0.25*inch))
+        story.append(Paragraph(blurb, h4))
+
         story.append(PageBreak())
 
         # Header section
