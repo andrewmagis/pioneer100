@@ -116,8 +116,8 @@ class QS(object):
 
             (dates, values, range) = participants.participants[prt].GetMeasurement('AGE')
 
-            (start_range, end_range, start_weight, end_weight) = self.GetWeightLossIndividuals(prt)
-            #(start_range, end_range, start_weight, end_weight) = self.GetHeartRateIndividuals(prt)
+            #(start_range, end_range, start_weight, end_weight) = self.GetWeightLossIndividuals(prt)
+            (start_range, end_range, start_weight, end_weight) = self.GetHeartRateIndividuals(prt)
 
             if (start_range is None):
                 continue
