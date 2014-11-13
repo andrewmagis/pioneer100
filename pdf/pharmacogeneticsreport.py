@@ -51,8 +51,8 @@ h2 = PS(name = 'Heading2',
 
 h4 = PS(name = 'Heading4',
     fontFace = 'Helvetica',
-    fontSize = 10,
-    leading = 16)
+    fontSize = 14,
+    leading = 14)
 
 h0 = PS(
      name = 'Heading3',
