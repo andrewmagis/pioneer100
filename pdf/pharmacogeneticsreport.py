@@ -372,7 +372,7 @@ class PharmacogeneticsReport(object):
         There is considerable research underway looking to match specific gene variations with responses to particular medications. \
         Using this kind of information allows doctors to tailor treatments to individuals. This is the science of <strong>pharmacogenetics</strong>.</br></br> \
         This is a very exciting new field because pharmacogenetics offers the promise of predicting whether a medication is likely to \
-        be beneficial or harmful -- before you ever take it. "
+        be beneficial or harmful - before you ever take it. "
 
         story.append(Paragraph(blurb, h4))
 
