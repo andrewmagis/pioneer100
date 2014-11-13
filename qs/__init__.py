@@ -109,6 +109,7 @@ class QS(object):
 
             gender = participants.participants[prt].gender
 
+            print prt, trait
             participants.participants[prt].LoadTrait(trait, pvalue, True)
 
             if (not trait in participants.participants[prt].traits):
