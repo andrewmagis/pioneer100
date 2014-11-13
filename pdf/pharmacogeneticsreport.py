@@ -51,7 +51,7 @@ h2 = PS(name = 'Heading2',
 
 h4 = PS(name = 'Heading4',
     fontFace = 'Helvetica',
-    fontSize = 12,
+    fontSize = 15,
     leading = 14)
 
 h0 = PS(
@@ -362,8 +362,8 @@ class PharmacogeneticsReport(object):
 
         story.append(Spacer(1,0.5*inch))
 
-        story.append(Paragraph("OVERVIEW", h0))
-        story.append(Spacer(1, 0.25*inch))
+        story.append(Paragraph("Overview", h0))
+        story.append(Spacer(1, 0.5*inch))
 
         blurb = "You may have had an experience where a particular medication didn't work for you, even if it worked well for \
         someone else. Or perhaps a particular medication causes you to have severe side effects whereas someone else does fine with it. \
@@ -386,13 +386,12 @@ class PharmacogeneticsReport(object):
 
         story.append(Spacer(1, 0.25*inch))
         story.append(Paragraph("The Right Medicine, The Right Dose", h0))
-        story.append(Spacer(1, 0.25*inch))
 
         blurb = "Every person is genetically and biochemically unique. This means that your body's reaction to many things in your environment \
         - including foods, toxins, and medications - is unique to you. Pharmacogenetics looks at how you are able to metabolize medications based \
         on your genetic makeup."
 
-        story.append(Spacer(1, 0.25*inch))
+        story.append(Spacer(1, 0.5*inch))
         story.append(Paragraph(blurb, h4))
 
         blurb = "For example, one pharmacogenetic test looks at a group of enzymes that are responsible for breaking down and eliminating \
