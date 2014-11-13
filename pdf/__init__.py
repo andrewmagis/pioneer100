@@ -356,7 +356,7 @@ class TransitionsReport(object):
             print "Unknown pattern: %d"%(values[2])
 
         drawing.add(String(400, 500, pattern2), name="pattern2")
-        drawing.pattern2.x = 20+CHART_WIDTH*0.80;
+        drawing.pattern2.x = 20+CHART_WIDTH*0.85;
         drawing.pattern2.y = 10+CHART_HEIGHT*0.75;
         drawing.pattern2.textAnchor = 'middle';
         drawing.pattern2.fontSize = 32;
@@ -367,7 +367,7 @@ class TransitionsReport(object):
             drawing.pattern2.fillColor = colors.red;
 
         drawing.add(String(400, 500, "Draw"+str(dates[1])), name="range2")
-        drawing.range2.x = 20+CHART_WIDTH*0.80;
+        drawing.range2.x = 20+CHART_WIDTH*0.85;
         drawing.range2.y = 10+CHART_HEIGHT*0.6;
         drawing.range2.textAnchor = 'middle';
         drawing.range2.fontSize = 8;
