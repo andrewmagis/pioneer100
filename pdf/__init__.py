@@ -102,7 +102,7 @@ class TransitionsReport(object):
 
         canvas.setFont('Helvetica',8)
         #canvas.drawString(0.25*inch, 0.25*inch, "Page %d"%(doc.page))
-        canvas.drawString(2.5*inch, 0.20*inch, u"\u00A9 2014 Institute for Systems Biology. All Rights Reserved.")
+        canvas.drawString(2.5*inch, 0.20*inch, u"\u00A9 2014 Hundred Person Wellness Project. All Rights Reserved.")
         
         canvas.restoreState()
         
@@ -120,7 +120,7 @@ class TransitionsReport(object):
 
         canvas.setFont('Helvetica',8)
         canvas.drawString(7.75*inch, 0.25*inch, "%d"%(doc.page))
-        canvas.drawString(2.5*inch, 0.25*inch, u"\u00A9 2014 Institute for Systems Biology. All Rights Reserved.")
+        canvas.drawString(2.5*inch, 0.25*inch, u"\u00A9 2014 Hundred Person Wellness Project. All Rights Reserved.")
         
         canvas.restoreState();
 
