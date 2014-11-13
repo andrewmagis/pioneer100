@@ -330,13 +330,26 @@ class PharmacogeneticsReport(object):
         img.hAlign = "CENTER";
         story.append(img)
 
+        story.append(Spacer(1,0.5*inch))
+
         # Get the values from the participant for a particular metabolite
-        blurb = "<font color='#db881e'><strong>TOTAL CHOLESTEROL</strong></font> is a sum of your blood's cholesterol content. Cholesterol \
-        is an essential molecule needed for the integrity of all our cells. High concentrations \
-        of cholesterol found in the blood have been associated with increased risk of heart disease \
-        because these molecules stick to the arteries and cause buildups (plaques). If your total \
-        cholesterol levels are high it is important to know your LDL cholesterol and HDL cholesterol \
-        levels before deciding on your action.";
+        blurb = "<font color='#db881e'><strong>PHARMACOGENETICS</strong></font> is a component of personalized medicine that focuses \
+        on how genetic factors influence individual responses to different medications that may affect drug efficacy, drug side effects, \
+        and adverse events related to drug therapy. This area of study can play an important role in identifying responders and non-responders \
+        to medications and thus avoid adverse events and optimize drug dosage."
+
+        story.append(Paragraph(blurb, h2))
+        story.append(Spacer(1,0.5*inch))
+
+        blurb = "This report includes analysis of drug responses related to the following conditions: <br/><br/> \
+        - <font color='#db881e'><strong>Cancer</strong></font><br/><br/> \
+        - <font color='#db881e'><strong>Cardiovascular/anti-clotting</strong></font><br/><br/> \
+        - <font color='#db881e'><strong>Depression/mood stabilization</strong></font><br/><br/> \
+        - <font color='#db881e'><strong>Hepatitis C</strong></font><br/><br/> \
+        - <font color='#db881e'><strong>HIV</strong></font><br/><br/> \
+        - <font color='#db881e'><strong>Immunosuppression</strong></font><br/><br/> \
+        - <font color='#db881e'><strong>Malignant hypothermia</strong></font><br/><br/> \
+        - <font color='#db881e'><strong>Pain</strong></font><br/><br/> \ "
 
         story.append(Paragraph(blurb, h2))
 
