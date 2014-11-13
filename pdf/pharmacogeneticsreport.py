@@ -368,7 +368,7 @@ class PharmacogeneticsReport(object):
         blurb = "You may have had an experience where a particular medication didn't work for you, even if it worked well \
         for someone else. Or perhaps a particular medication causes you to have severe side effects whereas someone else \
         does fine with it.  Differences in response to medications are common and are influenced by age, lifestyle and health. \
-        But your genes also play an important role in influencing your response to medications.</br></br> "
+        </br></br> "
 
 
 
