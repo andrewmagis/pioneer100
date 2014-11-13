@@ -91,9 +91,20 @@ class Database(object):
         # Concatenate all the tuples together
         for row in cursor:
             if (result is None):
+                result = row
+            else:
+                result = zip(result, row)
+            print "BLAH BLAH BLAH"
+            print result
+
+        """
+        # Concatenate all the tuples together
+        for row in cursor:
+            if (result is None):
                 result = (row)
             else:
                 result = zip(*result, row)
+        """
 
         if (result is None):
             return {}
