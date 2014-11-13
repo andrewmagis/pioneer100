@@ -402,6 +402,13 @@ class PharmacogeneticsReport(object):
         story.append(Spacer(1, 0.25*inch))
         story.append(Paragraph(blurb, h4))
 
+        blurb = "<strong>Thus, an individual can experience 'adverse effects' due to either too rapid or too slow metabolism of a drug.</strong> \
+        Knowing your genetic makeup, your doctor can determine the best dose of medication for you - or whether a different medication \
+        altogether may be more appropriate."
+
+        story.append(Spacer(1, 0.25*inch))
+        story.append(Paragraph(blurb, h4))
+
         story.append(PageBreak())
 
         # Header section
