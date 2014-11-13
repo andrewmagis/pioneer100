@@ -163,7 +163,7 @@ class TransitionsReport(object):
         # Drop the Drawing onto the page.
         story.append(drawing)
             
-    def AddGraph(self, header, title, width=75):
+    def AddGraph(self, header, title, width=100):
     
         (dates, values, range) = self.participant.GetMeasurement(header);
 
