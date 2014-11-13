@@ -305,6 +305,8 @@ class PharmacogeneticsReport(object):
 
         story.append(Spacer(1,0.25*inch))
 
+        """
+
         story.append(Paragraph("This is your personalized pharmacogenetic (drug response) report. \
         The information below describes how you may respond to certain types of commonly prescribed \
         drugs based on your unique genotype.  If you are currently taking one of the types of drugs \
@@ -322,11 +324,27 @@ class PharmacogeneticsReport(object):
 
         self.Legend(story)
 
+        """
+
         # Add logo
-        #src = './images/pioneerLogo_ISBLogo.png'
-        #img = Image(src, 450, 75)
-        #img.hAlign = "CENTER"
-        #story.append(img)
+        src = './images/pg_cover1.png'
+        img = Image2(src, 625, 400)
+        img.hAlign = "CENTER";
+        story.append(img)
+
+        story.append(PageBreak())
+
+        story.append(Spacer(1,0.5*inch))
+        self.LogoHeader(story, './images/cardiovascular.png', "<font color='#002060'><strong>CARDIOVASCULAR HEALTH</strong></font>", "The following selected measurements are related to your cardiovascular health.");
+        #story.append(MCLine(6.0*inch));
+
+        # Get the values from the participant for a particular metabolite
+        blurb = "<font color='#db881e'><strong>TOTAL CHOLESTEROL</strong></font> is a sum of your blood's cholesterol content. Cholesterol \
+        is an essential molecule needed for the integrity of all our cells. High concentrations \
+        of cholesterol found in the blood have been associated with increased risk of heart disease \
+        because these molecules stick to the arteries and cause buildups (plaques). If your total \
+        cholesterol levels are high it is important to know your LDL cholesterol and HDL cholesterol \
+        levels before deciding on your action.";
 
         story.append(Spacer(1,0.5*inch))
 
