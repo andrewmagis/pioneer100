@@ -49,6 +49,11 @@ h2 = PS(name = 'Heading2',
     fontSize = 10,
     leading = 14)
 
+h4 = PS(name = 'Heading4',
+    fontFace = 'Helvetica',
+    fontSize = 10,
+    leading = 16)
+
 h0 = PS(
      name = 'Heading3',
     fontFace = 'Helvetica-Bold',
@@ -338,7 +343,7 @@ class PharmacogeneticsReport(object):
         and adverse events related to drug therapy. This area of study can play an important role in identifying responders and non-responders \
         to medications and thus avoid adverse events and optimize drug dosage."
 
-        story.append(Paragraph(blurb, h2))
+        story.append(Paragraph(blurb, h4))
         story.append(Spacer(1,0.25*inch))
 
         blurb = "This report includes analysis of drug responses related to the following conditions: <br/> \
@@ -351,7 +356,7 @@ class PharmacogeneticsReport(object):
         - <font color='#db881e'><strong>Malignant hypothermia</strong></font><br/> \
         - <font color='#db881e'><strong>Pain</strong></font><br/> "
 
-        story.append(Paragraph(blurb, h2))
+        story.append(Paragraph(blurb, h4))
 
         story.append(PageBreak())
 
