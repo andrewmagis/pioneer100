@@ -384,6 +384,16 @@ class PharmacogeneticsReport(object):
         story.append(Spacer(1, 0.25*inch))
         story.append(Paragraph(blurb, h4))
 
+        story.append(Paragraph("The Right Medicine, The Right Dose", h0))
+        story.append(Spacer(1, 0.25*inch))
+
+        blurb = "Every person is genetically and biochemically unique.  This means that your body's reaction to many things in your environment \
+        - including foods, toxins, and medications - is unique to you. Pharmacogenetics looks at how you are able to metabolize medications based \
+        on your genetic makeup."
+
+        story.append(Spacer(1, 0.25*inch))
+        story.append(Paragraph(blurb, h4))
+
         story.append(PageBreak())
 
         # Header section
