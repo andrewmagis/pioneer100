@@ -103,11 +103,16 @@ class QS(object):
         return (start_date, end_date, start_weight, end_weight)
 
 
-    def AnalyzeQS(self, participants):
+    def AnalyzeQS(self, participants, trait, pvalue=1):
 
         for prt in participants.participants.keys():
 
             gender = participants.participants[prt].gender
+
+            participants.participants[prt].LoadTrait(trait, pvalue, True)
+
+            if (not trait in participants.participants[prt].traits):
+                continue
 
             (dates, values, range) = participants.participants[prt].GetMeasurement('AGE')
 
@@ -126,7 +131,7 @@ class QS(object):
                 mean_cals = self.GetActivityRange(prt, start_range, end_range)
 
                 if (not mean_cals is None):
-                    print prt, gender, values, start_range, end_range, start_weight, end_weight, end_weight-start_weight, mean_cals
+                     prt, gender, values, start_range, end_range, start_weight, end_weight, end_weight-start_weight, mean_cals
 
 
 
