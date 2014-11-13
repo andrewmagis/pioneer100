@@ -92,6 +92,8 @@ class Database(object):
         for row in cursor:
             print row
 
+        result = zip(columns, *row)
+        print result
 
         """
         # Concatenate all the tuples together
