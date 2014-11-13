@@ -213,12 +213,12 @@ class TransitionsReport(object):
         CHART_WIDTH=width;
         CHART_HEIGHT=100 
         
-        min_value = range[0];
+        min_value = ranges[0];
         mid_value = None;
-        max_value = range[1];
+        max_value = ranges[1];
         if (len(range)>2):
             mid_value = max_value;
-            max_value = range[2];
+            max_value = ranges[2];
 
         if (max_value == float("inf")):
             max_value = max(values) + max(values)*0.5;
@@ -230,7 +230,7 @@ class TransitionsReport(object):
         chart.valueAxis.valueMin = 0;
         chart.valueAxis.valueMax = max(max_value, max(values)) + 0.75*(max_value-min_value);
         #chart.valueAxis.valueStep = round((range[1]-range[0]) / 5);
-        chart.valueAxis.valueSteps = [round(x, 1) for x in range];
+        chart.valueAxis.valueSteps = [round(x, 1) for x in ranges];
         chart.valueAxis.tickRight = CHART_WIDTH;
         chart.valueAxis.strokeWidth = 0.1;
         
