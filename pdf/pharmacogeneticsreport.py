@@ -309,34 +309,13 @@ class PharmacogeneticsReport(object):
 
         story = []
 
-        """
-
-        story.append(Paragraph("This is your personalized pharmacogenetic (drug response) report. \
-        The information below describes how you may respond to certain types of commonly prescribed \
-        drugs based on your unique genotype.  If you are currently taking one of the types of drugs \
-        described in this report and you have a variant in a gene related to response to that drug, \
-        we encourage you to take this report to your physician to discuss appropriate steps.", h2))
-
-        story.append(Spacer(1,0.25*inch))
-
-        story.append(Paragraph("<strong>IMPORTANT: This report is for research purposes only and should not be construed as clinical/medical \
-        information.  You should never stop taking prescription medication, or change the amount you are taking, \
-        without the advice of your doctor. If you have any questions about this information, please discuss them with \
-        a qualified healthcare provider.</strong>", h2))
-
-        story.append(Spacer(1,0.25*inch))
-
-        self.Legend(story)
-
-        """
-
         # Add logo
         src = './images/pg_cover1.png'
         img = Image2(src, 625, 400)
         img.hAlign = "CENTER";
         story.append(img)
 
-        story.append(Spacer(1,0.5*inch))
+        story.append(Spacer(1,0.25*inch))
 
         # Get the values from the participant for a particular metabolite
         blurb = "<font color='#db881e'><strong>PHARMACOGENETICS</strong></font> is a component of personalized medicine that focuses \
@@ -348,22 +327,22 @@ class PharmacogeneticsReport(object):
         story.append(Spacer(1,0.25*inch))
 
         blurb = "This report includes analysis of drug responses related to the following conditions: <br/><br/> \
-        - <font color='#db881e'><strong>Cancer</strong></font><br/> \
-        - <font color='#db881e'><strong>Cardiovascular/anti-clotting</strong></font><br/> \
-        - <font color='#db881e'><strong>Depression/mood stabilization</strong></font><br/> \
-        - <font color='#db881e'><strong>Hepatitis C</strong></font><br/> \
-        - <font color='#db881e'><strong>HIV</strong></font><br/> \
-        - <font color='#db881e'><strong>Immunosuppression</strong></font><br/> \
-        - <font color='#db881e'><strong>Malignant hypothermia</strong></font><br/> \
-        - <font color='#db881e'><strong>Pain</strong></font><br/>"
+        <font color='#db881e'>- <strong>Cancer</strong></font><br/><br/> \
+        <font color='#db881e'>- <strong>Cardiovascular/anti-clotting</strong></font><br/><br/> \
+        <font color='#db881e'>- <strong>Depression/mood stabilization</strong></font><br/><br/> \
+        <font color='#db881e'>- <strong>Hepatitis C</strong></font><br/><br/> \
+        <font color='#db881e'>- <strong>HIV</strong></font><br/><br/> \
+        <font color='#db881e'>- <strong>Immunosuppression</strong></font><br/><br/> \
+        <font color='#db881e'>- <strong>Malignant hypothermia</strong></font><br/><br/> \
+        <font color='#db881e'>- <strong>Pain</strong></font><br/>"
 
         story.append(Paragraph(blurb, h4))
 
         story.append(PageBreak())
 
-        story.append(Spacer(1,0.5*inch))
+        story.append(Spacer(1,0.25*inch))
 
-        story.append(Paragraph("Overview", h0))
+        story.append(Paragraph("<font color='#db881e'><strong>Overview</strong></font>", h0))
         story.append(Spacer(1, 0.5*inch))
 
         blurb = "You may have had an experience where a particular medication didn't work for you, even if it worked well for \
@@ -386,7 +365,7 @@ class PharmacogeneticsReport(object):
         story.append(Paragraph(blurb, h4))
 
         story.append(Spacer(1, 0.25*inch))
-        story.append(Paragraph("The Right Medicine, The Right Dose", h0))
+        story.append(Paragraph("<font color='#db881e'><strong>The Right Medicine, The Right Dose</strong></font>", h0))
 
         blurb = "Every person is genetically and biochemically unique. This means that your body's reaction to many things in your environment \
         - including foods, toxins, and medications - is unique to you. Pharmacogenetics looks at how you are able to metabolize medications based \
@@ -417,7 +396,7 @@ class PharmacogeneticsReport(object):
         story.append(Spacer(1, 0.25*inch))
         story.append(Paragraph(blurb, h4))
 
-        blurb = "For more information please visit: <a href='http://www.genome.gov/27530645'>http://www.genome.gov/27530645</a>."
+        blurb = "For more information please visit: <u><a href='http://www.genome.gov/27530645'>http://www.genome.gov/27530645</a></u>."
 
         story.append(Spacer(1, 0.25*inch))
         story.append(Paragraph(blurb, h4))
@@ -436,8 +415,8 @@ class PharmacogeneticsReport(object):
         story.append(Paragraph(blurb, h4))
 
         blurb = "In general, the results in your report fall into two categories: <br/><br/> \
-        1. <font color='#db881e'><strong>Increased (or decreased) risk for side effects due to a certain medication, or</strong></font><br/> \
-        2. <font color='#db881e'><strong>Increased (or decreased) ability to metabolize a medication, leading to potential need for your \
+        <font color='#db881e'>1. <strong>Increased (or decreased) risk for side effects due to a certain medication, or</strong></font><br/> \
+        <font color='#db881e'>2. <strong>Increased (or decreased) ability to metabolize a medication, leading to potential need for your \
         physician to adjust the dosage to avoid side effects or optimize drug effectiveness.</strong></font><br/>"
 
         story.append(Spacer(1, 0.25*inch))
@@ -450,9 +429,12 @@ class PharmacogeneticsReport(object):
         story.append(Spacer(1, 0.25*inch))
         story.append(Paragraph(blurb, h4))
 
+        story.append(Spacer(1, 0.5*inch))
+
         self.Legend(story)
 
         story.append(PageBreak())
+        story.append(Spacer(1, 0.5*inch))
 
         # Header section
         story.append(Paragraph("RESPONSE TO ANTI-CANCER DRUGS", h1));
@@ -497,6 +479,9 @@ class PharmacogeneticsReport(object):
         self.ProcessVariantList(story, title)
         story.append(Spacer(1,0.5*inch))
 
+        story.append(PageBreak())
+        story.append(Spacer(1, 0.5*inch))
+
         # Header section
         story.append(Paragraph("RESPONSE TO ANTIDEPRESSANTS AND MOOD STABILIZERS", h1));
         story.append(Spacer(1, 5));
@@ -511,7 +496,6 @@ class PharmacogeneticsReport(object):
         self.ProcessVariantList(story, title)
         story.append(Spacer(1,0.5*inch))
 
-
         # Header section
         story.append(Paragraph("RESPONSE TO HEPATITIS C MEDICATIONS", h1));
         story.append(Spacer(1, 5));
@@ -520,19 +504,21 @@ class PharmacogeneticsReport(object):
 
         title = "PEG-interferon-alpha"
         self.ProcessVariantList(story, title)
-        story.append(Spacer(1,0.5*inch))
+        story.append(Spacer(1,0.25*inch))
 
         title = "PEG-interferon-alpha-2a"
         self.ProcessVariantList(story, title)
-        story.append(Spacer(1,0.5*inch))
+        story.append(Spacer(1,0.25*inch))
 
         title = "PEG-interferon-alpha-2b"
         self.ProcessVariantList(story, title)
-        story.append(Spacer(1,0.5*inch))
+        story.append(Spacer(1,0.25*inch))
 
         title = "Telaprevir"
         self.ProcessVariantList(story, title)
-        story.append(Spacer(1,0.5*inch))
+
+        story.append(PageBreak())
+        story.append(Spacer(1, 0.5*inch))
 
         # Header section
         story.append(Paragraph("RESPONSE TO HIV MEDICATIONS", h1));
@@ -549,6 +535,9 @@ class PharmacogeneticsReport(object):
         story.append(Spacer(1, 5));
         story.append(MCLine(7.3*inch))
         story.append(Spacer(1,0.25*inch))
+
+        story.append(PageBreak())
+        story.append(Spacer(1, 0.5*inch))
 
         title = "Azathioprine"
         self.ProcessVariantList(story, title)
