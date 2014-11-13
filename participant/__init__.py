@@ -214,6 +214,7 @@ class ParticipantDB(object):
         print x['Gender']
         print x['Round1']
         print x['Round2']
+        print x['Round3']
         print x['Score']
 
         # Return the array
