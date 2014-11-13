@@ -97,9 +97,11 @@ class Participant(object):
             if (np.isnan(values)):
                 return None
             elif (dates == 1):
-                return (self.username, self.gender, values, np.nan, self.traits[trait].score)
+                return (self.username, self.gender, values, np.nan, np.nan, self.traits[trait].score)
             elif (dates == 2):
-                return (self.username, self.gender, np.nan, values, self.traits[trait].score)
+                return (self.username, self.gender, np.nan, values, np.nan, self.traits[trait].score)
+            elif (dates == 3):
+                return (self.username, self.gender, np.nan, np.nan, values, self.traits[trait].score)
             else:
                 raise MyError('More than 2 values in measurement')
 
@@ -107,12 +109,12 @@ class Participant(object):
 
             if (np.isnan(values[0])) and (np.isnan(values[1])):
                 return None
-            elif (np.isnan(values[0])):
-                return (self.username, self.gender, np.nan, values[1], self.traits[trait].score)
-            elif (np.isnan(values[1])):
-                return (self.username, self.gender, values[0], np.nan, self.traits[trait].score)
-            else:
-                return (self.username, self.gender, values[0], values[1], self.traits[trait].score)
+            elif (dates[0] == 1) and (dates[1] == 2):
+                return (self.username, self.gender, values[0], values[1], np.nan, self.traits[trait].score)
+            elif (dates[0] == 2) and (dates[1] == 3):
+                return (self.username, self.gender, np.nan, values[0], values[1], self.traits[trait].score)
+            elif (dates[0] == 1) and (dates[1] == 3):
+                return (self.username, self.gender, values[0], np.nan, values[1], self.traits[trait].score)
 
         elif (values.size == 3):
 
@@ -122,7 +124,7 @@ class Participant(object):
                 return (self.username, self.gender, values[0], values[1], values[2], self.traits[trait].score)
 
         else:
-            raise MyError('More than 2 values in measurement')
+            raise MyError('More than 3 values in measurement')
 
     def LoadTrait(self, trait, pvalue, suppress_errors):
 
