@@ -131,8 +131,7 @@ class QS(object):
                 mean_cals = self.GetActivityRange(prt, start_range, end_range)
 
                 if (not mean_cals is None):
-                    prt, gender, values, start_range, end_range, start_weight, end_weight, end_weight-start_weight, mean_cals
-                    trait.Print()
+                    print prt, gender, values, start_range, end_range, start_weight, end_weight, end_weight-start_weight, mean_cals, trait.score
 
 
 
