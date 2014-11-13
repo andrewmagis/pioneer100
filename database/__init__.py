@@ -91,7 +91,7 @@ class Database(object):
         # Concatenate all the tuples together
         for row in cursor:
             if (result is None):
-                result = row
+                result = (row)
             else:
                 result = zip(*result, row)
 
