@@ -92,8 +92,7 @@ class Database(object):
         result = []
         for row in cursor:
             result.append(row)
-
-        result = zip(columns, *result)
+        result = zip(*result)
         print result
 
         """
