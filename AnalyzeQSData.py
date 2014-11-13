@@ -22,8 +22,14 @@ def main(parser):
     # Create the QS object
     qs = QS(database)
 
+    # Load the DBSnp database
+    dbsnp = DBSnp(database)
+
+    # Open connection to Clinvar database
+    clinvar_db = Clinvar(database)
+
     # Load the participants
-    participants = ParticipantDB(database, None, None, None, None, None)
+    participants = ParticipantDB(database, None, None, None, clinvar_db, dbsnp)
 
     qs.AnalyzeQS(participants, 'Exercise Responsiveness')
 
