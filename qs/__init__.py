@@ -103,13 +103,13 @@ class QS(object):
         return (start_date, end_date, start_weight, end_weight)
 
 
-    def AnalyzeQS(self, participants, trait, pvalue=1):
+    def AnalyzeQS(self, participants, title, pvalue=1):
 
         for prt in participants.participants.keys():
 
             gender = participants.participants[prt].gender
 
-            trait = participants.participants[prt].LoadTrait(trait, pvalue, True)
+            trait = participants.participants[prt].LoadTrait(title, pvalue, True)
 
             if (trait is None):
                 continue
