@@ -42,10 +42,6 @@ def main(parser):
     # Open connection to MySQL database
     database = Database()
 
-    result = database.GetData('7890752')
-    print result
-    return
-
     # Load the DBSnp database
     dbsnp = DBSnp(database)
 
