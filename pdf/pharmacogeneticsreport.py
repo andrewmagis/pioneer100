@@ -394,6 +394,14 @@ class PharmacogeneticsReport(object):
         story.append(Spacer(1, 0.25*inch))
         story.append(Paragraph(blurb, h4))
 
+        blurb = "For example, one pharmacogenetic test looks at a group of enzymes that are responsible for breaking down and eliminating \
+        more than 30 types of medications, including anti-depressants, chemotherapy drugs and heart medications. Some people, because of their \
+        genetic makeup, aren't able to break down these medications fast enough. This means the medications build up in the body and can cause \
+        severe side effects. Conversely, some people break down these medications too quickly - before they have a chance to work."
+
+        story.append(Spacer(1, 0.25*inch))
+        story.append(Paragraph(blurb, h4))
+
         story.append(PageBreak())
 
         # Header section
