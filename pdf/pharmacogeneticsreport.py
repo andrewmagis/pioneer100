@@ -51,7 +51,7 @@ h2 = PS(name = 'Heading2',
 
 h4 = PS(name = 'Heading4',
     fontFace = 'Helvetica',
-    fontSize = 14,
+    fontSize = 12,
     leading = 14)
 
 h0 = PS(
@@ -346,7 +346,7 @@ class PharmacogeneticsReport(object):
         story.append(Paragraph(blurb, h4))
         story.append(Spacer(1,0.25*inch))
 
-        blurb = "This report includes analysis of drug responses related to the following conditions: <br/> \
+        blurb = "This report includes analysis of drug responses related to the following conditions: <br/></br> \
         - <font color='#db881e'><strong>Cancer</strong></font><br/> \
         - <font color='#db881e'><strong>Cardiovascular/anti-clotting</strong></font><br/> \
         - <font color='#db881e'><strong>Depression/mood stabilization</strong></font><br/> \
@@ -361,6 +361,20 @@ class PharmacogeneticsReport(object):
         story.append(PageBreak())
 
         story.append(Spacer(1,0.5*inch))
+
+        story.append(Paragraph("OVERVIEW", h0))
+        story.append(Spacer(1, 0.25*inch))
+
+        blurb = "You may have had an experience where a particular medication didn’t work for you, even if it worked well \
+        for someone else. Or perhaps a particular medication causes you to have severe side effects whereas someone else \
+        does fine with it.  Differences in response to medications are common and are influenced by age, lifestyle and health. \
+        But your genes also play an important role in influencing your response to medications.</br></br> \
+        There is considerable research underway looking to match specific gene variations with responses to particular medications. \
+        Using this kind of information allows doctors to tailor treatments to individuals. This is the science of <strong>pharmacogenetics</strong>.</br></br> \
+        This is a very exciting new field because pharmacogenetics offers the promise of predicting whether a medication is likely to \
+        be beneficial or harmful -- before you ever take it. "
+
+        story.append(Paragraph(blurb, h4))
 
         # Header section
         story.append(Paragraph("RESPONSE TO ANTI-CANCER DRUGS", h1));
