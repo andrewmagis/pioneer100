@@ -502,7 +502,7 @@ class TransitionsReport(object):
         story = [];
 
         # Add logo
-        src = './images/transition_cover1.png' 
+        src = './images/transition_cover2.png'
         img = Image2(src, 625, 795)
         img.hAlign = "CENTER";
         story.append(img)
@@ -557,18 +557,19 @@ class TransitionsReport(object):
         if (not drawing is None):
             self.DrawingBlurb(story, [drawing], blurb);
 
-        story.append(Spacer(1,0.4*inch));
+        story.append(Spacer(1,0.5*inch));
+
+        # Get the values from the participant for a particular metabolite
+        blurb = "<font color='#db881e'><strong>TOTAL LOW-DENSITY LIPOPROTEIN (LDL)</strong></font> cholesterol is often called the 'bad' \
+        cholesterol as it can carry fat molecules into artery walls leading to fat build up and \
+        inflammation. Accumulation of fatty deposits in your arteries (atherosclerosis) increases \
+        your risk for cardiovascular disease.";
 
         drawing = self.AddGraph('HDL_CHOLESTEROL', 'HDL-Cholesterol');
         if (not drawing is None):
             self.DrawingBlurb(story, [drawing], blurb);
 
-        # Get the values from the participant for a particular metabolite
-        blurb = "<font color='#db881e'><strong>TRIGLYCERIDES</strong></font> are a type of fat in the blood that your body uses for energy. \
-        Triglycerides are the main constituents of vegetable oil and animal fat. High triglyceride \
-        levels may contribute to hardening of the arteries or thickening of the artery walls - \
-        increasing your risk for heart disease and metabolic syndrome.";
-        
+
         story.append(PageBreak())
         
         story.append(Spacer(1,0.5*inch));  
