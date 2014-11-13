@@ -206,7 +206,7 @@ class TransitionsReport(object):
             return None
         """
 
-        for index in range(0, values.size):
+        for index in range(values.size):
             if (np.isnan(values[index])):
                 values[index] = 0
 
