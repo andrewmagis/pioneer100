@@ -405,7 +405,7 @@ class PharmacogeneticsReport(object):
 
         story.append(Spacer(1,0.5*inch))
 
-        story.append(Paragraph("YOUR REPORT", h0))
+        story.append(Paragraph("<font color='#db881e'><strong>YOUR REPORT</strong></font>", h0))
         story.append(Spacer(1, 0.5*inch))
 
         blurb = "In your report, you will see tests for a number of common variants related to drug response that have been \
@@ -536,9 +536,6 @@ class PharmacogeneticsReport(object):
         story.append(MCLine(7.3*inch))
         story.append(Spacer(1,0.25*inch))
 
-        story.append(PageBreak())
-        story.append(Spacer(1, 0.5*inch))
-
         title = "Azathioprine"
         self.ProcessVariantList(story, title)
         story.append(Spacer(1,0.5*inch))
@@ -548,7 +545,6 @@ class PharmacogeneticsReport(object):
         story.append(Spacer(1, 5));
         story.append(MCLine(7.3*inch))
         story.append(Spacer(1,0.25*inch))
-
 
         variant_table = [['Gene', 'Identifier', 'Effect', 'You', 'Description']] # this is the header row
         variant_style = []
