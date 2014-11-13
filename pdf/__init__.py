@@ -295,7 +295,7 @@ class TransitionsReport(object):
         drawing.title.fontSize = 10;
 
         if (values[0] == 0):
-            pattern = 'A'
+            pattern0 = 'A'
         else:
             pattern0 = 'B'
 
