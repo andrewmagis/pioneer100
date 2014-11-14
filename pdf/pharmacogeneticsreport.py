@@ -181,7 +181,7 @@ class PharmacogeneticsReport(object):
             variant = trait.variants[key]
 
             if (not header):
-                story.append(Paragraph(variant.note_generic, h2));
+                story.append(Paragraph(unicode(variant.note_generic), h2));
                 story.append(Spacer(1, 5));
                 story.append(MCLine(7.3*inch))
                 header = True
@@ -509,6 +509,9 @@ class PharmacogeneticsReport(object):
         title = "Tricyclic antidepressants"
         self.ProcessVariantList(story, title)
         story.append(Spacer(1,0.5*inch))
+
+        story.append(PageBreak())
+        story.append(Spacer(1,0.25*inch))
 
         # Header section
         story.append(Paragraph("RESPONSE TO HEPATITIS C MEDICATIONS", h1));
