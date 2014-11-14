@@ -245,7 +245,7 @@ class PharmacogeneticsReport(object):
                 variant_style.append(('BACKGROUND', (0, count), (-1, count), self.no_effect))
             count += 1
 
-        table = Table(variant_table, [75, 60, 60, 60, 285], hAlign='CENTER', style=variant_style)
+        table = Table(variant_table, [60, 60, 75, 75, 270], hAlign='CENTER', style=variant_style)
         story.append(table)
 
 
@@ -572,7 +572,7 @@ class PharmacogeneticsReport(object):
         variant_style.append(('LINEAFTER',(0,count),(-1,count),0.5,colors.black))
 
         variant_style.append(('BACKGROUND', (0, count), (-1, count), self.no_effect))
-        table = Table(variant_table, [75, 60, 60, 60, 285], hAlign='CENTER', style=variant_style)
+        table = Table(variant_table, [60, 60, 75, 75, 270], hAlign='CENTER', style=variant_style)
         story.append(table)
         story.append(Spacer(1,0.5*inch))
 
