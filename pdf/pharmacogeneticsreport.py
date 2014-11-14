@@ -159,7 +159,7 @@ class PharmacogeneticsReport(object):
 
     def ProcessVariantList(self, story, title):
 
-        variant_table = [['Gene', 'Identifier', 'Effect', 'You', 'Description']] # this is the header row
+        variant_table = [['Gene', 'Identifier', 'Effect Allele', 'Your Genotype', 'Description']] # this is the header row
         variant_style = []
         variant_style.append(('VALIGN', (0,0), (-1,-1), 'MIDDLE'))
         variant_style.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
@@ -346,7 +346,7 @@ class PharmacogeneticsReport(object):
         story.append(Spacer(1, 0.5*inch))
 
         blurb = "You may have had an experience where a particular medication didn't work for you, even if it worked well for \
-        someone else. Or perhaps a particular medication causes you to have severe side effects whereas someone else does fine with it. \
+        someone else. Or perhaps a certain medication causes you to have severe side effects whereas someone else does fine with it. \
         Differences in response to medications are common and are influenced by age, lifestyle and health.  But your genes also play \
         an important role in influencing your response to medications."
 
@@ -375,7 +375,7 @@ class PharmacogeneticsReport(object):
         story.append(Paragraph(blurb, h4))
 
         blurb = "For example, one pharmacogenetic test looks at a group of enzymes that are responsible for breaking down and eliminating \
-        more than 30 types of medications, including anti-depressants, chemotherapy drugs and heart medications. Some people, because of their \
+        more than 30 types of medications, including anti-depressants, chemotherapy drugs and heart medications.Some people, because of their \
         genetic makeup, aren't able to break down these medications fast enough. This means the medications build up in the body and can cause \
         severe side effects. Conversely, some people break down these medications too quickly - before they have a chance to work."
 
@@ -415,9 +415,9 @@ class PharmacogeneticsReport(object):
         story.append(Paragraph(blurb, h4))
 
         blurb = "In general, the results in your report fall into two categories: <br/><br/> \
-        <font color='#db881e'>1. <strong>Increased (or decreased) risk for side effects due to a certain medication, or</strong></font><br/> \
+        <font color='#db881e'>1. <strong>Increased (or decreased) risk for <u>side effects</u> due to a certain medication, or</strong></font><br/> \
         <font color='#db881e'>2. <strong>Increased (or decreased) ability to metabolize a medication, leading to potential need for your \
-        physician to adjust the dosage to avoid side effects or optimize drug effectiveness.</strong></font><br/>"
+        physician to <u>adjust the dosage</u> to avoid side effects or optimize drug effectiveness.</strong></font><br/>"
 
         story.append(Spacer(1, 0.25*inch))
         story.append(Paragraph(blurb, h4))
@@ -541,12 +541,12 @@ class PharmacogeneticsReport(object):
         story.append(Spacer(1,0.5*inch))
 
         # Header section
-        story.append(Paragraph("RISK FOR MALIGNANT HYPOTHERMIA", h1));
+        story.append(Paragraph("RISK FOR MALIGNANT HYPERTHERMIA", h1));
         story.append(Spacer(1, 5));
         story.append(MCLine(7.3*inch))
         story.append(Spacer(1,0.25*inch))
 
-        variant_table = [['Gene', 'Identifier', 'Effect', 'You', 'Description']] # this is the header row
+        variant_table = [['Gene', 'Identifier', 'Effect Allele', 'Your Genotype', 'Description']] # this is the header row
         variant_style = []
         variant_style.append(('VALIGN', (0,0), (-1,-1), 'MIDDLE'))
         variant_style.append(('ALIGN',(0,0),(-1,-1),'CENTER'))
@@ -562,7 +562,7 @@ class PharmacogeneticsReport(object):
         header = True
         count = 0
 
-        variant_table.append([Paragraph("RYR1, CACNA1S", h2), '-', '-', '-', Paragraph("You do not have any known variants associated with malignant hypothermia", h2)])
+        variant_table.append([Paragraph("RYR1, CACNA1S", h2), '-', '-', '-', Paragraph("You do not have any known variants associated with malignant hyperthermia", h2)])
 
         variant_style.append(('VALIGN', (0,count), (-1,count), 'MIDDLE'))
         variant_style.append(('ALIGN',(0,count),(-1,count),'CENTER'))
