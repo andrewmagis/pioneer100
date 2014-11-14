@@ -35,7 +35,7 @@ def main(parser):
     # Load the participants
     participants = ParticipantDB(database, None, None, None, clinvar_db, dbsnp)
 
-    qs.AnalyzeQSMeasurement(participants, 'Exercise Responsiveness', 'HEMOGLOBIN_A1C')
+    qs.AnalyzeQSMeasurement(participants, 'Exercise Responsiveness', 'AVERAGE_INFLAMMATION_SCORE')
 
 
 if __name__ == "__main__":
