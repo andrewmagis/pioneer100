@@ -47,8 +47,8 @@ class QS(object):
 
         active_cals = np.array(active_cals)
 
-        index = np.sum(active_cals > 100)
-        if (index < 40):
+        index = active_cals > 100
+        if (np.sum(index) < 40):
             return None
 
         mean_cals = scipy.nanmean(active_cals[index])
