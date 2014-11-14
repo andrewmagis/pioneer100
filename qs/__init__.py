@@ -45,22 +45,14 @@ class QS(object):
 
         days = (end_range-start_range).days
 
-        if (len(active_cals)>(days-3)):
+        active_cals = np.array(active_cals)
 
-            active_cals = np.array(active_cals)
-
-            print active_cals
-            index = np.sum(active_cals > 100)
-            print index
-
-            mean_cals = scipy.nanmean(active_cals)
-
-
-
-            return mean_cals
-
-        else:
+        index = np.sum(active_cals > 100)
+        if (index < 40):
             return None
+
+        mean_cals = scipy.nanmean(active_cals[index])
+        return mean_cals
 
     def GetWeightLossIndividuals(self, username):
 
