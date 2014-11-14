@@ -600,7 +600,7 @@ class TransitionsReport(object):
         # Get the values from the participant for a particular metabolite
         blurb = "<font color='#db881e'><strong>GLUTATHIONE</strong></font> is a natural substance produced by the liver and obtained \
         by the food we eat. It acts as a powerful antioxidant and detoxification molecule making it a crucial component in healthy \
-        maintenance of our cells.  Raw fruits and vegetables are great sources of glutathione."
+        maintenance of our cells. Fruits and vegetables are great sources of glutathione."
         
         drawing = self.AddGraph('GLUTATHIONE', 'Glutathione');
         if (not drawing is None):
