@@ -136,7 +136,7 @@ class QS(object):
         x = np.array(results, dtype=[('Username', np.str, 10), ('Gender', np.str, 1), ('Round1', float), ('Round2', float), ('Activity', float)])
 
         # Start by calculating the correlation
-        (R, P) = stats.pearsonr(x['Round1'], x['Score'])
+        (R, P) = scipy.stats.pearsonr(x['Round1'], x['Score'])
         print R, P
 
         # Sort by the score column
