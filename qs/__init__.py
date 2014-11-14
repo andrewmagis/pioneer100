@@ -130,7 +130,7 @@ class QS(object):
             mean_cals = self.GetActivityRange(prt, FIRST_FITBIT_DATE, SECOND_BLOOD_DRAW)
 
             if (not mean_cals is None):
-                print prt, gender, values, FIRST_FITBIT_DATE, SECOND_BLOOD_DRAW, mean_cals, values[0], values[1], diff, trait.score
+                print prt, gender, FIRST_FITBIT_DATE, SECOND_BLOOD_DRAW, mean_cals, values[0], values[1], diff, trait.score
 
     def AnalyzeQS(self, participants, title, pvalue=1):
 
