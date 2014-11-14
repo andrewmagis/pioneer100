@@ -521,15 +521,15 @@ class PharmacogeneticsReport(object):
 
         title = "PEG-interferon-alpha"
         self.ProcessVariantList(story, title)
-        story.append(Spacer(1,0.25*inch))
+        story.append(Spacer(1,0.5*inch))
 
         title = "PEG-interferon-alpha-2a"
         self.ProcessVariantList(story, title)
-        story.append(Spacer(1,0.25*inch))
+        story.append(Spacer(1,0.5*inch))
 
         title = "PEG-interferon-alpha-2b"
         self.ProcessVariantList(story, title)
-        story.append(Spacer(1,0.25*inch))
+        story.append(Spacer(1,0.5*inch))
 
         title = "Telaprevir"
         self.ProcessVariantList(story, title)
