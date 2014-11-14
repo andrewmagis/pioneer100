@@ -140,12 +140,43 @@ class QS(object):
         print R, P
 
         # Sort by the score column
-        x = np.sort(x, axis=-1, kind='quicksort', order=['Diff'])
+        x = np.sort(x, axis=-1, kind='quicksort', order=['Activity'])
 
         print x
 
         # Generate histogram of the score column
-        (probability, bins) = np.histogram(x['Score'], bins=5)
+        (probability, bins) = np.histogram(x['Activity'], bins=5)
+
+        print probability
+        print bins
+
+        print
+        print "Diff"
+
+        # Now calculate the average
+        start = bins[0]
+        count = 1
+        for end in bins[1:]:
+
+            count += 1
+
+            # Get the subset of indices for these values
+            if (count == len(bins)):
+                indices = (x['Activity'] >= start) & (x['Activity'] <= end)
+            else:
+                indices = (x['Activity'] >= start) & (x['Activity'] < end)
+
+            # Get the values of round1 for these indices
+            subset = x['Diff'][indices]
+            subind = x['Activity'][indices]
+
+            # Calculate the mean and stdev of these values
+            mean = np.nanmean(subset)
+            sd = np.nanstd(subset)
+            stderr = sd / math.sqrt(len(subset))
+
+            print mean, stderr
+            start = end
 
             #if (not mean_cals is None):
             #    print prt, gender, FIRST_FITBIT_DATE, SECOND_BLOOD_DRAW, mean_cals, values[0], values[1], diff, trait.score
