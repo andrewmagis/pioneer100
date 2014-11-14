@@ -130,11 +130,11 @@ class QS(object):
             diff = values[1] - values[0]
 
             mean_cals = self.GetActivityRange(prt, FIRST_FITBIT_DATE, SECOND_BLOOD_DRAW)
-            if (not mean_cals is None) and (mean_cals < 2000):
-                results.append((prt, gender, values[0], values[1], values[1]-values[0], mean_cals))
+            if (not mean_cals is None) and (mean_cals < 2000) and (trait.score > 0.0):
+                results.append((prt, gender, values[0], values[1], values[1]-values[0], trait.score, mean_cals))
 
       # Build numpy structured array of scores
-        x = np.array(results, dtype=[('Username', np.str, 10), ('Gender', np.str, 1), ('Round1', float), ('Round2', float), ('Diff', float), ('Activity', float)])
+        x = np.array(results, dtype=[('Username', np.str, 10), ('Gender', np.str, 1), ('Round1', float), ('Round2', float), ('Diff', float), ('Score', float), ('Activity', float)])
 
         # Start by calculating the correlation
         (R, P) = scipy.stats.pearsonr(x['Diff'], x['Activity'])
