@@ -181,7 +181,7 @@ class PharmacogeneticsReport(object):
             variant = trait.variants[key]
 
             if (not header):
-                story.append(Paragraph(variant.note_generic.encode('utf8'), h2));
+                story.append(Paragraph(repr(variant.note_generic.decode('unicode-escape')), h2));
                 story.append(Spacer(1, 5));
                 story.append(MCLine(7.3*inch))
                 header = True
