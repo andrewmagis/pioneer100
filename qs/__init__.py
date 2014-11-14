@@ -146,7 +146,7 @@ class QS(object):
         print x
 
         # Generate histogram of the score column
-        (probability, bins) = np.histogram(x['Activity'], bins=4)
+        (probability, bins) = np.histogram(x['Activity'], bins=6)
 
         print probability
         print bins
