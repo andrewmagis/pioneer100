@@ -115,15 +115,22 @@ class QS(object):
             if (trait is None):
                 continue
 
-            (dates, values, range) = participants.participants[prt].GetMeasurement('AGE')
-            (dates1, values1, range1) = participants.participants[prt].GetMeasurement(measurement)
+            #(dates, values, range) = participants.participants[prt].GetMeasurement('AGE')
+            (dates, values, range) = participants.participants[prt].GetMeasurement(measurement)
 
-                #print start_range, end_range, start_weight, end_weight, gender, time_elapsed
+            if (values.size < 2):
+                continue
+            if (np.isnan(values[0])):
+                continue
+            if (np.isnan(values[1])):
+                continue
+
+            diff = values[1] - values[0]
 
             mean_cals = self.GetActivityRange(prt, FIRST_FITBIT_DATE, SECOND_BLOOD_DRAW)
 
             if (not mean_cals is None):
-                print prt, gender, values, FIRST_FITBIT_DATE, SECOND_BLOOD_DRAW, mean_cals, values1, trait.score
+                print prt, gender, values, FIRST_FITBIT_DATE, SECOND_BLOOD_DRAW, mean_cals, values[0], values[1], diff, trait.score
 
     def AnalyzeQS(self, participants, title, pvalue=1):
 
