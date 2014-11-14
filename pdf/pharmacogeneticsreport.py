@@ -433,6 +433,17 @@ class PharmacogeneticsReport(object):
 
         self.Legend(story)
 
+        story.append(Paragraph("<font color='#db881e'><strong>Definitions</strong></font>", h0))
+        story.append(Spacer(1, 0.5*inch))
+
+        blurb = "<font color='#db881e'><strong>Gene</strong></font> - this is a standardized symbol geneticists use to identify a gene.<br/> \
+        <font color='#db881e'><strong>Identifer</strong></font> - this is a code that uniquely identifies to a geneticist a specific location in the genome; it refers to a database of known genomic variants, also known as Single Nucleotide Polymorphisms (SNPs).<br/> \
+        <font color='#db881e'><strong>Effect Allele</strong></font> - an allele is a specific version (variant) that has been observed in a given location in the genome; the effect allele is the version that has been associated with modified effects.<br/> \
+        <font color='#db881e'><strong>Your Genotype</strong></font> - this field shows you which alleles you have at this location in the genome. If your genotype contains one or two copies of the 'effect allele', it suggests you may have altered function in this gene.<br/>"
+
+        story.append(Spacer(1, 0.25*inch))
+        story.append(Paragraph(blurb, h4))
+
         story.append(PageBreak())
         story.append(Spacer(1, 0.5*inch))
 
