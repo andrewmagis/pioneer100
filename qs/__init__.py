@@ -130,7 +130,7 @@ class QS(object):
 
             mean_cals = self.GetActivityRange(prt, FIRST_FITBIT_DATE, SECOND_BLOOD_DRAW)
             if (not mean_cals is None):
-                results.append((username, gender, values[0], values[1], mean_cals))
+                results.append((prt, gender, values[0], values[1], mean_cals))
 
       # Build numpy structured array of scores
         x = np.array(results, dtype=[('Username', np.str, 10), ('Gender', np.str, 1), ('Round1', float), ('Round2', float), ('Activity', float)])
