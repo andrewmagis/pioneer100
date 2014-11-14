@@ -106,6 +106,7 @@ class QS(object):
 
         SECOND_BLOOD_DRAW=datetime(2014, 9, 30)
 
+        results = []
         for prt in participants.participants.keys():
 
             gender = participants.participants[prt].gender
@@ -128,9 +129,26 @@ class QS(object):
             diff = values[1] - values[0]
 
             mean_cals = self.GetActivityRange(prt, FIRST_FITBIT_DATE, SECOND_BLOOD_DRAW)
-
             if (not mean_cals is None):
-                print prt, gender, FIRST_FITBIT_DATE, SECOND_BLOOD_DRAW, mean_cals, values[0], values[1], diff, trait.score
+                results.append((username, gender, values[0], values[1], mean_cals))
+
+      # Build numpy structured array of scores
+        x = np.array(results, dtype=[('Username', np.str, 10), ('Gender', np.str, 1), ('Round1', float), ('Round2', float), ('Activity', float)])
+
+        # Start by calculating the correlation
+        (R, P) = stats.pearsonr(x['Round1'], x['Score'])
+        print R, P
+
+        # Sort by the score column
+        x = np.sort(x, axis=-1, kind='quicksort', order=['Score'])
+
+        print x
+
+        # Generate histogram of the score column
+        (probability, bins) = np.histogram(x['Score'], bins=5)
+
+            #if (not mean_cals is None):
+            #    print prt, gender, FIRST_FITBIT_DATE, SECOND_BLOOD_DRAW, mean_cals, values[0], values[1], diff, trait.score
 
     def AnalyzeQS(self, participants, title, pvalue=1):
 
