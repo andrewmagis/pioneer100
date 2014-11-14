@@ -5,6 +5,7 @@ from errors import MyError
 
 import numpy as np
 import scipy
+import math
 
 OWNER_KEY = '0fcad4c11b0944e790b9043effd5ef41'
 OWNER_SECRET = 'b90405040b274d93b4c504052489e1a9'
