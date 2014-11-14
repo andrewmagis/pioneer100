@@ -48,6 +48,7 @@ class QS(object):
         if (len(active_cals)>(days-3)):
 
             active_cals = np.array(active_cals)
+            print active_cals
             mean_cals = scipy.nanmean(active_cals)
             return mean_cals
 
