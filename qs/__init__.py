@@ -102,6 +102,29 @@ class QS(object):
 
         return (start_date, end_date, start_weight, end_weight)
 
+    def AnalyzeQSMeasurement(self, participants, title, measurement, pvalue=1):
+
+        FIRST_BLOOD_DRAW=datetime.datetime(2014, 5, 20)
+        SECOND_BLOOD_DRAW=datetime.datetime(2014, 9, 30)
+
+        for prt in participants.participants.keys():
+
+            gender = participants.participants[prt].gender
+
+            trait = participants.participants[prt].LoadTrait(title, pvalue, True)
+
+            if (trait is None):
+                continue
+
+            (dates, values, range) = participants.participants[prt].GetMeasurement('AGE')
+            (dates1, values1, range1) = participants.participants[prt].GetMeasurement(measurement)
+
+                #print start_range, end_range, start_weight, end_weight, gender, time_elapsed
+
+            mean_cals = self.GetActivityRange(prt, FIRST_BLOOD_DRAW, SECOND_BLOOD_DRAW)
+
+            if (not mean_cals is None):
+                print prt, gender, values, start_range, end_range, start_weight, end_weight, end_weight-start_weight, mean_cals, trait.score
 
     def AnalyzeQS(self, participants, title, pvalue=1):
 
@@ -115,6 +138,7 @@ class QS(object):
                 continue
 
             (dates, values, range) = participants.participants[prt].GetMeasurement('AGE')
+            #(dates, values, range) = participants.participants[prt].GetMeasurement('GLUCOSE')
 
             #(start_range, end_range, start_weight, end_weight) = self.GetWeightLossIndividuals(prt)
             (start_range, end_range, start_weight, end_weight) = self.GetHeartRateIndividuals(prt)
