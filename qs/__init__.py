@@ -130,7 +130,7 @@ class QS(object):
             diff = values[1] - values[0]
 
             mean_cals = self.GetActivityRange(prt, FIRST_FITBIT_DATE, SECOND_BLOOD_DRAW)
-            if (not mean_cals is None):
+            if (not mean_cals is None) and (mean_cals < 2000):
                 results.append((prt, gender, values[0], values[1], values[1]-values[0], mean_cals))
 
       # Build numpy structured array of scores
@@ -146,7 +146,7 @@ class QS(object):
         print x
 
         # Generate histogram of the score column
-        (probability, bins) = np.histogram(x['Activity'], bins=6)
+        (probability, bins) = np.histogram(x['Activity'], bins=5)
 
         print probability
         print bins
