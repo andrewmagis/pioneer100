@@ -436,9 +436,9 @@ class PharmacogeneticsReport(object):
         story.append(Spacer(1,0.25*inch))
 
         story.append(Paragraph("<font color='#db881e'><strong>Definitions</strong></font>", h0))
-        story.append(Spacer(1, 5));
+        story.append(Spacer(1, 0.1*inch));
         story.append(MCLine(7.3*inch))
-        story.append(Spacer(1,0.25*inch))
+        story.append(Spacer(1,0.1*inch))
 
         blurb = "<font color='#db881e'><strong>Gene</strong></font> - this is a standardized symbol geneticists use to identify a gene.<br/><br/> \
         <font color='#db881e'><strong>Identifer</strong></font> - this is a code that uniquely identifies to a geneticist a specific location in the genome; it refers to a database of known genomic variants, also known as Single Nucleotide Polymorphisms (SNPs).<br/><br/> \
