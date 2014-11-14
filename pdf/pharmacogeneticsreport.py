@@ -436,7 +436,7 @@ class PharmacogeneticsReport(object):
         story.append(Spacer(1,0.25*inch))
 
         story.append(Paragraph("<font color='#db881e'><strong>Definitions</strong></font>", h0))
-        story.append(Spacer(1, 0.1*inch));
+        story.append(Spacer(1, 0.25*inch));
         story.append(MCLine(7.3*inch))
         story.append(Spacer(1,0.1*inch))
 
@@ -445,7 +445,6 @@ class PharmacogeneticsReport(object):
         <font color='#db881e'><strong>Effect Allele</strong></font> - an allele is a specific version (variant) that has been observed in a given location in the genome; the effect allele is the version that has been associated with modified effects.<br/><br/> \
         <font color='#db881e'><strong>Your Genotype</strong></font> - this field shows you which alleles you have at this location in the genome. If your genotype contains one or two copies of the 'effect allele', it suggests you may have altered function in this gene."
 
-        story.append(Spacer(1, 0.25*inch))
         story.append(Paragraph(blurb, h4))
 
         story.append(PageBreak())
