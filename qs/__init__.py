@@ -104,8 +104,7 @@ class QS(object):
 
     def AnalyzeQSMeasurement(self, participants, title, measurement, pvalue=1):
 
-        FIRST_BLOOD_DRAW=datetime.datetime(2014, 5, 20)
-        SECOND_BLOOD_DRAW=datetime.datetime(2014, 9, 30)
+        SECOND_BLOOD_DRAW=datetime(2014, 9, 30)
 
         for prt in participants.participants.keys():
 
@@ -121,7 +120,7 @@ class QS(object):
 
                 #print start_range, end_range, start_weight, end_weight, gender, time_elapsed
 
-            mean_cals = self.GetActivityRange(prt, FIRST_BLOOD_DRAW, SECOND_BLOOD_DRAW)
+            mean_cals = self.GetActivityRange(prt, FIRST_FITBIT_DATE, SECOND_BLOOD_DRAW)
 
             if (not mean_cals is None):
                 print prt, gender, values, start_range, end_range, start_weight, end_weight, end_weight-start_weight, mean_cals, trait.score
