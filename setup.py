@@ -17,13 +17,12 @@ static = os.path.join('100i','utils','static.py')
 execfile(static)
 
 setup(
-name='GPUDirac',
+name='100i',
 version=VERSION,
 packages=find_packages(),
 author='Andrew Magis',
 author_email='Andrew.Magis@systemsbiology.org',
-url="https://github.com/JohnCEarls/GPUDirac",
-description="A dirac server for gpus.",
+url="/JohnCEarls/GPUDirac",
 classifiers=[
     'Environment :: Console',
     'Development Status :: 4 - Beta',
