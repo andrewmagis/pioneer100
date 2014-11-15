@@ -9,7 +9,7 @@ if sys.version_info < (2, 7):
 from setuptools import setup, find_packages
 
 console_scripts = []
-extra = dict(install_requires=['reportlab', 'fitbit','tabix'],
+extra = dict(install_requires=['reportlab', 'fitbit','pytabix'],
             entry_points=dict(console_scripts=console_scripts), 
              zip_safe=False)
 VERSION = '0.0.0'#actually set in utils.static
