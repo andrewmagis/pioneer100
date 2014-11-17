@@ -37,7 +37,8 @@ def main(parser):
     print "Measurement: %s"%(parser.measurement)
 
     # Loop over all the participants, and get the R1 and R2 metabolite + genetic score
-    x = participants.MetaboliteTraitCorrelation('Homocysteine levels', 'HOMOCYSTEINE_CARDIOVASCULAR_QUEST', 1e-50)
+    #x = participants.MetaboliteTraitCorrelation('Homocysteine levels', 'HOMOCYSTEINE_CARDIOVASCULAR_QUEST', 1e-50)
+    x = participants.MetaboliteTraitCorrelation('COMT', 'HOMOCYSTEINE_CARDIOVASCULAR_QUEST', 1)
     data = []
 
     # Now we get the supplementation level for each of these people
