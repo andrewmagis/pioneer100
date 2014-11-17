@@ -61,7 +61,7 @@ def main(parser):
 
         data.append((prt, gender, round1, round2, score, anxiety, depression, stress))
 
-    x = np.array(data, dtype=[('Username', np.str, 10), ('Gender', np.str, 1), ('Round1', float), ('Round2', float), ('Score', float), ('Anxiety', float), ('Depression', float), ('Stress', 'float')])
+    x = np.array(data, dtype=[('Username', np.str, 10), ('Gender', np.str, 1), ('Round1', float), ('Round2', float), ('Score', float), ('Anxiety', float), ('Depression', float), ('Stress', float)])
 
     for (username, gender, round1, round2, score, anxiety, depression, stress) in x:
         print username, gender, round1, round2, score, anxiety, depression, stress
