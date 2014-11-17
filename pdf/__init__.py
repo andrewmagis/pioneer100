@@ -293,7 +293,8 @@ class TransitionsReport(object):
             self.buildme = False
             return None
 
-        if (np.isnan(values[2])):
+        if (header == "TOTAL_CHOLESTEROL") and (np.isnan(values[2])):
+            self.buildme = False
             return None
 
         drawing.add(String(400, 500, title), name="title")
