@@ -42,7 +42,7 @@ def main(parser):
     data = []
 
     # Now we get the supplementation level for each of these people
-    for (prt, round1, round2, round3, score) in x:
+    for username, gender, round1, round2, round3, score in x:
 
         # Get the compliance for vitamin D and supplementation level
         gender = participants.participants[prt].gender
