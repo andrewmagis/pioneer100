@@ -371,7 +371,7 @@ class TransitionsReport(object):
         drawing.pattern2.textAnchor = 'middle';
         drawing.pattern2.fontSize = 32;
 
-        if (values[1] == range[0]):
+        if (values[2] == range[0]):
             drawing.pattern2.fillColor = colors.green;
         else:
             drawing.pattern2.fillColor = colors.red;
