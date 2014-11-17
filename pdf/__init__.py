@@ -182,7 +182,6 @@ class TransitionsReport(object):
             return None
 
         if (np.isnan(values[2])):
-            self.buildme = False
             return None
 
         """
@@ -295,7 +294,6 @@ class TransitionsReport(object):
             return None
 
         if (np.isnan(values[2])):
-            self.buildme = False
             return None
 
         drawing.add(String(400, 500, title), name="title")
