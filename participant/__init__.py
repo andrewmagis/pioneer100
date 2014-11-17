@@ -210,12 +210,17 @@ class ParticipantDB(object):
             start = end
 
 
+        for username, gender, round1, round2, round3, score in x:
+            print username, gender, round1, round2, round3, score
+
+        """
         print x['Username']
         print x['Gender']
         print x['Round1']
         print x['Round2']
         print x['Round3']
         print x['Score']
+        """
 
         # Return the array
         return x
