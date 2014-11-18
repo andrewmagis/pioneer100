@@ -71,6 +71,21 @@ class Metabolomics(object):
             return None
         return new_value
 
+    def CreateMetabolomicsTable(self, filename):
+
+        command = "";
+        command += "CREATE TABLE metabolomics (ENTRY INT PRIMARY KEY AUTO_INCREMENT, USERNAME VARCHAR(16) NOT NULL, DATE DATETIME, ROUND INT NOT NULL"
+
+        cursor = self.database.GetCursor();
+        result = cursor.execute('SELECT COMP_ID from metabolites')
+        for (COMP_ID) in result:
+            command += ", %s FLOAT"%(COMP_ID)
+        command += ")"
+
+        print command
+        cursor.execute(command)
+        database.Commit()
+
     def CreateMetabolitesTable(self, filename):
 
         command = ""
