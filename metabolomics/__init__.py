@@ -74,15 +74,20 @@ class Metabolomics(object):
     def LoadMetabolomicsData(self, filename):
 
         data = {}
+        headers = []
 
         with open(filename, 'rU') as f:
             for line in f:
 
                 tokens = line.split('\t')
                 if (tokens[12]=='CLIENT IDENTIFIER'):
-                    headers = line.strip().split('\t')[13:]
+                    headers = line.strip().split('\t')
                     headers = [x.split('-')[0] for x in headers]
                     print headers
+
+                elif (tokens[12]=='DRAW NO'):
+                    rounds = line.strip().split('\t')
+                    print rounds
 
                 """
                 # Zip the data up
