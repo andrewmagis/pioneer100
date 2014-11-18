@@ -7,62 +7,48 @@ import numpy as np
 import scipy
 import math
 
-FIRST_FITBIT_DATE=datetime(2014, 04, 20);
-
 class Metabolomics(object):
 
     def __init__(self, database):
         self.database = database
 
-    def InsertData(self, table, username, date, data):
-
-        # Build the insertion statement
-        command = "INSERT INTO " + table + " (USERNAME,DATE";
-        for key in data.keys():
-            command += ','+key.upper();
-        command += ") VALUES (%s, %s";
-
-        # Build tuple for parameterization
-        tdata = (username, date)
-
-        for key in data.keys():
-            command += ', %s';
-            tdata += (data[key],);
-
-        command += ")";
+    def GetData(self, username):
 
         # Get the cursor
-        cursor = self.database.GetCursor();
-        cursor.execute(command, tdata)
-        self.database.Commit()
+        cursor = self.db.cursor();
 
-    def LoadWeightData(self, filename, participants):
+        cursor.execute("SELECT * FROM metabolomics WHERE username = (%s) ORDER BY ROUND", (username,))
+        result = None
+        columns = [d[0] for d in cursor.description]
 
-        with open(filename, 'Ur') as f:
-            for line in f:
+        # Concatenate all the tuples together
+        result = []
+        for row in cursor:
+            result.append(row)
 
-                tokens = line.split('\t')
-                if (len(tokens)<10):
-                    continue
+        if (len(result)>0):
+            result = zip(*result)
 
-                try:
+        if (result is None):
+            return {}
 
-                    username = tokens[6].strip()
-                    if (not username in participants.participants):
-                        continue
+        if (len(result)==0):
+            return {}
 
-                    weight = float(tokens[7].strip())
-                    date = tokens[8].strip() + ' ' + tokens[9].strip()
-                    dt = datetime.strptime(date, "%m/%d/%y %I:%M %p")
+        # Now convert each value into a numpy array
+        final = {}
+        for key, values in zip(columns, result):
+            if (key == "USERNAME"):
+                continue;
+            if (key == "ROUND"):
+                final[key] = np.array(values, dtype=np.object)
+                continue;
 
-                    data = {'WEIGHT': weight}
-
-                    # Check to see if this date is after the last date in the database
-                    if (self.CheckDate('weight', username, dt)):
-                        self.InsertData('weight', username, dt, data);
-
-                except:
-                    pass
+            try:
+                final[key] = np.array(values, dtype=np.float)
+            except:
+                final[key] = np.array(values, dtype=np.object)
+        return final
 
     def Clean(self, value):
 
@@ -149,7 +135,6 @@ class Metabolomics(object):
                 cursor = self.database.GetCursor();
                 cursor.execute(command, tuple(tdata))
                 self.database.Commit()
-
 
     def CreateMetabolomicsTable(self, filename):
 
