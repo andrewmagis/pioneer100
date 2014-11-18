@@ -89,7 +89,7 @@ class Metabolomics(object):
     def CreateMetabolitesTable(self, filename):
 
         command = ""
-        command += "CREATE TABLE metabolites (COMP_ID INT PRIMARY KEY, BIOCHEMICAL VARCHAR(256), SUPER_PATHWAY VARCHAR(256), " \
+        command += "CREATE TABLE metabolites (COMP_ID VARCHAR(16) PRIMARY KEY, BIOCHEMICAL VARCHAR(256), SUPER_PATHWAY VARCHAR(256), " \
                    "SUB_PATHWAY VARCHAR(256), PLATFORM  VARCHAR(256), CHEMICAL_ID INT, RI FLOAT, MASS FLOAT, CAS VARCHAR(256)," \
                    "PUBCHEM INT, KEGG VARCHAR(256), HMDB VARCHAR(256))"
 
