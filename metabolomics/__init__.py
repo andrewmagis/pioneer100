@@ -15,7 +15,7 @@ class Metabolomics(object):
     def GetData(self, username):
 
         # Get the cursor
-        cursor = self.db.cursor();
+        cursor = self.database.GetCursor();
 
         cursor.execute("SELECT * FROM metabolomics WHERE username = (%s) ORDER BY ROUND", (username,))
         result = None
