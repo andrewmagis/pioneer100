@@ -81,7 +81,7 @@ class Metabolomics(object):
                 tokens = line.split('\t')
                 if (tokens[12]=='CLIENT IDENTIFIER'):
                     usernames = line.strip().split('\t')[1:]
-                    usernames = [x.split('-')[0] for x in headers]
+                    usernames = [x.split('-')[0] for x in usernames]
 
                 elif (tokens[12]=='DRAW NO'):
                     rounds = line.strip().split('\t')[1:]
