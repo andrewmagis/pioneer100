@@ -89,6 +89,10 @@ class Metabolomics(object):
                     rounds = line.strip().split('\t')[1:]
                     print rounds
 
+                elif (tokens[12]=='COLLECTION DATE'):
+                    dates = line.strip().split('\t')[1:]
+                    print dates
+
                 """
                 # Zip the data up
                 data = dict(zip(keys, tokens[1:13]))
