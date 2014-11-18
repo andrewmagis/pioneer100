@@ -91,7 +91,16 @@ class Metabolomics(object):
 
                 elif (tokens[12]=='COLLECTION DATE'):
                     dates = line.strip().split('\t')[1:]
-                    print dates
+
+                    dates_final = []
+                    for date in dates:
+                        try:
+                            d = datetime.datetime.strptime(date, "%m/%d/%y")
+                        except:
+                            d = datetime.datetime.strptime(date, "%m-%d-%y")
+                        dates_final.append(d)
+
+                    print dates_final
 
                 """
                 # Zip the data up
