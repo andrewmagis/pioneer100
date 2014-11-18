@@ -89,16 +89,16 @@ class Metabolomics(object):
                 data = dict(zip(keys, tokens[1:12]))
 
                 # Build the insertion statement
-                command = "INSERT INTO metabolites ("
-                for key in data.keys():
-                    command += key.upper() + ','
-                command += ") VALUES (";
+                command = "INSERT INTO metabolites (COMP_ID"
+                for key in data.keys()[1:]:
+                    command += ',' + key.upper()
+                command += ") VALUES (%s";
 
                 # Build tuple for parameterization
                 tdata = []
 
-                for key in data.keys():
-                    command += '%s,';
+                for key in data.keys()[1:]:
+                    command += ',' + '%s';
                     tdata += (data[key],);
 
                 command += ")";
