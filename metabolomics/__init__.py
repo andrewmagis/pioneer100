@@ -95,9 +95,9 @@ class Metabolomics(object):
                     dates_final = []
                     for date in dates:
                         try:
-                            d = datetime.datetime.strptime(date, "%m/%d/%y")
+                            d = datetime.strptime(date, "%m/%d/%y")
                         except:
-                            d = datetime.datetime.strptime(date, "%m-%d-%y")
+                            d = datetime.strptime(date, "%m-%d-%y")
                         dates_final.append(d)
 
                     print dates_final
