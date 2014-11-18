@@ -122,10 +122,6 @@ class Metabolomics(object):
                         if (not round in date_mapping[username]):
                             date_mapping[username][round] = date
 
-        print data['2918006']
-        print date_mapping['2918006']
-
-        return
         # Now zip up the data
         for username in data:
 
