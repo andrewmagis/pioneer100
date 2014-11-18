@@ -7,7 +7,7 @@ import argparse
 from database import Database
 from participant import ParticipantDB
 from qs import QS
-from metabolomics import Metobolomics
+from metabolomics import Metabolomics
 
 # Import DBSnp class
 from dbsnp import DBSnp
