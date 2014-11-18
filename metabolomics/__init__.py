@@ -84,7 +84,7 @@ class Metabolomics(object):
 
         print command
         cursor.execute(command)
-        database.Commit()
+        self.database.Commit()
 
     def CreateMetabolitesTable(self, filename):
 
