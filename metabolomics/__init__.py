@@ -9,7 +9,7 @@ import math
 
 FIRST_FITBIT_DATE=datetime(2014, 04, 20);
 
-class Metobolomics(object):
+class Metabolomics(object):
 
     def __init__(self, database):
         self.database = database
