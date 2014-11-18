@@ -79,7 +79,7 @@ class Metabolomics(object):
         cursor = self.database.GetCursor();
         result = cursor.execute("SELECT COMP_ID from metabolites")
         for (comp_id) in cursor:
-            command += ", %s FLOAT"%(comp_id)
+            command += ", %s FLOAT"%('M'+comp_id)
         command += ")"
 
         print command
@@ -93,7 +93,7 @@ class Metabolomics(object):
                    "SUB_PATHWAY VARCHAR(256), PLATFORM  VARCHAR(256), CHEMICAL_ID INT, RI FLOAT, MASS FLOAT, CAS VARCHAR(256)," \
                    "PUBCHEM INT, KEGG VARCHAR(256), HMDB VARCHAR(256))"
 
-        #self.database.Command(command)
+        self.database.Command(command)
 
         keys = ['BIOCHEMICAL', 'SUPER_PATHWAY', 'SUB_PATHWAY', 'COMP_ID', 'PLATFORM', 'CHEMICAL_ID', 'RI', 'MASS', 'CAS', 'PUBCHEM', 'KEGG', 'HMDB']
 
@@ -117,7 +117,7 @@ class Metabolomics(object):
                 command += ") VALUES (%s";
 
                 # Build tuple for parameterization
-                tdata = [data['COMP_ID']]
+                tdata = ['M'+data['COMP_ID']]
 
                 for key in data.keys()[1:]:
                     command += ',' + '%s';
@@ -129,9 +129,3 @@ class Metabolomics(object):
                 cursor = self.database.GetCursor();
                 cursor.execute(command, tuple(tdata))
                 self.database.Commit()
-
-        #command = ""
-        #command += "CREATE TABLE metabolomics (ENTRY INT PRIMARY KEY AUTO_INCREMENT, USERNAME VARCHAR(16) NOT NULL, DATE DATETIME NOT NULL, \
-
-        # First create columns
-        #self.database.Command(command)
