@@ -29,7 +29,8 @@ def main(parser):
 
     if (not parser.filename is None):
         #mets.CreateMetabolitesTable(parser.filename)
-        mets.CreateMetabolomicsTable(parser.filename)
+        #mets.CreateMetabolomicsTable(parser.filename)
+        mets.LoadMetabolomicsData(parser.filename)
 
     return
 
