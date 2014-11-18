@@ -28,7 +28,9 @@ def main(parser):
     mets = Metabolomics(database)
 
     if (not parser.filename is None):
-        mets.Create
+        mets.CreateTable()
+
+    return
 
     # Load the DBSnp database
     dbsnp = DBSnp(database)
