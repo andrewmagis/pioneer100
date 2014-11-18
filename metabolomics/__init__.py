@@ -79,8 +79,7 @@ class Metabolomics(object):
         cursor = self.database.GetCursor();
         result = cursor.execute("SELECT COMP_ID from metabolites")
         for comp_id in cursor:
-            print comp_id
-            command += ", %s FLOAT"%('M'+comp_id)
+            command += ", %s FLOAT"%(comp_id)
         command += ")"
 
         print command
