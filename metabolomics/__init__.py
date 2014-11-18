@@ -95,7 +95,7 @@ class Metabolomics(object):
                 command += ") VALUES (%s";
 
                 # Build tuple for parameterization
-                tdata = []
+                tdata = (data['COMP_ID'])
 
                 for key in data.keys()[1:]:
                     command += ',' + '%s';
@@ -107,7 +107,7 @@ class Metabolomics(object):
 
                 # Get the cursor
                 cursor = self.database.GetCursor();
-                cursor.execute(command, tuple(tdata))
+                cursor.execute(command, tdata)
                 self.database.Commit()
 
         #command = ""
