@@ -88,17 +88,14 @@ class Metabolomics(object):
                 # Zip the data up
                 data = dict(zip(keys, tokens[1:12]))
 
-                print data
-
-                """
                 # Build the insertion statement
-                command = "INSERT INTO " + table + " (COMP_ID, BIOCHEMICAL, SUPER_PATHWAY, SUB_PATHWAY, PLATFORM, CHEMICAL_ID, RI, MASS, CAS, PUBCHEM, KEGG, HMDB""
+                command = "INSERT INTO metabolites ("
                 for key in data.keys():
                     command += ','+key.upper();
-                command += ") VALUES (%s, %s";
+                command += ") VALUES (";
 
                 # Build tuple for parameterization
-                tdata = (username, date)
+                tdata = []
 
                 for key in data.keys():
                     command += ', %s';
@@ -108,10 +105,8 @@ class Metabolomics(object):
 
                 # Get the cursor
                 cursor = self.database.GetCursor();
-                cursor.execute(command, tdata)
+                cursor.execute(command, tuple(tdata))
                 self.database.Commit()
-                """
-
 
         #command = ""
         #command += "CREATE TABLE metabolomics (ENTRY INT PRIMARY KEY AUTO_INCREMENT, USERNAME VARCHAR(16) NOT NULL, DATE DATETIME NOT NULL, \
