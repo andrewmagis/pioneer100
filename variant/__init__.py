@@ -201,8 +201,8 @@ class Variant(object):
 
                 # None of my alleles are in the alleles for this variant
                 else:
-                    #self.effect = 1;
-                    raise MyError('Warning, unknown alleles for rsid %s'%(self.rsid))
+                    self.effect = 1;
+                    #raise MyError('Warning, unknown alleles for rsid %s'%(self.rsid))
 
 
         # If this is an odds ratio, return the log
