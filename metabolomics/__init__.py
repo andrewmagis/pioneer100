@@ -91,14 +91,14 @@ class Metabolomics(object):
                 # Build the insertion statement
                 command = "INSERT INTO metabolites ("
                 for key in data.keys():
-                    command += ','+key.upper();
+                    command += key.upper() + ','
                 command += ") VALUES (";
 
                 # Build tuple for parameterization
                 tdata = []
 
                 for key in data.keys():
-                    command += ', %s';
+                    command += '%s,';
                     tdata += (data[key],);
 
                 command += ")";
