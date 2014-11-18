@@ -73,7 +73,7 @@ class Metabolomics(object):
 
         #self.database.Command(command)
 
-        keys = ['COMP_ID', 'BIOCHEMICAL', 'SUPER_PATHWAY', 'SUB_PATHWAY', 'PLATFORM', 'CHEMICAL_ID', 'RI', 'MASS', 'CAS', 'PUBCHEM', 'KEGG', 'HMDB']
+        keys = ['BIOCHEMICAL', 'SUPER_PATHWAY', 'SUB_PATHWAY', 'COMP_ID', 'PLATFORM', 'CHEMICAL_ID', 'RI', 'MASS', 'CAS', 'PUBCHEM', 'KEGG', 'HMDB']
 
         with open(filename, 'rU') as f:
             for line in f:
