@@ -81,12 +81,12 @@ class Metabolomics(object):
 
                 tokens = line.split('\t')
                 if (tokens[12]=='CLIENT IDENTIFIER'):
-                    headers = line.strip().split('\t')
+                    headers = line.strip().split('\t')[1:]
                     headers = [x.split('-')[0] for x in headers]
                     print headers
 
                 elif (tokens[12]=='DRAW NO'):
-                    rounds = line.strip().split('\t')
+                    rounds = line.strip().split('\t')[1:]
                     print rounds
 
                 """
