@@ -103,6 +103,8 @@ class Metabolomics(object):
 
                 command += ")";
 
+                print command
+
                 # Get the cursor
                 cursor = self.database.GetCursor();
                 cursor.execute(command, tuple(tdata))
