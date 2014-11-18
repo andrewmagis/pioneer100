@@ -33,8 +33,7 @@ def main(parser):
         #mets.LoadMetabolomicsData(parser.filename)
         pass
 
-    result = mets.GetData('2682430')
-    print result
+    mets.GetCompile('2682430')
 
     return
 
