@@ -81,6 +81,7 @@ class Metabolomics(object):
                 tokens = line.split('\t')
                 if (tokens[12]=='CLIENT IDENTIFIER'):
                     headers = line.strip().split('\t')[13:]
+                    headers = [x.split('-')[0] for x in headers]
                     print headers
 
                 """
