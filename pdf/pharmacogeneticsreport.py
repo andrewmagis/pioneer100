@@ -390,8 +390,8 @@ class PharmacogeneticsReport(object):
         story.append(Paragraph(blurb, h4))
 
         blurb = "Although pharmacogenetics has much promise, it's still in its early stages. Millions of genetic variations exist, \
-        and identifying them could take many years. Research is under way, however, and pharmacogenetics may someday soon be part of \
-        routine medical care."
+        and identifying which of the variants affect your drug responses could take many years. Research is under way, however, and \
+        pharmacogenetics will someday soon be part of routine medical care."
 
         story.append(Spacer(1, 0.25*inch))
         story.append(Paragraph(blurb, h4))
