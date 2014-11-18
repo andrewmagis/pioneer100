@@ -105,7 +105,7 @@ class Metabolomics(object):
                     mdata = tokens[13:]
 
                     # Add this data to the dictionary by round
-                    for username, round, date, d in zip(usernames, rounds, dates, mdata):
+                    for username, round, date, d in zip(usernames, rounds, dates_final, mdata):
 
                         if (not username in data):
                             data[username] = {}
