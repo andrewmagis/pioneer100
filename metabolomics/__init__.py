@@ -74,15 +74,14 @@ class Metabolomics(object):
     def LoadMetabolomicsData(self, filename):
 
         data = {}
-        headers = []
 
         with open(filename, 'rU') as f:
             for line in f:
 
                 tokens = line.split('\t')
                 if (tokens[12]=='CLIENT IDENTIFIER'):
-                    headers = line.strip().split('\t')[1:]
-                    headers = [x.split('-')[0] for x in headers]
+                    usernames = line.strip().split('\t')[1:]
+                    usernames = [x.split('-')[0] for x in headers]
 
                 elif (tokens[12]=='DRAW NO'):
                     rounds = line.strip().split('\t')[1:]
@@ -99,7 +98,10 @@ class Metabolomics(object):
                         dates_final.append(d)
 
                 elif (len(tokens[0])>0) and (tokens[0] != "PATHWAY SORTORDER"):
-                    print tokens[0]
+
+                    key = 'M' + tokens[4]
+
+                    print key
 
 
                 """
