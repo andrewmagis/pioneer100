@@ -107,7 +107,7 @@ class Metabolomics(object):
                     for username, round, date, d in zip(usernames, rounds, dates, mdata):
 
                         if (not username in data):
-                            data[username] = []
+                            data[username] = {}
 
                         if (not round in data[username]):
                             data[username][round] = []
