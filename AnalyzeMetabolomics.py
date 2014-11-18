@@ -30,7 +30,11 @@ def main(parser):
     if (not parser.filename is None):
         #mets.CreateMetabolitesTable(parser.filename)
         #mets.CreateMetabolomicsTable(parser.filename)
-        mets.LoadMetabolomicsData(parser.filename)
+        #mets.LoadMetabolomicsData(parser.filename)
+        pass
+
+    result = mets.GetData('2682430')
+    print result
 
     return
 
