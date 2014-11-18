@@ -99,7 +99,7 @@ class Metabolomics(object):
 
                 for key in data.keys()[1:]:
                     command += ',' + '%s';
-                    tdata.append(data[key]);
+                    tdata.append(data[key].strip('"').strip("'"));
 
                 command += ")";
 
