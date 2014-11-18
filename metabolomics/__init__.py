@@ -145,13 +145,10 @@ class Metabolomics(object):
 
                 command += ")";
 
-                print command
-                return
-
                 # Get the cursor
-                #cursor = self.database.GetCursor();
-                #cursor.execute(command, tuple(tdata))
-                #self.database.Commit()
+                cursor = self.database.GetCursor();
+                cursor.execute(command, tuple(tdata))
+                self.database.Commit()
 
 
     def CreateMetabolomicsTable(self, filename):
