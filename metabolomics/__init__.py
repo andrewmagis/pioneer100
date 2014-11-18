@@ -12,6 +12,18 @@ class Metabolomics(object):
     def __init__(self, database):
         self.database = database
 
+    def Compile(self):
+
+        username = '2682430'
+        round = 1
+
+        # Make a really big matrix of round 1 and round 2 for all participants
+        cursor = self.database.GetCursor()
+        cursor.execute("SELECT * FROM metabolomics WHERE username = (%s) AND round = (%s)", (username,round,))
+
+        r1 = np.array([x for x in cursor])
+        print r1
+
     def GetData(self, username):
 
         # Get the cursor
