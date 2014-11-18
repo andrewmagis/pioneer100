@@ -86,7 +86,7 @@ class Metabolomics(object):
                     continue
 
                 # Zip the data up
-                data = dict(zip(keys, tokens[1:12]))
+                data = dict(zip(keys, tokens[1:13]))
 
                 # Build the insertion statement
                 command = "INSERT INTO metabolites (COMP_ID"
@@ -102,8 +102,6 @@ class Metabolomics(object):
                     tdata.append(data[key].strip('"').strip("'"));
 
                 command += ")";
-
-                print command
 
                 # Get the cursor
                 cursor = self.database.GetCursor();
