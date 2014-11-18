@@ -71,6 +71,43 @@ class Metabolomics(object):
             return None
         return new_value
 
+    def LoadMetabolomicsData(self, filename):
+
+        data = {}
+
+        with open(filename, 'rU') as f:
+            for line in f:
+
+                tokens = line.split('\t')
+                if (tokens[12]=='CLIENT IDENTIFIER'):
+                    headers = line.strip().split('\t')[13:]
+                    print headers
+
+                """
+                # Zip the data up
+                data = dict(zip(keys, tokens[1:13]))
+
+                # Build the insertion statement
+                command = "INSERT INTO metabolites (COMP_ID"
+                for key in data.keys()[1:]:
+                    command += ',' + key.upper()
+                command += ") VALUES (%s";
+
+                # Build tuple for parameterization
+                tdata = ['M'+data['COMP_ID']]
+
+                for key in data.keys()[1:]:
+                    command += ',' + '%s';
+                    tdata.append(self.Clean(data[key]));
+
+                command += ")";
+
+                # Get the cursor
+                cursor = self.database.GetCursor();
+                cursor.execute(command, tuple(tdata))
+                self.database.Commit()
+                """
+
     def CreateMetabolomicsTable(self, filename):
 
         command = "";
