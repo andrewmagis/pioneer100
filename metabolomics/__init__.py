@@ -64,6 +64,13 @@ class Metabolomics(object):
                 except:
                     pass
 
+    def Clean(self, value):
+
+        new_value = value.strip().strip("'").strip('"')
+        if (len(new_value) == 0):
+            return None
+        return new_value
+
     def CreateMetabolitesTable(self, filename):
 
         command = ""
@@ -99,7 +106,7 @@ class Metabolomics(object):
 
                 for key in data.keys()[1:]:
                     command += ',' + '%s';
-                    tdata.append(data[key].strip('"').strip("'"));
+                    tdata.append(self.Clean(data[key]));
 
                 command += ")";
 
