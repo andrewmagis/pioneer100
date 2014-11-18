@@ -116,7 +116,7 @@ class Metabolomics(object):
                         # Now append to the list
                         data[username][round].append(d)
 
-                        if (not username in dates_mapping):
+                        if (not username in date_mapping):
                             date_mapping[username] = {}
 
                         if (not round in date_mapping[username]):
