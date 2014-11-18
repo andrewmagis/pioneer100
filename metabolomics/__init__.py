@@ -83,11 +83,9 @@ class Metabolomics(object):
                 if (tokens[12]=='CLIENT IDENTIFIER'):
                     headers = line.strip().split('\t')[1:]
                     headers = [x.split('-')[0] for x in headers]
-                    print headers
 
                 elif (tokens[12]=='DRAW NO'):
                     rounds = line.strip().split('\t')[1:]
-                    print rounds
 
                 elif (tokens[12]=='COLLECTION DATE'):
                     dates = line.strip().split('\t')[1:]
@@ -100,7 +98,9 @@ class Metabolomics(object):
                             d = datetime.strptime(date, "%d-%m-%y")
                         dates_final.append(d)
 
-                    print dates_final
+                elif (len(tokens[0])>0) and (tokens[0] != "SUB PATHWAY"):
+                    print tokens[0]
+
 
                 """
                 # Zip the data up
