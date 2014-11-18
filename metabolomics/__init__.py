@@ -75,6 +75,7 @@ class Metabolomics(object):
 
         data = {}
         mets = []
+        date_mapping = {}
 
         with open(filename, 'rU') as f:
             for line in f:
@@ -115,7 +116,44 @@ class Metabolomics(object):
                         # Now append to the list
                         data[username][round].append(d)
 
-        print data['5900559']
+                        if (not username in dates_mapping):
+                            date_mapping[username] = {}
+
+                        if (not round in date_mapping[username]):
+                            date_mapping[username][round] = date
+
+        print data['2918006']
+        print date_mapping['2918006']
+
+        return
+        # Now zip up the data
+        for username in data:
+
+            for round in data[username]:
+
+                # Zip up the data with the metabolite names
+                current = dict(zip(mets, data[username][round]))
+
+                # Now build the insertion statement
+                command = "INSERT INTO metabolomics (USERNAME, DATE, ROUND"
+                for key in current.keys():
+                    command += ',' + key.upper()
+                command += ") VALUES (%s, %s, %s";
+
+                # Build tuple for parameterization
+                tdata = [username, round]
+
+                for key in data.keys()[1:]:
+                    command += ',' + '%s';
+                    tdata.append(self.Clean(data[key]));
+
+                command += ")";
+
+                # Get the cursor
+                cursor = self.database.GetCursor();
+                cursor.execute(command, tuple(tdata))
+                self.database.Commit()
+
 
         """
         # Zip the data up
