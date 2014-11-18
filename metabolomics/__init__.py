@@ -77,7 +77,11 @@ class Metabolomics(object):
         command += "CREATE TABLE metabolomics (ENTRY INT PRIMARY KEY AUTO_INCREMENT, USERNAME VARCHAR(16) NOT NULL, DATE DATETIME, ROUND INT NOT NULL"
 
         cursor = self.database.GetCursor();
-        result = cursor.execute('SELECT COMP_ID, BIOCHEMICAL from metabolites')
+        result = cursor.execute('SELECT * from metabolites')
+        for row in result:
+            print row
+
+        return
 
         for (comp_id, biochem) in result:
             command += ", %s FLOAT"%(comp_id)
