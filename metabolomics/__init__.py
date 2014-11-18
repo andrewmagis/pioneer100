@@ -141,44 +141,22 @@ class Metabolomics(object):
                 command += ") VALUES (%s, %s, %s";
 
                 # Build tuple for parameterization
-                tdata = [username, round]
+                tdata = [username, date_mapping[username][round], round]
 
-                for key in data.keys()[1:]:
+                for key in current.keys():
                     command += ',' + '%s';
-                    tdata.append(self.Clean(data[key]));
+                    tdata.append(self.Clean(current[key]));
 
                 command += ")";
 
+                print command
+                return
+
                 # Get the cursor
-                cursor = self.database.GetCursor();
-                cursor.execute(command, tuple(tdata))
-                self.database.Commit()
+                #cursor = self.database.GetCursor();
+                #cursor.execute(command, tuple(tdata))
+                #self.database.Commit()
 
-
-        """
-        # Zip the data up
-        data = dict(zip(keys, tokens[1:13]))
-
-        # Build the insertion statement
-        command = "INSERT INTO metabolites (COMP_ID"
-        for key in data.keys()[1:]:
-            command += ',' + key.upper()
-        command += ") VALUES (%s";
-
-        # Build tuple for parameterization
-        tdata = ['M'+data['COMP_ID']]
-
-        for key in data.keys()[1:]:
-            command += ',' + '%s';
-            tdata.append(self.Clean(data[key]));
-
-        command += ")";
-
-        # Get the cursor
-        cursor = self.database.GetCursor();
-        cursor.execute(command, tuple(tdata))
-        self.database.Commit()
-        """
 
     def CreateMetabolomicsTable(self, filename):
 
