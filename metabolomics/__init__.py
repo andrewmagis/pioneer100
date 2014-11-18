@@ -98,7 +98,7 @@ class Metabolomics(object):
                             d = datetime.strptime(date, "%d-%m-%y")
                         dates_final.append(d)
 
-                elif (len(tokens[0])>0) and (tokens[0] != "SUB PATHWAY"):
+                elif (len(tokens[0])>0) and (tokens[0] != "PATHWAY SORTORDER"):
                     print tokens[0]
 
 
