@@ -74,6 +74,7 @@ class Metabolomics(object):
     def LoadMetabolomicsData(self, filename):
 
         data = {}
+        mets = []
 
         with open(filename, 'rU') as f:
             for line in f:
@@ -99,35 +100,47 @@ class Metabolomics(object):
 
                 elif (len(tokens[0])>0) and (tokens[0] != "PATHWAY SORTORDER"):
 
-                    key = 'M' + tokens[4]
+                    mets.append('M' + tokens[4])
+                    mdata = tokens[13:]
 
-                    print key
+                    # Add this data to the dictionary by round
+                    for username, round, date, d in zip(usernames, rounds, dates, mdata):
 
+                        if (not username in data):
+                            data[username] = []
 
-                """
-                # Zip the data up
-                data = dict(zip(keys, tokens[1:13]))
+                        if (not round in data[username]):
+                            data[username][round] = []
 
-                # Build the insertion statement
-                command = "INSERT INTO metabolites (COMP_ID"
-                for key in data.keys()[1:]:
-                    command += ',' + key.upper()
-                command += ") VALUES (%s";
+                        # Now append to the list
+                        data[username][round].append(d)
 
-                # Build tuple for parameterization
-                tdata = ['M'+data['COMP_ID']]
+        print data['5900559']
 
-                for key in data.keys()[1:]:
-                    command += ',' + '%s';
-                    tdata.append(self.Clean(data[key]));
+        """
+        # Zip the data up
+        data = dict(zip(keys, tokens[1:13]))
 
-                command += ")";
+        # Build the insertion statement
+        command = "INSERT INTO metabolites (COMP_ID"
+        for key in data.keys()[1:]:
+            command += ',' + key.upper()
+        command += ") VALUES (%s";
 
-                # Get the cursor
-                cursor = self.database.GetCursor();
-                cursor.execute(command, tuple(tdata))
-                self.database.Commit()
-                """
+        # Build tuple for parameterization
+        tdata = ['M'+data['COMP_ID']]
+
+        for key in data.keys()[1:]:
+            command += ',' + '%s';
+            tdata.append(self.Clean(data[key]));
+
+        command += ")";
+
+        # Get the cursor
+        cursor = self.database.GetCursor();
+        cursor.execute(command, tuple(tdata))
+        self.database.Commit()
+        """
 
     def CreateMetabolomicsTable(self, filename):
 
