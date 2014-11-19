@@ -179,7 +179,7 @@ class Proteomics(object):
 
         command = ""
         command += "CREATE TABLE proteins (PROTEIN VARCHAR(16) PRIMARY KEY, NAME VARCHAR(256))"
-        #self.database.Command(command)
+        self.database.Command(command)
 
         header = None
 
@@ -188,8 +188,16 @@ class Proteomics(object):
 
                 if (header is None):
                     header = line.strip().split('\t')
-                    header = [x.split('_')[0] for x in header]
-                    print header
+                    header = [x.split('_')[1] for x in header]
+
+                    cursor = self.database.GetCursor()
+
+                    # Add to the proteins table
+                    for p in header:
+                        command = "INSERT INTO proteins (PROTEIN) VALUES (%s)"
+                        cursor.execute(command, (p,))
+
+                    self.database.Commit()
 
                 else:
                     pass
