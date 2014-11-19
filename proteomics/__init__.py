@@ -241,7 +241,17 @@ class Proteomics(object):
         neg_control_mean = np.mean(neg_control, axis=0)
         interplate_control_mean = np.mean(interplate_control, axis=0)
 
-        print neg_control_mean
+        # Now normalize the values based on the neg controls
+        for key1 in alldata:
+            for key2 in alldata[key1]:
+
+                print alldata[key1][key2]
+                print neg_control_mean
+                alldata[key1][key2] /= neg_control_mean
+                print alldata[key1][key2]
+                return
+
+
 
         """
 
