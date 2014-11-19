@@ -238,8 +238,8 @@ class Proteomics(object):
         interplate_control = np.array(interplate_control, dtype=float)
 
         # Get mean of the controls
-        neg_control_mean = np.mean(neg_control, axis=1)
-        interplate_control_mean = np.mean(interplate_control, axis=1)
+        neg_control_mean = np.mean(neg_control, axis=0)
+        interplate_control_mean = np.mean(interplate_control, axis=0)
 
         print neg_control_mean
 
