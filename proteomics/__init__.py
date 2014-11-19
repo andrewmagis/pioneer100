@@ -251,33 +251,26 @@ class Proteomics(object):
                 print alldata[key1][key2]
                 return
 
+        # Finally, add this data to the protein table
+        for username in alldata:
+            for round in alldata[username]:
 
+                # Build the insertion statement
+                command = "INSERT INTO proteomics (USERNAME, ROUND"
+                for key in header:
+                    command += ',' + key.upper()
+                command += ") VALUES (%s";
 
-        """
+                # Build tuple for parameterization
+                tdata = [username, round]
 
-        except:
-            continue
+                for value in alldata[username][round]:
+                    command += ',' + '%s';
+                    tdata.append(value);
 
-        # Zip the data up
-        data = dict(zip(keys, tokens[1:13]))
+                command += ")";
 
-        # Build the insertion statement
-        command = "INSERT INTO metabolites (COMP_ID"
-        for key in data.keys()[1:]:
-            command += ',' + key.upper()
-        command += ") VALUES (%s";
-
-        # Build tuple for parameterization
-        tdata = ['M'+data['COMP_ID']]
-
-        for key in data.keys()[1:]:
-            command += ',' + '%s';
-            tdata.append(self.Clean(data[key]));
-
-        command += ")";
-
-        # Get the cursor
-        cursor = self.database.GetCursor();
-        cursor.execute(command, tuple(tdata))
-        self.database.Commit()
-        """
+                # Get the cursor
+                cursor = self.database.GetCursor();
+                cursor.execute(command, tuple(tdata))
+                self.database.Commit()
