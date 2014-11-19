@@ -233,31 +233,37 @@ class Proteomics(object):
                             alldata[username][round] = None
                         alldata[username][round] = data
 
-                """
+        # At the end, make a numpy array out of controls
+        neg_control = np.array(neg_control)
+        interplate_control = np.array(interplate_control)
 
-                except:
-                    continue
+        print net_control
 
-                # Zip the data up
-                data = dict(zip(keys, tokens[1:13]))
+        """
 
-                # Build the insertion statement
-                command = "INSERT INTO metabolites (COMP_ID"
-                for key in data.keys()[1:]:
-                    command += ',' + key.upper()
-                command += ") VALUES (%s";
+        except:
+            continue
 
-                # Build tuple for parameterization
-                tdata = ['M'+data['COMP_ID']]
+        # Zip the data up
+        data = dict(zip(keys, tokens[1:13]))
 
-                for key in data.keys()[1:]:
-                    command += ',' + '%s';
-                    tdata.append(self.Clean(data[key]));
+        # Build the insertion statement
+        command = "INSERT INTO metabolites (COMP_ID"
+        for key in data.keys()[1:]:
+            command += ',' + key.upper()
+        command += ") VALUES (%s";
 
-                command += ")";
+        # Build tuple for parameterization
+        tdata = ['M'+data['COMP_ID']]
 
-                # Get the cursor
-                cursor = self.database.GetCursor();
-                cursor.execute(command, tuple(tdata))
-                self.database.Commit()
-                """
+        for key in data.keys()[1:]:
+            command += ',' + '%s';
+            tdata.append(self.Clean(data[key]));
+
+        command += ")";
+
+        # Get the cursor
+        cursor = self.database.GetCursor();
+        cursor.execute(command, tuple(tdata))
+        self.database.Commit()
+        """
