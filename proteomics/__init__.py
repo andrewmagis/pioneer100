@@ -199,8 +199,21 @@ class Proteomics(object):
 
                     self.database.Commit()
 
+                    command = "";
+                    command += "CREATE TABLE proteomics (ENTRY INT PRIMARY KEY AUTO_INCREMENT, USERNAME VARCHAR(16) NOT NULL, ROUND INT NOT NULL"
+
+                    cursor = self.database.GetCursor();
+                    result = cursor.execute("SELECT PROTEIN from proteins")
+                    for protein in cursor:
+                        command += ", %s FLOAT"%(protein)
+                    command += ")"
+
+                    cursor.execute(command)
+                    self.database.Commit()
+
                 else:
                     pass
+
 
                 """
 
