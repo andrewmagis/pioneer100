@@ -1,13 +1,12 @@
 
 from datetime import date, datetime, timedelta as td
-import fitbit
 from errors import MyError
 
 import numpy as np
 import scipy
 import math
 
-class Metabolomics(object):
+class Proteomics(object):
 
     def __init__(self, database):
         self.database = database
@@ -82,7 +81,7 @@ class Metabolomics(object):
             return None
         return new_value
 
-    def LoadMetabolomicsData(self, filename):
+    def LoadProteomicsData(self, filename):
 
         data = {}
         mets = []
@@ -161,10 +160,10 @@ class Metabolomics(object):
                 cursor.execute(command, tuple(tdata))
                 self.database.Commit()
 
-    def CreateMetabolomicsTable(self, filename):
+    def CreateProteomicsTable(self, filename):
 
         command = "";
-        command += "CREATE TABLE metabolomics (ENTRY INT PRIMARY KEY AUTO_INCREMENT, USERNAME VARCHAR(16) NOT NULL, DATE DATETIME, ROUND INT NOT NULL"
+        command += "CREATE TABLE proteomics (ENTRY INT PRIMARY KEY AUTO_INCREMENT, USERNAME VARCHAR(16) NOT NULL, ROUND INT NOT NULL"
 
         cursor = self.database.GetCursor();
         result = cursor.execute("SELECT COMP_ID from metabolites")
@@ -176,23 +175,24 @@ class Metabolomics(object):
         cursor.execute(command)
         self.database.Commit()
 
-    def CreateMetabolitesTable(self, filename):
+    def CreateProteinTable(self, filename):
 
         command = ""
-        command += "CREATE TABLE metabolites (COMP_ID VARCHAR(16) PRIMARY KEY, BIOCHEMICAL VARCHAR(256), SUPER_PATHWAY VARCHAR(256), " \
-                   "SUB_PATHWAY VARCHAR(256), PLATFORM  VARCHAR(256), CHEMICAL_ID INT, RI FLOAT, MASS FLOAT, CAS VARCHAR(256)," \
-                   "PUBCHEM INT, KEGG VARCHAR(256), HMDB VARCHAR(256))"
-
+        command += "CREATE TABLE metabolites (PROTEIN VARCHAR(16) PRIMARY KEY, NAME VARCHAR(256))"
         self.database.Command(command)
 
-        keys = ['BIOCHEMICAL', 'SUPER_PATHWAY', 'SUB_PATHWAY', 'COMP_ID', 'PLATFORM', 'CHEMICAL_ID', 'RI', 'MASS', 'CAS', 'PUBCHEM', 'KEGG', 'HMDB']
+        header = None
 
         with open(filename, 'rU') as f:
             for line in f:
 
-                tokens = line.split('\t')
-                try:
-                    comp_id = int(tokens[4])
+                if (header is None):
+                    header = line.split('\t')
+
+                else:
+                    pass
+
+                """
 
                 except:
                     continue
@@ -219,3 +219,4 @@ class Metabolomics(object):
                 cursor = self.database.GetCursor();
                 cursor.execute(command, tuple(tdata))
                 self.database.Commit()
+                """
