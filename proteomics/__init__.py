@@ -187,7 +187,8 @@ class Proteomics(object):
             for line in f:
 
                 if (header is None):
-                    header = line.split('\t')
+                    header = line.strip().split('\t')
+                    header = [x.split('_')[0] for x in header]
                     print header
 
                 else:
