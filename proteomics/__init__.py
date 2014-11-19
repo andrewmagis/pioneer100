@@ -226,7 +226,7 @@ class Proteomics(object):
                         interplate_control.append(tokens[2:])
                     else:
 
-                        data = np.array(tokens[2:], type=float)
+                        data = np.array(tokens[2:], dtype=float)
                         if (not username in alldata):
                             alldata[username] = {}
                         if (not round in alldata[username]):
@@ -234,8 +234,8 @@ class Proteomics(object):
                         alldata[username][round] = data
 
         # At the end, make a numpy array out of controls
-        neg_control = np.array(neg_control, type=float)
-        interplate_control = np.array(interplate_control, type=float)
+        neg_control = np.array(neg_control, dtype=float)
+        interplate_control = np.array(interplate_control, dtype=float)
 
         # Get mean of the controls
         neg_control_mean = np.mean(neg_control, axis=1)
