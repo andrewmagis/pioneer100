@@ -247,7 +247,7 @@ class Proteomics(object):
 
                 print alldata[key1][key2]
                 print neg_control_mean
-                alldata[key1][key2] = neg_control_mean - alldata[key1][key2]
+                alldata[key1][key2] = np.power(2, np.powneg_control_mean - alldata[key1][key2])
                 print alldata[key1][key2]
                 return
 
