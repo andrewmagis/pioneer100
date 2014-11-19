@@ -196,7 +196,7 @@ class Proteomics(object):
                     # Add to the proteins table
                     for p in header:
                         command = "INSERT INTO proteins (PROTEIN, CATEGORY) VALUES (%s, %s)"
-                        cursor.execute(command, (p,category))
+                        #cursor.execute(command, (p,category))
 
                     #self.database.Commit()
 
@@ -209,7 +209,7 @@ class Proteomics(object):
                         command += ", %s FLOAT"%(protein)
                     command += ")"
 
-                    cursor.execute(command)
+                    #cursor.execute(command)
                     #self.database.Commit()
 
                 else:
