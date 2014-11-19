@@ -218,7 +218,12 @@ class Proteomics(object):
                     username = tokens[0].strip()
                     round = tokens[1].strip()
                     data = np.array(tokens[2:])
-                    print data
+
+                    if (not username in alldata):
+                        alldata[username] = {}
+                    if (not round in alldata[username]):
+                        alldata[username][round] = None
+                    alldata[username][round] = data
 
                 """
 
