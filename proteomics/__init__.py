@@ -188,6 +188,7 @@ class Proteomics(object):
 
                 if (header is None):
                     header = line.split('\t')
+                    print header
 
                 else:
                     pass
