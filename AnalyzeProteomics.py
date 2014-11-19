@@ -28,7 +28,7 @@ def main(parser):
     prots = Proteomics(database)
 
     if (not parser.filename is None):
-        prots.CreateProteinTable(parser.filename)
+        prots.CreateProteinTable(parser.filename, "CVD")
         return
 
     # Load the DBSnp database

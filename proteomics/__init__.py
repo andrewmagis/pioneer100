@@ -175,10 +175,10 @@ class Proteomics(object):
         cursor.execute(command)
         self.database.Commit()
 
-    def CreateProteinTable(self, filename):
+    def CreateProteinTable(self, filename, category = None):
 
         command = ""
-        command += "CREATE TABLE proteins (PROTEIN VARCHAR(16) PRIMARY KEY, NAME VARCHAR(256))"
+        command += "CREATE TABLE proteins (PROTEIN VARCHAR(16) PRIMARY KEY, CATEGORY VARCHAR(16), NAME VARCHAR(256))"
         self.database.Command(command)
 
         header = None
@@ -194,8 +194,8 @@ class Proteomics(object):
 
                     # Add to the proteins table
                     for p in header:
-                        command = "INSERT INTO proteins (PROTEIN) VALUES (%s)"
-                        cursor.execute(command, (p,))
+                        command = "INSERT INTO proteins (PROTEIN, CATEGORY) VALUES (%s, %s)"
+                        cursor.execute(command, (p,category))
 
                     self.database.Commit()
 
