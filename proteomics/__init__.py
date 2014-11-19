@@ -237,7 +237,7 @@ class Proteomics(object):
         neg_control = np.array(neg_control)
         interplate_control = np.array(interplate_control)
 
-        print net_control
+        print neg_control
 
         """
 
