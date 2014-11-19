@@ -28,7 +28,7 @@ def main(parser):
     prots = Proteomics(database)
 
     if (not parser.filename is None):
-        prots.CreateProteinTable(parser.filename, "CVD")
+        prots.CreateProteinTable(parser.filename)
         return
 
     # Load the DBSnp database
@@ -40,6 +40,7 @@ def main(parser):
     # Load the participants
     participants = ParticipantDB(database, None, None, None, clinvar_db, dbsnp)
 
+    # Now we can analyze the proteomics data
 
 
 if __name__ == "__main__":

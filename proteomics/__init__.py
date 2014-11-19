@@ -179,7 +179,7 @@ class Proteomics(object):
 
         command = ""
         command += "CREATE TABLE proteins (PROTEIN VARCHAR(16) PRIMARY KEY, CATEGORY VARCHAR(16), NAME VARCHAR(256))"
-        #self.database.Command(command)
+        self.database.Command(command)
 
         header = None
         alldata = {}
@@ -200,7 +200,7 @@ class Proteomics(object):
                         command = "INSERT INTO proteins (PROTEIN, CATEGORY) VALUES (%s, %s)"
                         #cursor.execute(command, (p,category))
 
-                    #self.database.Commit()
+                    self.database.Commit()
 
                     command = "";
                     command += "CREATE TABLE proteomics (ENTRY INT PRIMARY KEY AUTO_INCREMENT, USERNAME VARCHAR(16) NOT NULL, ROUND INT NOT NULL"
@@ -211,8 +211,8 @@ class Proteomics(object):
                         command += ", %s FLOAT"%(protein)
                     command += ")"
 
-                    #cursor.execute(command)
-                    #self.database.Commit()
+                    cursor.execute(command)
+                    self.database.Commit()
 
                 else:
 
