@@ -188,7 +188,7 @@ class Proteomics(object):
 
                 if (header is None):
                     header = line.strip().split('\t')
-                    header = [x.split('_')[1] for x in header]
+                    header = [x.split('_')[1] for x in header[2:]]
 
                     cursor = self.database.GetCursor()
 
