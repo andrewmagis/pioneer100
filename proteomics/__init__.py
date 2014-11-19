@@ -217,7 +217,8 @@ class Proteomics(object):
                     tokens = line.strip().split('\t')
                     username = tokens[0].strip()
                     round = tokens[1].strip()
-                    print username, round
+                    data = np.array(tokens[2:])
+                    print data
 
                 """
 
