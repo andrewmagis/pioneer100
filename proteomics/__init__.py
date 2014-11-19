@@ -178,8 +178,8 @@ class Proteomics(object):
     def CreateProteinTable(self, filename):
 
         command = ""
-        command += "CREATE TABLE metabolites (PROTEIN VARCHAR(16) PRIMARY KEY, NAME VARCHAR(256))"
-        self.database.Command(command)
+        command += "CREATE TABLE proteins (PROTEIN VARCHAR(16) PRIMARY KEY, NAME VARCHAR(256))"
+        #self.database.Command(command)
 
         header = None
 
