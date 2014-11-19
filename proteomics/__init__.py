@@ -252,7 +252,7 @@ class Proteomics(object):
                 command = "INSERT INTO proteomics (USERNAME, ROUND"
                 for key in header:
                     command += ',' + key.upper()
-                command += ") VALUES (%s";
+                command += ") VALUES (%s,%s";
 
                 # Build tuple for parameterization
                 tdata = [username, round]
