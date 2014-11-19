@@ -241,19 +241,12 @@ class Proteomics(object):
         neg_control_mean = np.mean(neg_control, axis=0)
         interplate_control_mean = np.mean(interplate_control, axis=0)
 
-        # Now normalize the values based on the neg controls
-        for key1 in alldata:
-            for key2 in alldata[key1]:
-
-                print alldata[key1][key2]
-                print neg_control_mean
-                alldata[key1][key2] = np.power(2, neg_control_mean - alldata[key1][key2])
-                print alldata[key1][key2]
-                return
-
         # Finally, add this data to the protein table
         for username in alldata:
             for round in alldata[username]:
+
+                # Now normalize the values based on the neg controls
+                alldata[username][round] = np.power(2, neg_control_mean - alldata[username][round])
 
                 # Build the insertion statement
                 command = "INSERT INTO proteomics (USERNAME, ROUND"
