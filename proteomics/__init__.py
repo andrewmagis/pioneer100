@@ -183,6 +183,8 @@ class Proteomics(object):
 
         header = None
         alldata = {}
+        neg_control = []
+        interplate_control = []
 
         with open(filename, 'rU') as f:
             for line in f:
@@ -217,13 +219,19 @@ class Proteomics(object):
                     tokens = line.strip().split('\t')
                     username = tokens[0].strip()
                     round = tokens[1].strip()
-                    data = np.array(tokens[2:])
+                    # Get controls
+                    if (username == "Negative Control"):
+                        neg_control.append(tokens[2:])
+                    elif (username == "Interplate Control"):
+                        interplate_control.append(tokens[2:])
+                    else:
 
-                    if (not username in alldata):
-                        alldata[username] = {}
-                    if (not round in alldata[username]):
-                        alldata[username][round] = None
-                    alldata[username][round] = data
+                        data = np.array(tokens[2:])
+                        if (not username in alldata):
+                            alldata[username] = {}
+                        if (not round in alldata[username]):
+                            alldata[username][round] = None
+                        alldata[username][round] = data
 
                 """
 
