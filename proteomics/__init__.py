@@ -160,21 +160,6 @@ class Proteomics(object):
                 cursor.execute(command, tuple(tdata))
                 self.database.Commit()
 
-    def CreateProteomicsTable(self, filename):
-
-        command = "";
-        command += "CREATE TABLE proteomics (ENTRY INT PRIMARY KEY AUTO_INCREMENT, USERNAME VARCHAR(16) NOT NULL, ROUND INT NOT NULL"
-
-        cursor = self.database.GetCursor();
-        result = cursor.execute("SELECT COMP_ID from metabolites")
-        for comp_id in cursor:
-            command += ", %s FLOAT"%(comp_id)
-        command += ")"
-
-        print command
-        cursor.execute(command)
-        self.database.Commit()
-
     def CreateProteinTable(self, filename, category = None):
 
         command = ""
@@ -198,7 +183,7 @@ class Proteomics(object):
                     # Add to the proteins table
                     for p in header:
                         command = "INSERT INTO proteins (PROTEIN, CATEGORY) VALUES (%s, %s)"
-                        #cursor.execute(command, (p,category))
+                        cursor.execute(command, (p,category))
 
                     self.database.Commit()
 
