@@ -189,7 +189,7 @@ class Proteomics(object):
                     else:
                         if (not username in alldata):
                             alldata[username] = {}
-                        if (not round in data[username]):
+                        if (not round in alldata[username]):
                             alldata[username][round] = None
                         alldata[username][round] = tokens[2:]
 
@@ -234,11 +234,11 @@ class Proteomics(object):
         for username in alldata.keys():
             for round in alldata[username]:
                 if (round == 1):
-                    data.append(username, round, FIRST_BLOOD_DRAW)
+                    alldata.append(username, round, FIRST_BLOOD_DRAW)
                 elif (round == 2):
-                    data.append(username, round,  SECOND_BLOOD_DRAW)
+                    alldata.append(username, round,  SECOND_BLOOD_DRAW)
                 else:
-                    data.append(username, round, THIRD_BLOOD_DRAW)
+                    alldata.append(username, round, THIRD_BLOOD_DRAW)
 
         # Insert the observation values
         result = cursor.executemany("INSERT INTO prot_observations (username, date, round) VALUES (%s,%s,%s)", data)
