@@ -197,14 +197,14 @@ class Proteomics(object):
         cursor = self.database.GetCursor()
 
         # Add to the proteins table
-        for p in header:
-            command = "INSERT INTO prot_proteins (abbreviation, category) VALUES (%s, %s)"
-            cursor.execute(command, (p,category))
+        #for p in header:
+        #    command = "INSERT INTO prot_proteins (abbreviation, category) VALUES (%s, %s)"
+        #    cursor.execute(command, (p,category))
 
         # Next add in the controls
         for negative, plate in zip(neg_control, interplate_control):
             for protein, neg_value, plate_value, in zip(header, negative, plate):
-                cursor.execute("INSERT INTO prot_control (protein_id, negative_control, interplate_control) SELECT protein_id FROM prot_proteins WHERE abbreviation = '%s', %s, %s", (protein, neg_value, plate_value,))
+                cursor.execute("INSERT INTO prot_control (negative_control, interplate_control, protein_id) %s, %s, SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s)", (neg_value, plate_value,protein,))
 
 
         # Finalize
