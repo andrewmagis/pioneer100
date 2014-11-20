@@ -205,17 +205,6 @@ class Proteomics(object):
         result = cursor.executemany("INSERT INTO prot_proteins (abbreviation, category) VALUES (%s,%s)", data)
         self.database.Commit()
 
-        """
-        # Query the table for the keys
-        protein_ids = []
-        for protein in header:
-            cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s) LIMIT 1", (protein,))
-            protein_ids.append(*cursor)
-
-        print protein_ids
-        return
-        """
-
         # Get the cursor to insert
         cursor = self.database.GetCursor()
 
@@ -233,13 +222,8 @@ class Proteomics(object):
                 # Build the tuples
                 data.append(tup)
 
-
-                # Insert the control values
-                #cursor.execute("INSERT INTO prot_control (protein_id, negative_control, interplate_control, protein_id) VALUES (%s, %s, SELECT protein_id FROM prot_proteins WHERE abbreviation = %s)", (neg_value, plate_value,protein,))
-
-        print data
-
-        # Finalize
+        # Insert the control values
+        result = cursor.executemany("INSERT INTO prot_control (protein_id, negative_control, interplate_control) VALUES (%s,%s,%s)", data)
         self.database.Commit()
 
 
