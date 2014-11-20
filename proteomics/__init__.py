@@ -265,7 +265,7 @@ class Proteomics(object):
                     prot_control_id = cursor.fetchone()
 
                     # Get the observation id
-                    cursor.execute("SELECT observation_id FROM prot_observations WHERE username,round = (%s,%s) LIMIT 1", (username,round))
+                    cursor.execute("SELECT observation_id FROM prot_observations WHERE username = (%s) AND round = (%s) LIMIT 1", (username,round))
                     observation_id = cursor.fetchone()
 
                     # Append variables to tuple
