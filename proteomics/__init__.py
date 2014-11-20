@@ -180,7 +180,7 @@ class Proteomics(object):
 
                     tokens = line.strip().split('\t')
                     username = tokens[0].strip()
-                    round = tokens[1].strip()
+                    round = int(tokens[1].strip())
                     # Get controls
                     if (username == "Negative Control"):
                         neg_control.append(tokens[2:])
@@ -233,9 +233,9 @@ class Proteomics(object):
         data = []
         for username in alldata.keys():
             for round in alldata[username]:
-                if (round == 1L):
+                if (round == 1):
                     data.append((username, round, FIRST_BLOOD_DRAW))
-                elif (round == 2L):
+                elif (round == 2):
                     data.append((username, round,  SECOND_BLOOD_DRAW))
                 else:
                     data.append((username, round, THIRD_BLOOD_DRAW))
