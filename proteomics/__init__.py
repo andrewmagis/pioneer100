@@ -202,8 +202,9 @@ class Proteomics(object):
             data.append((p, category))
 
         # Insert into table
-        result = cursor.executemany("INSERT INTO prot_proteins (abbreviation, category) VALUES (%s,%s)", data)
+        #result = cursor.executemany("INSERT INTO prot_proteins (abbreviation, category) VALUES (%s,%s)", data)
 
+        """
         # Query the table for the keys
         protein_ids = []
         for protein in header:
@@ -212,11 +213,25 @@ class Proteomics(object):
 
         print protein_ids
         return
+        """
 
         # Next add in the controls
+        data = []
         for negative, plate in zip(neg_control, interplate_control):
             for protein, neg_value, plate_value, in zip(header, negative, plate):
-                cursor.execute("INSERT INTO prot_control (negative_control, interplate_control, protein_id) VALUES (%s, %s, SELECT protein_id FROM prot_proteins WHERE abbreviation = %s)", (neg_value, plate_value,protein,))
+
+                # Get the protein_id for this abbreviation
+                cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s) LIMIT 1", (protein,))
+
+                # Append variables to tuple
+                tup = cursor + (negative_control, interplate_control)
+
+                # Build the tuples
+                data.append(tup)
+
+
+                # Insert the control values
+                #cursor.execute("INSERT INTO prot_control (protein_id, negative_control, interplate_control, protein_id) VALUES (%s, %s, SELECT protein_id FROM prot_proteins WHERE abbreviation = %s)", (neg_value, plate_value,protein,))
 
         # Finalize
         self.database.Commit()
