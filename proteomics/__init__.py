@@ -191,8 +191,9 @@ class Proteomics(object):
                             data[username] = {}
                         if (not round in data[username]):
                             data[username][round] = None
-                        data[username][round] = np.array(tokens[2:], dtype=float)
+                        data[username][round] = tokens[2:]
 
+        """
         # Get the cursor to insert
         cursor = self.database.GetCursor()
 
@@ -200,6 +201,13 @@ class Proteomics(object):
         for p in header:
             command = "INSERT INTO prot_proteins (abbreviation, category) VALUES (%s, %s)"
             cursor.execute(command, (p,category))
+        """
+
+        # Next add in the controls
+        for negative, plate in zip(neg_control, interplate_control):
+            for protein, neg_value, plate_value, in zip(header, negative, plate):
+                print protein, neg_value, plate_value
+
 
         # Finalize
         self.database.Commit()
