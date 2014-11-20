@@ -163,7 +163,7 @@ class Proteomics(object):
     def LoadData(self, filename, category=None):
 
         header = None
-        data = {}
+        alldata = {}
         neg_control = []
         interplate_control = []
 
@@ -187,16 +187,15 @@ class Proteomics(object):
                     elif (username == "Interplate Control"):
                         interplate_control.append(tokens[2:])
                     else:
-                        if (not username in data):
-                            data[username] = {}
+                        if (not username in alldata):
+                            alldata[username] = {}
                         if (not round in data[username]):
-                            data[username][round] = None
-                        data[username][round] = tokens[2:]
+                            alldata[username][round] = None
+                        alldata[username][round] = tokens[2:]
 
-        # Get the cursor to insert
+
+        # Insert the proteins
         cursor = self.database.GetCursor()
-
-        # Build tuple
         data = []
         for p in header:
             data.append((p, category))
@@ -205,10 +204,8 @@ class Proteomics(object):
         result = cursor.executemany("INSERT INTO prot_proteins (abbreviation, category) VALUES (%s,%s)", data)
         self.database.Commit()
 
-        # Get the cursor to insert
-        cursor = self.database.GetCursor()
-
         # Next add in the controls
+        cursor = self.database.GetCursor()
         data = []
         for negative, plate in zip(neg_control, interplate_control):
             for protein, neg_value, plate_value, in zip(header, negative, plate):
@@ -224,6 +221,27 @@ class Proteomics(object):
 
         # Insert the control values
         result = cursor.executemany("INSERT INTO prot_controls (protein_id, negative_control, interplate_control) VALUES (%s,%s,%s)", data)
+        self.database.Commit()
+
+        # Dates for blood draws for proteomics
+        FIRST_BLOOD_DRAW=datetime.datetime(2014, 5, 1)
+        SECOND_BLOOD_DRAW=datetime.datetime(2014, 8, 1)
+        THIRD_BLOOD_DRAW=datetime.datetime(2014, 11, 1)
+
+        # Now add in the observations
+        cursor = self.database.GetCursor()
+        data = []
+        for username in alldata.keys():
+            for round in alldata[username]:
+                if (round == 1):
+                    data.append(username, round, FIRST_BLOOD_DRAW)
+                elif (round == 2):
+                    data.append(username, round,  SECOND_BLOOD_DRAW)
+                else:
+                    data.append(username, round, THIRD_BLOOD_DRAW)
+
+        # Insert the observation values
+        result = cursor.executemany("INSERT INTO prot_observations (username, date, round) VALUES (%s,%s,%s)", data)
         self.database.Commit()
 
 
