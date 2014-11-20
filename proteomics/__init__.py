@@ -223,7 +223,7 @@ class Proteomics(object):
                 data.append(tup)
 
         # Insert the control values
-        result = cursor.executemany("INSERT INTO prot_control (protein_id, negative_control, interplate_control) VALUES (%s,%s,%s)", data)
+        result = cursor.executemany("INSERT INTO prot_controls (protein_id, negative_control, interplate_control) VALUES (%s,%s,%s)", data)
         self.database.Commit()
 
 
