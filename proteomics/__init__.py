@@ -160,6 +160,39 @@ class Proteomics(object):
                 cursor.execute(command, tuple(tdata))
                 self.database.Commit()
 
+    def LoadData(self, filename):
+
+        header = None
+        data = {}
+        neg_control = []
+        interplate_control = []
+
+        # Load all the data into a data structure to start
+        with open(filename, 'rU') as f:
+            for line in f:
+
+                # Get header row
+                if (header is None):
+                    header = line.strip().split('\t')
+                    header = [x.split('_')[1].replace('-', '_').replace(' ', '_') for x in header[2:]]
+
+                else:
+
+                    tokens = line.strip().split('\t')
+                    username = tokens[0].strip()
+                    round = tokens[1].strip()
+                    # Get controls
+                    if (username == "Negative Control"):
+                        neg_control.append(tokens[2:])
+                    elif (username == "Interplate Control"):
+                        interplate_control.append(tokens[2:])
+                    else:
+                        if (not username in alldata):
+                            alldata[username] = {}
+                        if (not round in alldata[username]):
+                            alldata[username][round] = None
+                        alldata[username][round] = np.array(tokens[2:], dtype=float)
+
     def CreateProteinTable(self, filename, category = None):
 
         command = ""
