@@ -32,6 +32,9 @@ def main(parser):
         prots.LoadData(parser.filename, parser.category)
         return
 
+    prots.Get('2682430', 1)
+    return
+
     # Load the DBSnp database
     dbsnp = DBSnp(database)
 
@@ -42,6 +45,7 @@ def main(parser):
     participants = ParticipantDB(database, None, None, None, clinvar_db, dbsnp)
 
     # Now we can analyze the proteomics data
+
 
 
 if __name__ == "__main__":
