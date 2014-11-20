@@ -233,9 +233,9 @@ class Proteomics(object):
         data = []
         for username in alldata.keys():
             for round in alldata[username]:
-                if (round == 1):
+                if (round == 1L):
                     data.append((username, round, FIRST_BLOOD_DRAW))
-                elif (round == 2):
+                elif (round == 2L):
                     data.append((username, round,  SECOND_BLOOD_DRAW))
                 else:
                     data.append((username, round, THIRD_BLOOD_DRAW))
