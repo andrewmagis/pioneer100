@@ -191,7 +191,7 @@ class Proteomics(object):
                             data[username] = {}
                         if (not round in data[username]):
                             data[username][round] = None
-                        alldata[username][round] = np.array(tokens[2:], dtype=float)
+                        data[username][round] = np.array(tokens[2:], dtype=float)
 
     def CreateProteinTable(self, filename, category = None):
 
