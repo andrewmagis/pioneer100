@@ -17,7 +17,7 @@ class Proteomics(object):
         cursor.execute("SELECT v.ct_value FROM prot_observations as o, prot_values as v WHERE o.username = (%s) AND o.round = (%s) AND v.observation_id = o.observation_id ORDER BY o.observation_id", (username,round,))
 
         # Build numpy array out of result
-        return np.array([x for item in cursor.fetchall()], dtype=[('ct_value', float)])
+        return np.array([x for x in cursor.fetchall()], dtype=[('ct_value', float)])
 
     #def GetNormalized(self, username, round):
 
