@@ -216,7 +216,7 @@ class Proteomics(object):
                 cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s) LIMIT 1", (protein,))
 
                 # Append variables to tuple
-                tup = cursor.fetchone() + (neg_value, plate_value)
+                tup = cursor.fetch() + (neg_value, plate_value)
 
                 # Build the tuples
                 data.append(tup)
@@ -234,7 +234,7 @@ class Proteomics(object):
         cursor = self.database.GetCursor()
         data = []
         for username in alldata.keys():
-            for round in alldata[username]:
+            for round in alldata[username].keys():
                 if (round == 1):
                     data.append((username, round, FIRST_BLOOD_DRAW))
                 elif (round == 2):
@@ -246,6 +246,34 @@ class Proteomics(object):
         result = cursor.executemany("INSERT INTO prot_observations (username, round, date) VALUES (%s,%s,%s)", data)
         self.database.Commit()
 
+        # Finally add the observations
+        cursor = self.database.GetCursor()
+        data = []
+
+        for username in alldata.keys():
+            for round in alldata[username].keys():
+
+                # Loop over the observations
+                for protein, value in zip(header, alldata[username][round]):
+
+                    # Get the protein_id for this abbreviation
+                    cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s) LIMIT 1", (protein,))
+                    protein_id = cursor.fetch()
+
+                    # Get the control id
+                    cursor.execute("SELECT prot_control_id FROM prot_controls WHERE protein_id = (%s) LIMIT 1", protein_id)
+                    prot_control_id = cursor.fetch()
+
+                    # Get the observation id
+                    cursor.execute("SELECT observation_id FROM prot_observations WHERE username,round = (%s,%s) LIMIT 1", (username,round))
+                    observation_id = cursor.fetch()
+
+                    # Append variables to tuple
+                    data.append((observation_id, protein_id, prot_control_id, value))
+
+        # Insert the observation values
+        result = cursor.executemany("INSERT INTO prot_values (observation_id, protein_id, prot_control_id, ct_value) VALUES (%s,%s,%s,%s)", data)
+        self.database.Commit()
 
     def CreateProteinTable(self, filename, category = None):
 
