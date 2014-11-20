@@ -224,7 +224,7 @@ class Proteomics(object):
                 cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s) LIMIT 1", (protein,))
 
                 # Append variables to tuple
-                tup = cursor + (negative_control, interplate_control)
+                tup = cursor + (neg_value, plate_value)
 
                 # Build the tuples
                 data.append(tup)
