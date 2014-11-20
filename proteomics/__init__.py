@@ -187,10 +187,10 @@ class Proteomics(object):
                     elif (username == "Interplate Control"):
                         interplate_control.append(tokens[2:])
                     else:
-                        if (not username in alldata):
-                            alldata[username] = {}
-                        if (not round in alldata[username]):
-                            alldata[username][round] = None
+                        if (not username in data):
+                            data[username] = {}
+                        if (not round in data[username]):
+                            data[username][round] = None
                         alldata[username][round] = np.array(tokens[2:], dtype=float)
 
     def CreateProteinTable(self, filename, category = None):
