@@ -234,11 +234,11 @@ class Proteomics(object):
         for username in alldata.keys():
             for round in alldata[username]:
                 if (round == 1):
-                    alldata.append(username, round, FIRST_BLOOD_DRAW)
+                    data.append(username, round, FIRST_BLOOD_DRAW)
                 elif (round == 2):
-                    alldata.append(username, round,  SECOND_BLOOD_DRAW)
+                    data.append(username, round,  SECOND_BLOOD_DRAW)
                 else:
-                    alldata.append(username, round, THIRD_BLOOD_DRAW)
+                    data.append(username, round, THIRD_BLOOD_DRAW)
 
         # Insert the observation values
         result = cursor.executemany("INSERT INTO prot_observations (username, date, round) VALUES (%s,%s,%s)", data)
