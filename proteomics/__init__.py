@@ -20,7 +20,7 @@ class Proteomics(object):
         print data
 
         # Build numpy array out of result
-        return np.array(cursor.fetchall(), dtype=[('ct_value', float), ('dummy', np.str, 8)])
+        return np.array(list(cursor.fetchall()), dtype=[('ct_value', float)])
 
     #def GetNormalized(self, username, round):
 
