@@ -29,7 +29,7 @@ def main(parser):
 
     if (not parser.filename is None):
         #prots.CreateProteinTable(parser.filename)
-        prots.LoadData(parser.filename)
+        prots.LoadData(parser.filename, "CVD")
         return
 
     # Load the DBSnp database
