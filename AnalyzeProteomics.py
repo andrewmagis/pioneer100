@@ -32,7 +32,8 @@ def main(parser):
         prots.LoadData(parser.filename, parser.category)
         return
 
-    prots.Get('2682430', 1)
+    result = prots.Get('2682430', 1)
+    print result
     return
 
     # Load the DBSnp database
