@@ -207,10 +207,10 @@ class Proteomics(object):
         # Query the table for the keys
         protein_ids = []
         for protein in header:
-            cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s)", (protein,))
+            cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = '(%s)'", (protein,))
             for e in cursor:
                 print e
-            protein_ids.append(result)
+            #protein_ids.append(result)
 
         return
 
