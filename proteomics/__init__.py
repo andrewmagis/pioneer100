@@ -223,11 +223,13 @@ class Proteomics(object):
                 # Get the protein_id for this abbreviation
                 cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s) LIMIT 1", (protein,))
 
+                print cursor.fetchone()
+
                 # Append variables to tuple
-                tup = cursor + (neg_value, plate_value)
+                #tup = cursor + (neg_value, plate_value)
 
                 # Build the tuples
-                data.append(tup)
+                #data.append(tup)
 
 
                 # Insert the control values
