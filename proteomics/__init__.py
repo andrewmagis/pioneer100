@@ -209,7 +209,7 @@ class Proteomics(object):
         for protein in header:
             result = cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s)", (protein,))
             print result
-            protein_ids.append()
+            protein_ids.append(result)
 
         return
 
