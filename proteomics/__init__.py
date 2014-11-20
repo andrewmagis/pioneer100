@@ -206,7 +206,9 @@ class Proteomics(object):
         # Insert into table
         result = cursor.executemany("INSERT INTO prot_proteins (abbreviation, category) VALUES (%s,%s)", data)
 
+
         print result
+        self.database.Commit()
 
         # Add to the proteins table
         #for p in header:
