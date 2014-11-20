@@ -202,15 +202,16 @@ class Proteomics(object):
             data.append((p, category))
 
         # Insert into table
-        #result = cursor.executemany("INSERT INTO prot_proteins (abbreviation, category) VALUES (%s,%s)", data)
+        result = cursor.executemany("INSERT INTO prot_proteins (abbreviation, category) VALUES (%s,%s)", data)
 
         # Query the table for the keys
         protein_ids = []
         for protein in header:
-            cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = '(%s)'", (protein,))
+            cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s)", (protein,))
             for e in cursor:
                 print e
             #protein_ids.append(result)
+
 
         return
 
