@@ -216,7 +216,7 @@ class Proteomics(object):
                 cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s) LIMIT 1", (protein,))
 
                 # Append variables to tuple
-                tup = cursor.fetch() + (neg_value, plate_value)
+                tup = cursor.fetchone() + (neg_value, plate_value)
 
                 # Build the tuples
                 data.append(tup)
@@ -258,15 +258,15 @@ class Proteomics(object):
 
                     # Get the protein_id for this abbreviation
                     cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s) LIMIT 1", (protein,))
-                    protein_id = cursor.fetch()
+                    protein_id = cursor.fetchone()
 
                     # Get the control id
                     cursor.execute("SELECT prot_control_id FROM prot_controls WHERE protein_id = (%s) LIMIT 1", protein_id)
-                    prot_control_id = cursor.fetch()
+                    prot_control_id = cursor.fetchone()
 
                     # Get the observation id
                     cursor.execute("SELECT observation_id FROM prot_observations WHERE username,round = (%s,%s) LIMIT 1", (username,round))
-                    observation_id = cursor.fetch()
+                    observation_id = cursor.fetchone()
 
                     # Append variables to tuple
                     data.append((observation_id, protein_id, prot_control_id, value))
