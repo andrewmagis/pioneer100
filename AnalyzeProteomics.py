@@ -33,7 +33,7 @@ def main(parser):
         return
 
     result = prots.Get('2682430', 1)
-    print result
+    print result['ct_value']
     return
 
     # Load the DBSnp database
