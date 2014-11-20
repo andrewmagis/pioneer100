@@ -180,13 +180,15 @@ class Proteomics(object):
 
                     tokens = line.strip().split('\t')
                     username = tokens[0].strip()
-                    round = int(tokens[1].strip())
+
                     # Get controls
                     if (username == "Negative Control"):
                         neg_control.append(tokens[2:])
                     elif (username == "Interplate Control"):
                         interplate_control.append(tokens[2:])
                     else:
+
+                        round = int(tokens[1].strip())
                         if (not username in alldata):
                             alldata[username] = {}
                         if (not round in alldata[username]):
