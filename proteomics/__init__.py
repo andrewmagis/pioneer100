@@ -198,7 +198,7 @@ class Proteomics(object):
 
         # Add to the proteins table
         for p in header:
-            command = "INSERT INTO proteins (abbreviation, category) VALUES (%s, %s)"
+            command = "INSERT INTO prot_proteins (abbreviation, category) VALUES (%s, %s)"
             cursor.execute(command, (p,category))
 
         # Finalize
