@@ -224,9 +224,9 @@ class Proteomics(object):
         self.database.Commit()
 
         # Dates for blood draws for proteomics
-        FIRST_BLOOD_DRAW=datetime.datetime(2014, 5, 1)
-        SECOND_BLOOD_DRAW=datetime.datetime(2014, 8, 1)
-        THIRD_BLOOD_DRAW=datetime.datetime(2014, 11, 1)
+        FIRST_BLOOD_DRAW=datetime(2014, 5, 1)
+        SECOND_BLOOD_DRAW=datetime(2014, 8, 1)
+        THIRD_BLOOD_DRAW=datetime(2014, 11, 1)
 
         # Now add in the observations
         cursor = self.database.GetCursor()
