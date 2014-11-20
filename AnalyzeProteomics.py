@@ -16,6 +16,7 @@ from clinvar import Clinvar
 def ArgParser():
     parser = argparse.ArgumentParser()
     parser.add_argument('-f', '--filename', default=None, help="Proteomics input filename")
+    parser.add_argument('-c', '--category', default=None)
     args = parser.parse_args()
     return args
 
@@ -28,8 +29,7 @@ def main(parser):
     prots = Proteomics(database)
 
     if (not parser.filename is None):
-        #prots.CreateProteinTable(parser.filename)
-        prots.LoadData(parser.filename, "CVD")
+        prots.LoadData(parser.filename, parser.category)
         return
 
     # Load the DBSnp database
