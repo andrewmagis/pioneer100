@@ -241,7 +241,7 @@ class Proteomics(object):
                     data.append((username, round, THIRD_BLOOD_DRAW))
 
         # Insert the observation values
-        result = cursor.executemany("INSERT INTO prot_observations (username, date, round) VALUES (%s,%s,%s)", data)
+        result = cursor.executemany("INSERT INTO prot_observations (username, round, date) VALUES (%s,%s,%s)", data)
         self.database.Commit()
 
 
