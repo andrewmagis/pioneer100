@@ -201,21 +201,9 @@ class Proteomics(object):
         for p in header:
             data.append((p, category))
 
-        print data
-
         # Insert into table
         result = cursor.executemany("INSERT INTO prot_proteins (abbreviation, category) VALUES (%s,%s)", data)
-
-
-        print result
         self.database.Commit()
-
-        # Add to the proteins table
-        #for p in header:
-        #    command = "INSERT INTO prot_proteins (abbreviation, category) VALUES (%s, %s)"
-        #    cursor.execute(command, (p,category))
-
-        return
 
         # Next add in the controls
         for negative, plate in zip(neg_control, interplate_control):
