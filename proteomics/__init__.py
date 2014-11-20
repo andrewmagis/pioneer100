@@ -202,8 +202,16 @@ class Proteomics(object):
             data.append((p, category))
 
         # Insert into table
-        result = cursor.executemany("INSERT INTO prot_proteins (abbreviation, category) VALUES (%s,%s)", data)
-        self.database.Commit()
+        #result = cursor.executemany("INSERT INTO prot_proteins (abbreviation, category) VALUES (%s,%s)", data)
+
+        # Query the table for the keys
+        protein_ids = []
+        for protein in header:
+            result = cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = '%s'", (protein,))
+            print result
+            protein_ids.append()
+
+        return
 
         # Next add in the controls
         for negative, plate in zip(neg_control, interplate_control):
