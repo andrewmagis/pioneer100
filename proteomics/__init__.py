@@ -204,7 +204,7 @@ class Proteomics(object):
         print data
 
         # Insert into table
-        cursor.executemany("INSERT INTO prot_proteins (abbreviation, category) VALUES (%s,%s)", data)
+        cursor.executemany("""INSERT INTO prot_proteins (abbreviation, category) VALUES (%s,%s)""", data)
 
         # Add to the proteins table
         #for p in header:
