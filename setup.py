@@ -22,7 +22,6 @@ version=VERSION,
 packages=find_packages(),
 author='Andrew Magis',
 author_email='Andrew.Magis@systemsbiology.org',
-url="/JohnCEarls/GPUDirac",
 classifiers=[
     'Environment :: Console',
     'Development Status :: 4 - Beta',
