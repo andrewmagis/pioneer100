@@ -160,7 +160,7 @@ class Proteomics(object):
                 cursor.execute(command, tuple(tdata))
                 self.database.Commit()
 
-    def LoadData(self, filename):
+    def LoadData(self, filename, plate=None):
 
         header = None
         data = {}
@@ -192,6 +192,18 @@ class Proteomics(object):
                         if (not round in data[username]):
                             data[username][round] = None
                         data[username][round] = np.array(tokens[2:], dtype=float)
+
+        # Get the cursor to insert
+        cursor = self.database.GetCursor()
+
+        # Add to the proteins table
+        for p in header:
+            command = "INSERT INTO proteins (prot_proteins, category) VALUES (%s, %s)"
+            cursor.execute(command, (p,category))
+
+        # Finalize
+        self.database.Commit()
+
 
     def CreateProteinTable(self, filename, category = None):
 
