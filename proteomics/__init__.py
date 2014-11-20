@@ -160,7 +160,7 @@ class Proteomics(object):
                 cursor.execute(command, tuple(tdata))
                 self.database.Commit()
 
-    def LoadData(self, filename, plate=None):
+    def LoadData(self, filename, category=None):
 
         header = None
         data = {}
