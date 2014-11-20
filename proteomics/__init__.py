@@ -207,12 +207,10 @@ class Proteomics(object):
         # Query the table for the keys
         protein_ids = []
         for protein in header:
-            cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s)", (protein,))
-            for e in cursor:
-                print e
-            #protein_ids.append(result)
+            cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s) LIMIT 1", (protein,))
+            protein_ids.append(*cursor)
 
-
+        print protein_ids
         return
 
         # Next add in the controls
