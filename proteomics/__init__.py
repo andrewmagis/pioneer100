@@ -11,13 +11,15 @@ class Proteomics(object):
     def __init__(self, database):
         self.database = database
 
-    def Get(self, username, round=None):
+    def Get(self, username, round):
 
         cursor = self.database.GetCursor()
-        cursor.execute("SELECT v.ct_value FROM prot_observations as o, prot_values as v WHERE o.username = (%s) AND o.round = (%s) AND v.observation_id = o.observation_id", (username,round,))
+        cursor.execute("SELECT v.ct_value FROM prot_observations as o, prot_values as v WHERE o.username = (%s) AND o.round = (%s) AND v.observation_id = o.observation_id ORDER BY o.observation_id", (username,round,))
 
-        for e in cursor:
-            print e
+        # Build numpy array out of result
+        return np.array(cursor.fetchall(), dtype=[('ct_value', float)])
+
+    #def GetNormalized(self, username, round):
 
     def Compile(self):
 
