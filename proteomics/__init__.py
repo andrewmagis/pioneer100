@@ -227,17 +227,17 @@ class Proteomics(object):
                 # Get the protein_id for this abbreviation
                 cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s) LIMIT 1", (protein,))
 
-                print cursor.fetchone()
-
                 # Append variables to tuple
-                #tup = cursor + (neg_value, plate_value)
+                tup = cursor.fetchone() + (neg_value, plate_value)
 
                 # Build the tuples
-                #data.append(tup)
+                data.append(tup)
 
 
                 # Insert the control values
                 #cursor.execute("INSERT INTO prot_control (protein_id, negative_control, interplate_control, protein_id) VALUES (%s, %s, SELECT protein_id FROM prot_proteins WHERE abbreviation = %s)", (neg_value, plate_value,protein,))
+
+        print data
 
         # Finalize
         self.database.Commit()
