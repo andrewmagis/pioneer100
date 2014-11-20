@@ -202,7 +202,8 @@ class Proteomics(object):
             data.append((p, category))
 
         # Insert into table
-        #result = cursor.executemany("INSERT INTO prot_proteins (abbreviation, category) VALUES (%s,%s)", data)
+        result = cursor.executemany("INSERT INTO prot_proteins (abbreviation, category) VALUES (%s,%s)", data)
+        self.database.Commit()
 
         """
         # Query the table for the keys
@@ -214,6 +215,9 @@ class Proteomics(object):
         print protein_ids
         return
         """
+
+        # Get the cursor to insert
+        cursor = self.database.GetCursor()
 
         # Next add in the controls
         data = []
