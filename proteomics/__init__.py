@@ -16,6 +16,9 @@ class Proteomics(object):
         cursor = self.database.GetCursor()
         cursor.execute("SELECT v.ct_value FROM prot_observations as o, prot_values as v WHERE o.username = (%s) AND o.round = (%s) AND v.observation_id = o.observation_id ORDER BY o.observation_id", (username,round,))
 
+        data = cursor.fetchall();
+        print data
+
         # Build numpy array out of result
         return np.array(cursor.fetchall(), dtype=[('ct_value', float), ('dummy', np.str, 8)])
 
