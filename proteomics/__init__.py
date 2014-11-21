@@ -120,7 +120,7 @@ class Proteomics(object):
     def LoadData(self, filename, category=None):
 
         # Ignore this function
-        raise MyError('LoadData function disabled')
+        #raise MyError('LoadData function disabled')
 
         header = None
         alldata = {}
