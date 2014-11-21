@@ -24,6 +24,7 @@ class Proteomics(object):
     def GetNormalized(self, username, round):
 
         result = self.Get(username, round)
+        print result
 
         cursor = self.database.GetCursor()
         cursor.execute("SELECT v.prot_control_id, v.ct_value FROM prot_observations as o, prot_values as v "
