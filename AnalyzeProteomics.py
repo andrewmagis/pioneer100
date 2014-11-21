@@ -32,7 +32,7 @@ def main(parser):
         prots.LoadData(parser.filename, parser.category)
         return
 
-    result = prots.GetNormalized('2682430', 1)
+    result = prots.GetNormalized('9691870', 1)
     return
 
     # Load the DBSnp database
