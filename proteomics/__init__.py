@@ -123,6 +123,7 @@ class Proteomics(object):
         #raise MyError('LoadData function disabled')
 
         header = None
+        category = None
         alldata = {}
         neg_control = []
         interplate_control = []
@@ -135,6 +136,10 @@ class Proteomics(object):
                 if (header is None):
                     header = line.strip().split('\t')
                     header = [x.split('_')[1].replace('-', '_').replace(' ', '_') for x in header[2:]]
+
+                # Get category row next
+                elif (category is None):
+                    category= line.strip().split('\t')[2:]
 
                 else:
 
@@ -159,8 +164,8 @@ class Proteomics(object):
         # Insert the proteins
         cursor = self.database.GetCursor()
         data = []
-        for p in header:
-            data.append((p, category))
+        for p,c in zip(header, category):
+            data.append((p, c))
 
         # Insert into table
         result = cursor.executemany("INSERT INTO prot_proteins (abbreviation, category) VALUES (%s,%s)", data)
