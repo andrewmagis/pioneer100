@@ -25,6 +25,16 @@ class Proteomics(object):
 
         result = self.Get(username, round)
 
+        cursor = self.database.GetCursor()
+        cursor.execute("SELECT v.prot_control_id, v.ct_value FROM prot_observations as o, prot_values as v "
+                       "WHERE o.username = (%s) AND o.round = (%s) AND v.observation_id = o.observation_id "
+                       "ORDER BY o.observation_id", (username,round,))
+
+        # Create an array with the control ids and the values
+        temp = np.array(list(cursor.fetchall()), dtype=[('control_id', int), ('ct_value', float)])
+        print temp
+
+        """
         # Now get the control values
         cursor = self.database.GetCursor()
         cursor.execute("SELECT c.negative_control,c.interplate_control "
@@ -34,6 +44,7 @@ class Proteomics(object):
 
         result = list(cursor.fetchall())
         print result
+        """
 
     def Compile(self):
 
