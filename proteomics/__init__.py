@@ -14,7 +14,7 @@ class Proteomics(object):
     def Get(self, username, round):
 
         cursor = self.database.GetCursor()
-        cursor.execute("SELECT DISTINCT v.ct_value FROM prot_observations as o, prot_values as v "
+        cursor.execute("SELECT v.ct_value FROM prot_observations as o, prot_values as v "
                        "WHERE o.username = (%s) AND o.round = (%s) AND v.observation_id = o.observation_id "
                        "ORDER BY o.observation_id", (username,round,))
 
