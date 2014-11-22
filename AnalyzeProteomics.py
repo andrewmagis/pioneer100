@@ -28,12 +28,26 @@ def main(parser):
     # Create the QS object
     prots = Proteomics(database)
 
+    # Create the QS object
+    qs = QS(database)
+
     if (not parser.filename is None):
         prots.LoadData(parser.filename, parser.category)
         return
 
+    print "Getting proteomics data"
     result = prots._get_val('9691870', 1)
     print result
+
+    print "Getting qs data"
+    # Dates for blood draws for proteomics
+    FIRST_BLOOD_DRAW=datetime(2014, 5, 1)
+    SECOND_BLOOD_DRAW=datetime(2014, 8, 1)
+    THIRD_BLOOD_DRAW=datetime(2014, 11, 1)
+
+    result = qs.get_average('9691870', FIRST_BLOOD_DRAW, SECOND_BLOOD_DRAW)
+    print result
+
     return
 
     # Load the DBSnp database
