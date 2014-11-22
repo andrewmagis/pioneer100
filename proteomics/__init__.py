@@ -159,7 +159,7 @@ class Proteomics(object):
                             alldata[username] = {}
                         if (not round in alldata[username]):
                             alldata[username][round] = None
-                        alldata[username][round] = np.array(tokens[2:])
+                        alldata[username][round] = np.array([int(x) for x in tokens[2:]])
 
         mean_neg_control_array = np.mean(np.array(neg_control, dtype=float), axis=0)
         mean_interplate_control_array = np.mean(np.array(interplate_control, dtype=float), axis=0)
