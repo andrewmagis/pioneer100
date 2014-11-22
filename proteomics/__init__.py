@@ -164,6 +164,9 @@ class Proteomics(object):
         mean_neg_control_array = np.mean(np.array(neg_control, dtype=float), axis=0)
         mean_interplate_control_array = np.mean(np.array(interplate_control, dtype=float), axis=0)
 
+        print np.subtract(mean_neg_control_array, alldata['9691870'][1])
+        return
+
         # Insert the proteins
         cursor = self.database.GetCursor()
         data = []
