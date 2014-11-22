@@ -32,7 +32,7 @@ class QS(object):
             cursor = self.database.Cursor()
             cursor.execute("SELECT ACTIVITYCALORIES FROM qs WHERE USERNAME = (%s) AND DATE >= (%s) AND DATE <= (%s)", (username,start,stop,))
 
-
+            return np.array(list(cursor.fetchall()), dtype=[(username, float)])
 
 
     def GetActivity(self, username):
