@@ -221,8 +221,11 @@ class Proteomics(object):
         for username in alldata.keys():
             for round in alldata[username].keys():
 
+                # Get normalized data
+                norm_data = np.power(2, mean_neg_control_array - alldata[username][round])
+
                 # Loop over the observations
-                for protein, cat, value, in zip(header, category, alldata[username][round]):
+                for protein, cat, value, norm in zip(header, category, alldata[username][round], norm_data):
 
                     # Get the protein_id for this abbreviation
                     cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s) AND category = (%s) LIMIT 1", (protein,cat,))
@@ -237,8 +240,8 @@ class Proteomics(object):
                     observation_id = cursor.fetchone()
 
                     # Append variables to tuple
-                    data.append((observation_id, protein_id, prot_control_id, self.Clean(value)))
+                    data.append((observation_id, protein_id, prot_control_id, self.Clean(value), self.Clean(norm)))
 
         # Insert the observation values
-        result = cursor.executemany("INSERT INTO prot_values (observation_id, protein_id, prot_control_id, ct_value) VALUES (%s,%s,%s,%s)", data)
+        result = cursor.executemany("INSERT INTO prot_values (observation_id, protein_id, prot_control_id, ct_value, norm_value) VALUES (%s,%s,%s,%s,%s)", data)
         self.database.Commit()
