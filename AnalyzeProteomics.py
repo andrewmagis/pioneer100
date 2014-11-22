@@ -33,6 +33,7 @@ def main(parser):
         return
 
     result = prots._get_val('9691870', 1)
+    print result
     return
 
     # Load the DBSnp database
