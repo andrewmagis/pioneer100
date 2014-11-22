@@ -24,7 +24,7 @@ class QS(object):
         elif (start is None):
             pass
 
-        elif (end is None):
+        elif (stop is None):
             pass
 
         # Get the data within a range
