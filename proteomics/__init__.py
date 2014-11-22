@@ -19,7 +19,7 @@ class Proteomics(object):
                        "ORDER BY o.observation_id", (username,round,))
 
         # Build numpy array out of result
-        return np.array(list(cursor.fetchall()), dtype=[('norm_value', float)])
+        return np.array(list(cursor.fetchall()), dtype=[(username, float)])
 
     # Ignore this function
     def GetNormalized(self, username, round):
