@@ -21,6 +21,14 @@ class Proteomics(object):
         # Build numpy array out of result
         return np.array(list(cursor.fetchall()), dtype=[(username, float)])
 
+    def _get_diff(self, username, round1, round2):
+
+        r1 = self._get_val(username, round1)
+        r2 = self._get_val(username, round2)
+
+        # Build numpy array out of result
+        return np.array(r2-r1, dtype=[(username, float)])
+
     # Ignore this function
     def GetNormalized(self, username, round):
 
