@@ -27,7 +27,7 @@ class Proteomics(object):
         r2 = self._get_val(username, round2)
 
         # Build numpy array out of result
-        return np.array(r2-r1, dtype=[(username, float)])
+        return np.array(r2[username]-r1[username], dtype=[(username, float)])
 
     # Ignore this function
     def GetNormalized(self, username, round):
