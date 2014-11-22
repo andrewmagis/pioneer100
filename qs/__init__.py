@@ -16,23 +16,26 @@ class QS(object):
     def __init__(self, database):
         self.database = database
 
-    def get_average(self, username, start=None, stop=None):
+    def get_val(self, username, start=None, stop=None):
 
         if (start is None) and (end is None):
-            pass
+            cursor = self.database.GetCursor()
+            cursor.execute("SELECT q.ACTIVITYCALORIES FROM qs as q WHERE USERNAME = (%s)", (username,))
 
         elif (start is None):
-            pass
+            cursor = self.database.GetCursor()
+            cursor.execute("SELECT q.ACTIVITYCALORIES FROM qs as q WHERE USERNAME = (%s) AND q.DATE <= (%s)", (username,stop,))
 
         elif (stop is None):
-            pass
+            cursor = self.database.GetCursor()
+            cursor.execute("SELECT q.ACTIVITYCALORIES FROM qs as q WHERE USERNAME = (%s) AND q.DATE >= (%s)", (username,start,))
 
-        # Get the data within a range
         else:
             cursor = self.database.GetCursor()
-            cursor.execute("SELECT q.ACTIVITYCALORIES FROM qs as q WHERE USERNAME = (%s) AND q.DATE >= (%s) AND q.DATE <= (%s)", (username,start,None,))
+            cursor.execute("SELECT q.ACTIVITYCALORIES FROM qs as q WHERE USERNAME = (%s) AND q.DATE >= (%s) AND q.DATE <= (%s)", (username,start,stop,))
 
-            return np.array(list(cursor.fetchall()), dtype=[(username, float)])
+        # Return the data
+        return np.array(list(cursor.fetchall()), dtype=[(username, float)])
 
 
     def GetActivity(self, username):
