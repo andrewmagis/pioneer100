@@ -37,7 +37,7 @@ def main(parser):
         return
 
     print "Getting proteomics data"
-    result = prots._get_val('9691870', 1)
+    result = prots._get_val('1115268', 1)
     print result
 
     print "Getting qs data"
@@ -46,7 +46,7 @@ def main(parser):
     SECOND_BLOOD_DRAW=datetime(2014, 8, 1)
     THIRD_BLOOD_DRAW=datetime(2014, 11, 1)
 
-    result = qs.get_average('9691870', FIRST_BLOOD_DRAW, SECOND_BLOOD_DRAW)
+    result = qs.get_average('1115268', FIRST_BLOOD_DRAW, SECOND_BLOOD_DRAW)
     print result
 
     return
