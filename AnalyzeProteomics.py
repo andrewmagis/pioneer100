@@ -2,6 +2,7 @@
 
 # System imports
 import argparse
+from datetime import datetime
 
 # Import the database class
 from database import Database
