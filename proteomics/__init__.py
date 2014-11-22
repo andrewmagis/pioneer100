@@ -33,12 +33,15 @@ class Proteomics(object):
         temp = np.array(list(cursor.fetchall()), dtype=[('protein_id', int), ('ct_value', float)])
 
         # Get the control values for each protein
+        controls = []
         for protein_id in temp['protein_id']:
             cursor.execute("SELECT c.negative_control,c.interplate_control "
                            "FROM prot_controls as c "
                            "WHERE c.protein_id = (%s)", (protein_id,))
+            controls.append(list(cursor.fetchall()))
 
-            print cursor.fetchall()
+        controls = np.array(controls, dtype=[('negative_control', float), ('interplate_control', float)])
+        print controls['negative_control']
 
 
     def Compile(self):
