@@ -25,18 +25,19 @@ class Proteomics(object):
 
         # Get the protein control ids as well as the ct values
         cursor = self.database.GetCursor()
-        cursor.execute("SELECT v.prot_control_id, v.ct_value FROM prot_observations as o, prot_values as v "
+        cursor.execute("SELECT v.protein_id, v.ct_value FROM prot_observations as o, prot_values as v "
                        "WHERE o.username = (%s) AND o.round = (%s) AND v.observation_id = o.observation_id "
                        "ORDER BY o.observation_id", (username,round,))
 
         # Create an array with the control ids and the values
-        temp = np.array(list(cursor.fetchall()), dtype=[('control_id', int), ('ct_value', float)])
+        temp = np.array(list(cursor.fetchall()), dtype=[('protein_id', int), ('ct_value', float)])
 
         # Get the control values for each protein
-        for control_id in temp['control_id']:
+        for control_id in temp['protein_id']:
             cursor.execute("SELECT c.negative_control,c.interplate_control "
                            "FROM prot_controls as c "
-                           "WHERE c.prot_control_id = (%s)", (control_id,))
+                           "WHERE c.protein_id = (%s)", (protein_id,))
+
             print cursor.fetchall()
 
 
