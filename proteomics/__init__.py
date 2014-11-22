@@ -23,9 +23,7 @@ class Proteomics(object):
 
     def GetNormalized(self, username, round):
 
-        result = self.Get(username, round)
-        print result
-
+        # Get the protein control ids as well as the ct values
         cursor = self.database.GetCursor()
         cursor.execute("SELECT v.prot_control_id, v.ct_value FROM prot_observations as o, prot_values as v "
                        "WHERE o.username = (%s) AND o.round = (%s) AND v.observation_id = o.observation_id "
@@ -33,19 +31,14 @@ class Proteomics(object):
 
         # Create an array with the control ids and the values
         temp = np.array(list(cursor.fetchall()), dtype=[('control_id', int), ('ct_value', float)])
-        print temp
 
-        """
-        # Now get the control values
-        cursor = self.database.GetCursor()
-        cursor.execute("SELECT c.negative_control,c.interplate_control "
-                       "FROM prot_observations as o, prot_values as v, prot_controls as c "
-                       "WHERE o.username = (%s) AND o.round = (%s) AND v.observation_id = o.observation_id AND v.prot_control_id = c.prot_control_id "
-                       "ORDER BY c.prot_control_id", (username,round,))
+        # Get the control values for each protein
+        for control_id in temp['control_id']:
+            cursor.execute("SELECT c.negative_control,c.interplate_control "
+                           "FROM prot_controls as c "
+                           "WHERE c.prot_control_id = (%s)", (control_id,))
+            print cursor.fetchall()
 
-        result = list(cursor.fetchall())
-        print result
-        """
 
     def Compile(self):
 
