@@ -222,7 +222,7 @@ class Proteomics(object):
             for round in alldata[username].keys():
 
                 # Get normalized data
-                norm_data = np.power(2, mean_neg_control_array - alldata[username][round])
+                norm_data = np.power(2, np.subtract(mean_neg_control_array, alldata[username][round]))
 
                 # Loop over the observations
                 for protein, cat, value, norm in zip(header, category, alldata[username][round], norm_data):
