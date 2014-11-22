@@ -164,6 +164,9 @@ class Proteomics(object):
         mean_neg_control_array = np.mean(np.array(neg_control, dtype=float), axis=0)
         mean_interplate_control_array = np.mean(np.array(interplate_control, dtype=float), axis=0)
 
+        print mean_neg_control_array
+        print alldata['9691870'][1]
+
         print mean_neg_control_array - alldata['9691870'][1]
         return
 
