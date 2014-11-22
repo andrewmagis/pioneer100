@@ -29,7 +29,7 @@ class QS(object):
 
         # Get the data within a range
         else:
-            cursor = self.database.Cursor()
+            cursor = self.database.GetCursor()
             cursor.execute("SELECT ACTIVITYCALORIES FROM qs WHERE USERNAME = (%s) AND DATE >= (%s) AND DATE <= (%s)", (username,start,stop,))
 
             return np.array(list(cursor.fetchall()), dtype=[(username, float)])
