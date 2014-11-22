@@ -43,8 +43,8 @@ class Proteomics(object):
         controls = np.array(controls, dtype=[('negative_control', float), ('interplate_control', float)])
 
         # Calculate the mean negative control value
-        mean_controls = np.mean(controls)
-        print mean_controls
+        mean_negative_controls = np.mean(controls['negative_control'])
+        print mean_negative_controls
 
 
     def Compile(self):
