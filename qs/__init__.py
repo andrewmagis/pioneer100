@@ -16,6 +16,25 @@ class QS(object):
     def __init__(self, database):
         self.database = database
 
+    def get_average(self, username, start=None, stop=None):
+
+        if (start is None) and (end is None):
+            pass
+
+        elif (start is None):
+            pass
+
+        elif (end is None):
+            pass
+
+        # Get the data within a range
+        else:
+            cursor = self.database.Cursor()
+            cursor.execute("SELECT ACTIVITYCALORIES FROM qs WHERE USERNAME = (%s) AND DATE >= (%s) AND DATE <= (%s)", (username,start,stop,))
+
+
+
+
     def GetActivity(self, username):
 
         cursor = self.database.Get('qs', 'username', username, ['USERNAME', 'DATE', 'CALORIESOUT', 'ACTIVITYCALORIES'], 'DATE')
