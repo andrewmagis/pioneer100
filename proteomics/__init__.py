@@ -161,11 +161,11 @@ class Proteomics(object):
                             alldata[username][round] = None
                         alldata[username][round] = np.array(tokens[2:])
 
-        neg_control_array = np.array(neg_control)
-        interplate_control_array = np.array(interplate_control)
+        mean_neg_control_array = np.mean(np.array(neg_control), axis=1)
+        mean_interplate_control_array = np.mean(np.array(interplate_control), axis=1)
 
-        print neg_control_array
-        print interplate_control_array
+        print mean_neg_control_array
+        print mean_interplate_control_array
 
         return
 
