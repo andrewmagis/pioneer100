@@ -168,10 +168,10 @@ class Proteomics(object):
         cursor = self.database.GetCursor()
         data = []
         for negative, plate in zip(neg_control, interplate_control):
-            for protein, neg_value, plate_value, in zip(header, negative, plate):
+            for protein, cat, neg_value, plate_value, in zip(header, category, negative, plate):
 
                 # Get the protein_id for this abbreviation
-                cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s) LIMIT 1", (protein,))
+                cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s) and category = (%s) LIMIT 1", (protein,cat,))
 
                 # Append variables to tuple
                 tup = cursor.fetchone() + (neg_value, plate_value)
@@ -212,10 +212,10 @@ class Proteomics(object):
             for round in alldata[username].keys():
 
                 # Loop over the observations
-                for protein, value in zip(header, alldata[username][round]):
+                for protein, cat, value, in zip(header, category, alldata[username][round]):
 
                     # Get the protein_id for this abbreviation
-                    cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s) LIMIT 1", (protein,))
+                    cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s) AND category = (%s) LIMIT 1", (protein,cat,))
                     protein_id = cursor.fetchone()
 
                     # Get the control id
