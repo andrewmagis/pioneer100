@@ -44,7 +44,8 @@ class Proteomics(object):
 
         # Calculate the mean negative control value
         mean_negative_controls = np.mean(controls['negative_control'], axis=1)
-        print mean_negative_controls
+
+        # Normalize the
 
 
     def Compile(self):
@@ -158,8 +159,15 @@ class Proteomics(object):
                             alldata[username] = {}
                         if (not round in alldata[username]):
                             alldata[username][round] = None
-                        alldata[username][round] = tokens[2:]
+                        alldata[username][round] = np.array(tokens[2:])
 
+        neg_control_array = np.array(neg_control)
+        interplate_control_array = np.array(interplate_control)
+
+        print neg_control_array
+        print interplate_control_array
+
+        return
 
         # Insert the proteins
         cursor = self.database.GetCursor()
