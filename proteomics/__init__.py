@@ -240,7 +240,7 @@ class Proteomics(object):
                     observation_id = cursor.fetchone()
 
                     # Append variables to tuple
-                    data.append((observation_id, protein_id, prot_control_id, self.Clean(value), self.Clean(norm)))
+                    data.append((observation_id, protein_id, prot_control_id, value, norm))
 
         # Insert the observation values
         result = cursor.executemany("INSERT INTO prot_values (observation_id, protein_id, prot_control_id, ct_value, norm_value) VALUES (%s,%s,%s,%s,%s)", data)
