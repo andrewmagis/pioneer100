@@ -151,13 +151,11 @@ class ParticipantDB(object):
             subset = x['Round1'][indices]
             subind = x['Score'][indices]
 
-            print subset
-
             # Get stats
             q1.append(np.percentile(subset, 25))
-            mins.append(np.min(subset))
+            mins.append(np.nanmin(subset))
             medians.append(np.median(subset))
-            maxes.append(np.max(subset))
+            maxes.append(np.nanmax(subset))
             q3.append(np.percentile(subset, 75))
 
             # Calculate the mean and stdev of these values
