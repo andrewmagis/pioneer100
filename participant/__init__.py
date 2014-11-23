@@ -154,7 +154,7 @@ class ParticipantDB(object):
             # Get stats
             q1.append(np.percentile(subset, 25))
             mins.append(np.nanmin(subset))
-            medians.append(np.median(subset))
+            medians.append(np.nanmean(subset))
             maxes.append(np.nanmax(subset))
             q3.append(np.percentile(subset, 75))
 
