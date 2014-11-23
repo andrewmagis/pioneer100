@@ -151,6 +151,8 @@ class ParticipantDB(object):
             subset = x['Round1'][indices]
             subind = x['Score'][indices]
 
+            print subset
+
             # Get stats
             q1.append(np.percentile(subset, 25))
             mins.append(np.min(subset))
