@@ -128,6 +128,12 @@ class ParticipantDB(object):
         print
         print "Round1"
 
+        q1 = []
+        mins = []
+        medians = []
+        maxes = []
+        q3 = []
+
         # Now calculate the average
         start = bins[0]
         count = 1
@@ -145,10 +151,12 @@ class ParticipantDB(object):
             subset = x['Round1'][indices]
             subind = x['Score'][indices]
 
-            print "SUBSET %d"%(count)
-            for e in subset:
-                print e, ' ',
-            print
+            # Get stats
+            q1.append(np.percentile(subset, 25))
+            mins.append(np.min(subset))
+            medians.append(np.median(subset))
+            maxes.append(np.max(subset))
+            q3.append(np.percentile(subset, 75))
 
             # Calculate the mean and stdev of these values
             mean = np.nanmean(subset)
@@ -157,6 +165,13 @@ class ParticipantDB(object):
 
             print mean, stderr
             start = end
+
+        print q1
+        print mins
+        print medians
+        print maxes
+        print q3
+
 
         print
         print "Round2";
