@@ -74,10 +74,10 @@ class Chemistries(object):
         username_reg = re.compile(r"[0-9]{7}");
 
         cursor = self.database.GetCursor()
-        cursor.execute("SELECT name,vendor_id FROM chem_chemistries WHERE vendor = 'Quest'");
+        cursor.execute("SELECT vendor_id,chemistry_id FROM chem_chemistries WHERE vendor = 'Quest'");
         mapping = {};
-        for (measurement, id) in cursor:
-            mapping[id] = measurement
+        for (vendor_id, chem_id) in cursor:
+            mapping[vendor_id] = chem_id
 
         with open(filename, 'rU') as f:
             for tokens in reader(f):
@@ -129,8 +129,12 @@ class Chemistries(object):
                 else:
                     round = 3
 
-                # Try to find this in the observations table
-                print username, round, submitted_date
+                # Try to find this chem id in the values table
+                cursor.execute("SELECT v.value "
+                               "FROM chem_values as v, chem_observations as o "
+                               "WHERE o.username = (%s) AND o.round = (%s) and v.chemistry_id = (%s)", (username, round, mapping[id]))
+
+
                 continue
 
                 # Get the value for this date and round
