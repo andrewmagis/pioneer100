@@ -21,7 +21,7 @@ from util import calc_table_col_widths
 from common import *
 import numpy as np
 
-from errors import MyError
+from p100.errors import MyError
 
 from operator import attrgetter
 

@@ -4,11 +4,11 @@
 import argparse, re
 
 # Import the database class
-from database import Database
-from variant import Variant
-from genome import Genome
-from dbsnp import DBSnp
-from errors import MyError
+from p100.database import Database
+from p100.variant import Variant
+from p100.genome import Genome
+from p100.dbsnp import DBSnp
+from p100.errors import MyError
 
 def ArgParser():
     parser = argparse.ArgumentParser()
