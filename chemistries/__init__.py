@@ -79,6 +79,8 @@ class Chemistries(object):
         for (vendor_id, chem_id) in cursor:
             mapping[vendor_id] = chem_id
 
+        print mapping
+
         with open(filename, 'rU') as f:
             for tokens in reader(f):
 
