@@ -46,7 +46,7 @@ def main(parser):
 
     #quest_files = ["./db/QuestSpreadsheets/Quest.3.09232014/all.quest.csv"]
     #quest_files = ["./db/QuestSpreadsheets/Quest.4.11122014/all.quest.csv"]
-    quest_files = ["./db/QuestSpreadsheets/Quest.4.11232014/all.quest.csv"]
+    quest_files = ["./db/QuestSpreadsheets/Quest.5.11232014/all.quest.csv"]
 
     for f in quest_files:
         print "Loading file", f
