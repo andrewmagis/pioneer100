@@ -6,7 +6,7 @@
 
 """
 import time, gzip, sys
-from errors import MyError
+from p100.errors import MyError
 
 class ClinvarEntry(object):
 

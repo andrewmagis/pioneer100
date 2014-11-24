@@ -8,9 +8,9 @@ import MySQLdb
 import numpy as np
 import datetime, re
 from csv import reader
-from range import Range
+from p100.range import Range
 
-from errors import MyError
+from p100.errors import MyError
 
 FIRST_BLOOD_DRAW=datetime.datetime(2014, 6, 24)
 SECOND_BLOOD_DRAW=datetime.datetime(2014, 9, 30)

@@ -1,6 +1,5 @@
-from variant import Variant
-from errors import MyError
-
+from p100.variant import Variant
+from p100.errors import MyError
 
 class ActionableVariant(Variant):
     def __init__(self, line):

@@ -4,9 +4,9 @@ from scipy import stats
 
 from participantvariant import ParticipantVariant
 from participanttrait import ParticipantTrait
-from errors import MyError
-from vcf import VCF
-from trait import Trait
+from p100.errors import MyError
+from p100.vcf import VCF
+from p100.trait import Trait
 
 class Participant(object):
 

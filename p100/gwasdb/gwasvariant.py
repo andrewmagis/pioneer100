@@ -1,4 +1,4 @@
-from variant import Variant
+from p100.variant import Variant
 
 import re
 

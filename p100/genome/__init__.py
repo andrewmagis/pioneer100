@@ -10,7 +10,7 @@ import gzip
 
 from intervalQuery import IntervalQuery
 from fastaParser import FastaParser
-from errors import MyError
+from p100.errors import MyError
 
 class Gene:
     def __init__(self, line):

@@ -7,7 +7,7 @@
 """
 
 import gzip, sys, time
-from errors import MyError
+from p100.errors import MyError
 
 class DBSnpEntry(object):
 

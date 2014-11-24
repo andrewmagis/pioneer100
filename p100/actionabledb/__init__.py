@@ -7,8 +7,8 @@
 """
 
 from actionablevariant import ActionableVariant
-from trait import Trait
-from errors import MyError
+from p100.trait import Trait
+from p100.errors import MyError
 
 class ActionableDB(object):
     def __init__(self, dbsnp, genome):

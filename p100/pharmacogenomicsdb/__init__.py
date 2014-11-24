@@ -7,8 +7,8 @@
 """
 
 from pharmacogenomicsvariant import PharmacogenomicsVariant
-from trait import Trait
-from errors import MyError
+from p100.trait import Trait
+from p100.errors import MyError
 
 class PharmacogenomicsDB(object):
 

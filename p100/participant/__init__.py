@@ -1,14 +1,14 @@
-from range import Range
-from errors import MyError
+from p100.range import Range
+from p100.errors import MyError
 from participant import Participant
 import numpy as np
 from scipy import stats
 import math
 
 # Reports that I can generate
-from pdf.pharmacogeneticsreport import PharmacogeneticsReport
-from pdf.diseasereport import DiseaseReport
-from pdf import TransitionsReport
+from p100.pdf.pharmacogeneticsreport import PharmacogeneticsReport
+from p100.pdf.diseasereport import DiseaseReport
+from p100.pdf import TransitionsReport
 
 class ParticipantDB(object):
 
