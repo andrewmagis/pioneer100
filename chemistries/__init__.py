@@ -9,6 +9,9 @@ import numpy as np
 import scipy
 import math
 
+FIRST_BLOOD_DRAW=datetime.datetime(2014, 6, 24)
+SECOND_BLOOD_DRAW=datetime.datetime(2014, 9, 30)
+
 class Chemistries(object):
 
     def __init__(self, database):
@@ -76,9 +79,6 @@ class Chemistries(object):
         for (measurement, id) in cursor:
             mapping[id] = measurement
 
-        print mapping
-        return
-
         with open(filename, 'rU') as f:
             for tokens in reader(f):
 
@@ -128,6 +128,10 @@ class Chemistries(object):
                     round = 2
                 else:
                     round = 3
+
+                # Try to find this in the observations table
+                print username, round, submitted_date
+                continue
 
                 # Get the value for this date and round
                 result = self.GetMeasurementByRound('DATE', username, round);
