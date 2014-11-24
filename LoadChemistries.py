@@ -22,7 +22,11 @@ def main(parser):
     #database.CreateDataTable()
 
     chem = Chemistries(database)
-    chem.LoadQuest(None)
+
+    quest_files = ["./db/QuestSpreadsheets/Quest.4.11122014/all.quest.csv"]
+
+    for file in quest_files:
+        chem.LoadQuest(file)
     return
 
     # Load the data <- allocate some time to do this! It takes a while!
@@ -41,7 +45,6 @@ def main(parser):
         database.LoadGenova(f)
 
     #quest_files = ["./db/QuestSpreadsheets/Quest.3.09232014/all.quest.csv"]
-    quest_files = ["./db/QuestSpreadsheets/Quest.4.11122014/all.quest.csv"]
     quest_files = ["./db/QuestSpreadsheets/Quest.4.11122014/all.quest.csv"]
 
     for f in quest_files:
