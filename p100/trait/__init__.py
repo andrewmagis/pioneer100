@@ -1,5 +1,5 @@
-from errors import MyError
-from variant import Variant
+from p100.errors import MyError
+from p100.variant import Variant
 
 class Trait:
 
