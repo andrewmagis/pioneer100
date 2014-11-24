@@ -5,6 +5,7 @@ import argparse
 
 # Import the database class
 from database import Database
+from chemistries import Chemistries
 
 
 def ArgParser():
@@ -18,7 +19,11 @@ def main(parser):
     database = Database()
 
     # If necessary, build the data table
-    database.CreateDataTable()
+    #database.CreateDataTable()
+
+    chem = Chemistries(database)
+    chem.LoadQuest(None)
+    return
 
     # Load the data <- allocate some time to do this! It takes a while!
     #genova_files = ["./db/GenovaSpreadsheets/Genova.3.09232014/Hood.Nutreval.Binary.9.15.14 C.txt",
