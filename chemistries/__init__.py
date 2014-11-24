@@ -131,6 +131,10 @@ class Chemistries(object):
                 else:
                     round = 3
 
+                # Make sure this is in the mapping
+                if (not id in mapping):
+                    continue
+
                 # Try to find this chem id in the values table
                 cursor.execute("SELECT v.value "
                                "FROM chem_values as v, chem_observations as o "
