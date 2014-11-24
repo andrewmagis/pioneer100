@@ -19,7 +19,7 @@ def main(parser):
     database = Database()
 
     # If necessary, build the data table
-    database.CreateDataTable()
+    #database.CreateDataTable()
 
     # Load the data <- allocate some time to do this! It takes a while!
     #genova_files = ["./db/GenovaSpreadsheets/Genova.3.09232014/Hood.Nutreval.Binary.9.15.14 C.txt",
@@ -41,13 +41,12 @@ def main(parser):
 
     for f in genova_files:
         print "Loading file", f
-        database.LoadGenova(f)
+        #database.LoadGenova(f)
 
-    return
 
     #quest_files = ["./db/QuestSpreadsheets/Quest.3.09232014/all.quest.csv"]
-    quest_files = ["./db/QuestSpreadsheets/Quest.4.11122014/all.quest.csv"]
-    quest_files = ["./db/QuestSpreadsheets/Quest.4.11122014/all.quest.csv"]
+    #quest_files = ["./db/QuestSpreadsheets/Quest.4.11122014/all.quest.csv"]
+    quest_files = ["./db/QuestSpreadsheets/Quest.4.11232014/all.quest.csv"]
 
     for f in quest_files:
         print "Loading file", f
