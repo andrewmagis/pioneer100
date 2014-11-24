@@ -9,7 +9,7 @@
 """
 
 # Exceptions
-from errors import MyError
+from p100.errors import MyError
 
 import tabix
 
