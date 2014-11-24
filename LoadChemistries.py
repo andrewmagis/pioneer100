@@ -21,6 +21,10 @@ def main(parser):
     # If necessary, build the data table
     #database.CreateDataTable()
 
+    chem = Chemistries(database)
+    chem.LoadQuest(None)
+    return
+
     # Load the data <- allocate some time to do this! It takes a while!
     #genova_files = ["./db/GenovaSpreadsheets/Genova.3.09232014/Hood.Nutreval.Binary.9.15.14 C.txt",
     #         "./db/GenovaSpreadsheets/Genova.3.09232014/Hood.Metsyn.Binary.9.15.14 C.txt",
