@@ -70,7 +70,7 @@ class Chemistries(object):
         #username_reg = re.compile(r"[0-9]{7}(?!\S)");
         username_reg = re.compile(r"[0-9]{7}");
 
-        cursor = self.db.cursor()
+        cursor = self.database.GetCursor()
         cursor.execute("SELECT name,vendor_id FROM chem_chemistries WHERE vendor = 'Quest'");
         mapping = {};
         for (measurement, id) in cursor:
