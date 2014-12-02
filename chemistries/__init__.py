@@ -221,11 +221,11 @@ class Chemistries(object):
                     # Now we must loop over the ids
                     for id, value in zip(headers, tokens):
 
+                        print id, value
+
                         # Make sure this is in the mapping
                         if (not id in mapping):
                             continue
-
-                        print id, value
 
                         # Try to find this chem id in the values table
                         cursor.execute("SELECT v.value "
