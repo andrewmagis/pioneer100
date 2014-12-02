@@ -27,7 +27,6 @@ def main(parser):
 
     for file in quest_files:
         chem.LoadQuest(file)
-    return
 
     # Load the data <- allocate some time to do this! It takes a while!
     #genova_files = ["./db/GenovaSpreadsheets/Genova.3.09232014/Hood.Nutreval.Binary.9.15.14 C.txt",
@@ -40,12 +39,12 @@ def main(parser):
     #         "./db/GenovaSpreadsheets/Genova.4.11122014/Hood.VitaminD.Binary.11.10.14.txt",
     #         "./db/GenovaSpreadsheets/Genova.4.11122014/Hood.NutrientToxicElements.Binary.11.10.14.txt"]
 
-    """
+
     genova_files = ["./db/GenovaSpreadsheets/Genova.5.11212014/Hood.NutrEval.Binary.11.21.14.txt",
              "./db/GenovaSpreadsheets/Genova.5.11212014/Hood.MetSyn.Binary.11.21.14.txt",
              "./db/GenovaSpreadsheets/Genova.5.11212014/Hood.VitD.Binary.11.21.14.txt",
              "./db/GenovaSpreadsheets/Genova.5.11212014/Hood.NutrientToxicElements.Binary.11.21.14.txt"]
-    """
+
     genova_files = ["./db/GenovaSpreadsheets/Genova.5.11212014/final.txt"]
 
 
