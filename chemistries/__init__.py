@@ -215,8 +215,8 @@ class Chemistries(object):
                     # Get username from this row
                     username = current["Last Name"]
 
-                    print tokens
-                    print username
+                    #print tokens
+                    #print username
 
                     # Get date from this row
                     date_ordered = datetime.datetime.strptime(current['Date Ordered'], "%m/%d/%y");
