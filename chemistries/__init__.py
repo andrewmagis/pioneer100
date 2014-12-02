@@ -65,7 +65,7 @@ class Chemistries(object):
             temp = '1'
 
         try:
-            a = int(temp);
+            a = float(temp);
         except:
             print "COULD NOT CONVERT:", temp
 
