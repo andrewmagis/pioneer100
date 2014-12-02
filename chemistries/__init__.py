@@ -26,7 +26,7 @@ class Chemistries(object):
 
             cursor = self.database.GetCursor()
 
-            tup = (','.join(["'" + a + "'" for a in x]),)
+            tup = (','.join(["'" + x + "'" for x in fields]),)
             print tup
 
             # Get the field ids for these chemistries
