@@ -27,7 +27,7 @@ class Chemistries(object):
                        "AND v.observation_id = o.observation_id "
                        "ORDER BY o.observation_id", (round,field_id,))
 
-        return np.array(list(cursor.fetchall()), dtype=[(username, float)])
+        return np.array(list(cursor.fetchall()), dtype=[(str(field_id), float)])
 
 
     def _get_val(self, username, round, fields=None):
