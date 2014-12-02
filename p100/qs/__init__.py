@@ -16,6 +16,28 @@ class QS(object):
     def __init__(self, database):
         self.database = database
 
+    def get_val(self, username, start=None, stop=None):
+
+        if (start is None) and (end is None):
+            cursor = self.database.GetCursor()
+            cursor.execute("SELECT q.ACTIVITYCALORIES FROM qs as q WHERE USERNAME = (%s)", (username,))
+
+        elif (start is None):
+            cursor = self.database.GetCursor()
+            cursor.execute("SELECT q.ACTIVITYCALORIES FROM qs as q WHERE USERNAME = (%s) AND q.DATE <= (%s)", (username,stop,))
+
+        elif (stop is None):
+            cursor = self.database.GetCursor()
+            cursor.execute("SELECT q.ACTIVITYCALORIES FROM qs as q WHERE USERNAME = (%s) AND q.DATE >= (%s)", (username,start,))
+
+        else:
+            cursor = self.database.GetCursor()
+            cursor.execute("SELECT q.ACTIVITYCALORIES FROM qs as q WHERE USERNAME = (%s) AND q.DATE >= (%s) AND q.DATE <= (%s)", (username,start,stop,))
+
+        # Return the data
+        return np.array(list(cursor.fetchall()), dtype=[(username, float)])
+
+
     def GetActivity(self, username):
 
         cursor = self.database.Get('qs', 'username', username, ['USERNAME', 'DATE', 'CALORIESOUT', 'ACTIVITYCALORIES'], 'DATE')
@@ -130,11 +152,11 @@ class QS(object):
             diff = values[1] - values[0]
 
             mean_cals = self.GetActivityRange(prt, FIRST_FITBIT_DATE, SECOND_BLOOD_DRAW)
-            if (not mean_cals is None) and (mean_cals < 2000):
-                results.append((prt, gender, values[0], values[1], values[1]-values[0], mean_cals))
+            if (not mean_cals is None) and (mean_cals < 2000) and (trait.score > 0.0):
+                results.append((prt, gender, values[0], values[1], values[1]-values[0], trait.score, mean_cals))
 
       # Build numpy structured array of scores
-        x = np.array(results, dtype=[('Username', np.str, 10), ('Gender', np.str, 1), ('Round1', float), ('Round2', float), ('Diff', float), ('Activity', float)])
+        x = np.array(results, dtype=[('Username', np.str, 10), ('Gender', np.str, 1), ('Round1', float), ('Round2', float), ('Diff', float), ('Score', float), ('Activity', float)])
 
         # Start by calculating the correlation
         (R, P) = scipy.stats.pearsonr(x['Diff'], x['Activity'])
