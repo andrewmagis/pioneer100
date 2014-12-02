@@ -20,7 +20,7 @@ class Chemistries(object):
     def _get_val(self, username, round):
 
         cursor = self.database.GetCursor()
-        cursor.execute("SELECT v.norm_value FROM prot_observations as o, prot_values as v "
+        cursor.execute("SELECT v.value FROM chem_observations as o, chem_values as v "
                        "WHERE o.username = (%s) AND o.round = (%s) AND v.observation_id = o.observation_id "
                        "ORDER BY o.observation_id", (username,round,))
 
@@ -191,8 +191,6 @@ class Chemistries(object):
 
         observations = []
         data = []
-
-        print mapping
 
         with open(filename, 'rU') as f:
             for line in f:
