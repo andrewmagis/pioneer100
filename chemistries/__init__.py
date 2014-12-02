@@ -219,7 +219,7 @@ class Chemistries(object):
                     print username
 
                     # Get date from this row
-                    date_ordered = datetime.datetime.strptime(data['Date Ordered'], "%m/%d/%y");
+                    date_ordered = datetime.datetime.strptime(current['Date Ordered'], "%m/%d/%y");
                     if (date_ordered <= FIRST_BLOOD_DRAW):
                         round = 1
                     elif (date_ordered <= SECOND_BLOOD_DRAW):
