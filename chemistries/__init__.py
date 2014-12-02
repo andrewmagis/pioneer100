@@ -239,7 +239,7 @@ class Chemistries(object):
                                        "FROM chem_values as v, chem_observations as o "
                                        "WHERE o.username = (%s) AND o.round = (%s) and v.chemistry_id = (%s)", (username, round, mapping[id]))
 
-                        results = cursor.fetchall()
+                        result = cursor.fetchall()
 
                         if (not result is None):
 
