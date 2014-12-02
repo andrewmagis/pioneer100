@@ -246,13 +246,13 @@ class Chemistries(object):
                         result = cursor.fetchall()
                         print username, round, mapping[id], result
 
-                        if (len(result) != 0):
+                        if (len(result) == 1):
 
                             # There is data, skip insertion
                             print "Found round %d for username %s"%(round, username);
 
                             # Get the associated date
-                            (value, new_date) = list(result)[0]
+                            (value, old_date) = list(result)[0]
                             print value, old_date
 
                             if (old_date is None):
@@ -265,7 +265,7 @@ class Chemistries(object):
 
                         # There was no row found, so insert a new row!
                         # TODO: we could check to see if the date already exists as well
-                        else:
+                        elif (len(result)==0):
 
                             # Just insert the observation
                             cursor.execute("INSERT INTO chem_observations (username, round, date) VALUES (%s,%s, %s)", (username, round, date_ordered))
@@ -275,6 +275,9 @@ class Chemistries(object):
 
                             # Get the last observation id and create the data tuple
                             #data.append((cursor.lastrowid, mapping[id], self.Clean(current[id])))
+
+                        else:
+                            raise MyError('More than one entry! Bad!')
 
         # Insert the observations
         #result = cursor.executemany("INSERT INTO chem_values (observation_id, chemistry_id, value) VALUES (%s,%s, %s)", data)
