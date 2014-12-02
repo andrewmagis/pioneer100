@@ -144,10 +144,10 @@ class Chemistries(object):
                 results = cursor.fetchall()
                 if (len(results) == 0):
                     observations.append((username, round, submitted_date))
-                    data.append()
 
 
-        print data
+
+        print observations
         return
 
         # Insert the proteins
