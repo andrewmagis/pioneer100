@@ -143,7 +143,7 @@ class Chemistries(object):
 
                 results = cursor.fetchall()
                 if (len(results) == 0):
-                    observations.append((username, round, submitted_date))
+                    observations.append((username, round, date_ordered))
 
         # Insert the observations
         result = cursor.executemany("INSERT INTO chem_observations (username, round, date) VALUES (%s,%s, %s)", observations)
