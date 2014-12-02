@@ -266,7 +266,7 @@ class Chemistries(object):
 
                                 cursor.execute("UPDATE chem_values "
                                                "SET value = (%s) "
-                                               "WHERE chem_values_id = (%s)", (self.Clean(value), chem_values_id))
+                                               "WHERE chem_values_id = (%s)", (self.Clean(current[id]), chem_values_id))
 
 
                         # There was no row found, so insert a new row!
