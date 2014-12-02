@@ -83,6 +83,7 @@ class Chemistries(object):
         data = []
 
         print mapping
+        return
 
         with open(filename, 'rU') as f:
             for tokens in reader(f):
