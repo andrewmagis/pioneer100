@@ -240,6 +240,7 @@ class Chemistries(object):
                                        "WHERE o.username = (%s) AND o.round = (%s) and v.chemistry_id = (%s)", (username, round, mapping[id]))
 
                         result = cursor.fetchall()
+                        print result
 
                         if (not result is None):
 
