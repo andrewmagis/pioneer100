@@ -68,6 +68,7 @@ class Chemistries(object):
             a = float(temp);
         except:
             print "COULD NOT CONVERT:", temp
+            return False
 
         return temp;
 
@@ -151,6 +152,11 @@ class Chemistries(object):
 
                     # Just insert the row
                     cursor.execute("INSERT INTO chem_observations (username, round, date) VALUES (%s,%s, %s)", (username, round, date_ordered))
+
+                    value = self.Clean(value);
+                    if (value == False):
+                        print username, round, date_ordered, value
+                        continue
 
                     # Get the last observation id and create the data tuple
                     data.append((cursor.lastrowid, mapping[id], self.Clean(value)))
