@@ -37,7 +37,10 @@ class Chemistries(object):
 
     def Clean(self, value, username=None, round=None, date_ordered=None):
 
-        temp = value.strip('<').strip('>').strip(' ').strip('.').strip("NR");
+        temp = value.strip().strip('<').strip('>').strip(' ').strip('.');
+
+        if (temp == "NR"):
+            return None
 
         # If there is nothing left, return NULL
         if (len(temp)==0):
@@ -50,6 +53,7 @@ class Chemistries(object):
         # Below detectable limit. Return 0
         if ("DL" in temp.upper()):
             temp = '0'
+
         # Set A/B and binary entries to integers
         elif (temp.upper() == 'A'):
             print temp
