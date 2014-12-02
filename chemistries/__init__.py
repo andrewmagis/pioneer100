@@ -26,12 +26,11 @@ class Chemistries(object):
 
             cursor = self.database.GetCursor()
 
-            tup = "(" + ",".join(["'" + x + "'" for x in fields]) + ")"
-            print tup
+            format_strings = ','.join(['%s'] * len(fields))
 
             # Get the field ids for these chemistries
             cursor.execute("SELECT chemistry_id FROM chem_chemistries as c "
-                           "WHERE c.name IN (%s)", ("('3_hydroxyisovaleric_acid','vitamin_d')",))
+                           "WHERE c.name IN (%s)" % format_strings, tuple(fields))
 
             result = cursor.fetchall();
             print result
