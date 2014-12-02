@@ -162,7 +162,7 @@ class Chemistries(object):
                     print "Found round %d for username %s"%(round, username);
 
                     # Get the associated date
-                    (value, old_date, chem_values_id, observation_id) = list(result)[0]
+                    (old_value, old_date, chem_values_id, observation_id) = list(result)[0]
 
                     if (old_date is None):
                         raise MyError('No date for username %s and round %d'%(username, round));
