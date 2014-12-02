@@ -9,6 +9,7 @@ from database import Database
 from participant import ParticipantDB
 from qs import QS
 from proteomics import Proteomics
+from chemistries import Chemistries
 
 # Import DBSnp class
 from dbsnp import DBSnp
@@ -26,8 +27,11 @@ def main(parser):
     # Open connection to MySQL database
     database = Database()
 
-    # Create the QS object
+    # Get proteomics object
     prots = Proteomics(database)
+
+    # Get chemistry object
+    chem = Chemistries(database)
 
     # Create the QS object
     qs = QS(database)
@@ -35,6 +39,10 @@ def main(parser):
     if (not parser.filename is None):
         prots.LoadData(parser.filename, parser.category)
         return
+
+    print "Getting chemistry data"
+    result = chem._get_val('1115268', 1, ('3_hydroxyisovaleric_acid'))
+    return
 
     print "Getting proteomics data"
     result = prots._get_diff('1115268', 1, 2)
@@ -49,18 +57,7 @@ def main(parser):
     result = qs.get_val('1115268', FIRST_BLOOD_DRAW)
     print result['1115268']
 
-    return
 
-    # Load the DBSnp database
-    dbsnp = DBSnp(database)
-
-    # Open connection to Clinvar database
-    clinvar_db = Clinvar(database)
-
-    # Load the participants
-    participants = ParticipantDB(database, None, None, None, clinvar_db, dbsnp)
-
-    # Now we can analyze the proteomics data
 
 
 
