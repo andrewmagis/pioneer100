@@ -154,5 +154,101 @@ class Chemistries(object):
         result = cursor.executemany("INSERT INTO chem_values (observation_id, chemistry_id, value) VALUES (%s,%s, %s)", data)
         self.database.Commit()
 
+    def GetMeasurementByRound(self, measurement, username, round):
 
+        cursor = self.db.cursor()
+        cursor.execute("SELECT " + measurement + " FROM data5 WHERE USERNAME = (%s) and ROUND = (%s)", (username,round))
+        results = [];
+        for row in cursor:
+            results.append(row)
+
+        # Return nothing if it is not filled in
+        if (len(results)==0):
+            return None
+
+        # Error if there are multiple results
+        if (len(results)>1):
+            raise MyError('Multiple results back from database for %s %s %s'%(measurement, username, str(round)))
+
+        # Return the actual value
+        return results[0]
+
+    def LoadGenova(self, filename):
+
+        titles = None
+        headers = None
+
+        cursor = self.database.GetCursor()
+        cursor.execute("SELECT vendor_id,chemistry_id FROM chem_chemistries WHERE vendor = 'Genova'");
+        mapping = {};
+        for (vendor_id, chem_id) in cursor:
+            mapping[vendor_id] = chem_id
+
+        observations = []
+        data = []
+
+        with open(filename, 'rU') as f:
+            for line in f:
+
+                # Load the headers, removing the final 9 columns
+                if (titles is None):
+                    titles = line.strip().split('\t')[:-9]
+
+                # Next load the identifiers, removing the final 9 columns
+                elif (headers is None):
+                    headers = line.strip().split('\t')[:-9]
+
+                # Finally, load the data, removing the final 9 columns
+                else:
+                    tokens = line.strip().split('\t')[:-9]
+
+                    # Convert into dictionary
+                    data = dict(zip([x.strip().upper() for x in headers], [x.strip().upper() for x in tokens]))
+
+                    # Get username from this row
+                    username = data["LAST NAME"]
+
+                    print tokens
+                    print username
+
+                    # Get date from this row
+                    date_ordered = datetime.datetime.strptime(data['DATE ORDERED'], "%m/%d/%y");
+                    if (date_ordered <= FIRST_BLOOD_DRAW):
+                        round = 1
+                    elif (date_ordered <= SECOND_BLOOD_DRAW):
+                        round = 2
+                    else:
+                        round = 3
+
+                    # Make sure this is in the mapping
+                    if (not id in mapping):
+                        continue
+
+                    # Try to find this chem id in the values table
+                    cursor.execute("SELECT v.value "
+                                   "FROM chem_values as v, chem_observations as o "
+                                   "WHERE o.username = (%s) AND o.round = (%s) and v.chemistry_id = (%s)", (username, round, mapping[id]))
+
+                    results = cursor.fetchall()
+
+                    if (not result is None):
+
+                        # There is data, skip insertion
+                        print "Found round %d for username %s"%(round, username);
+
+                        # Get the associated date
+                        db_date = result[0];
+                        if (db_date is None):
+                            raise MyError('No date for username %s and round %d'%(username, round));
+
+                        # Update data
+                        #self.UpdateData(username, round, db_date, date_ordered, data, mapping)
+
+                    # There was no row found, so insert a new row!
+                    # TODO: we could check to see if the date already exists as well
+                    else:
+
+                        # Insert new row
+                        print "Inserting for username %s date %s"%(username, date_ordered)
+                        #self.InsertData(username, round, date_ordered, data, mapping)
 
