@@ -141,24 +141,48 @@ class Chemistries(object):
                     continue
 
                 # Try to find this chem id in the values table
-                cursor.execute("SELECT v.value "
+                cursor.execute("SELECT v.value, o.date, v.chem_values_id, o.observation_id "
                                "FROM chem_values as v, chem_observations as o "
                                "WHERE o.username = (%s) AND o.round = (%s) and v.chemistry_id = (%s) and v.observation_id = o.observation_id", (username, round, mapping[id]))
 
-                results = cursor.fetchall()
-                if (len(results) == 0):
+                result = cursor.fetchall()
 
-                    # Just insert the row
+                # There was no row found, so insert a new row!
+                if (len(result) == 0):
+
+                    # Just insert the observation
                     cursor.execute("INSERT INTO chem_observations (username, round, date) VALUES (%s,%s, %s)", (username, round, date_ordered))
 
-                    # Get the last observation id and create the data tuple
-                    data.append((cursor.lastrowid, mapping[id], self.Clean(value)))
+                    # Insert the data
+                    cursor.execute("INSERT INTO chem_values (observation_id, chemistry_id, value) VALUES (%s,%s, %s)", (cursor.lastrowid, mapping[id], self.Clean(current[id])))
+
+                elif (len(result) == 1):
+
+                    # There is data, skip insertion
+                    print "Found round %d for username %s"%(round, username);
+
+                    # Get the associated date
+                    (value, old_date, chem_values_id, observation_id) = list(result)[0]
+
+                    if (old_date is None):
+                        raise MyError('No date for username %s and round %d'%(username, round));
+
+                    elif (date_ordered > old_date):
+
+                        print "Update data (%s, %s) with (%s, %s)"%(str(value), old_date, self.Clean(current[id]), date_ordered)
+                        cursor.execute("UPDATE chem_observations "
+                                       "SET date = (%s) "
+                                       "WHERE observation_id = (%s)", (date_ordered, observation_id))
+
+                        cursor.execute("UPDATE chem_values "
+                                       "SET value = (%s) "
+                                       "WHERE chem_values_id = (%s)", (self.Clean(current[id]), chem_values_id))
 
                 else:
-                    print "Warning, this already existed!"
+                    raise MyError('More than one entry! Bad!')
 
         # Insert the observations
-        result = cursor.executemany("INSERT INTO chem_values (observation_id, chemistry_id, value) VALUES (%s,%s, %s)", data)
+        #result = cursor.executemany("INSERT INTO chem_values (observation_id, chemistry_id, value) VALUES (%s,%s, %s)", data)
         self.database.Commit()
 
     def GetMeasurementByRound(self, measurement, username, round):
@@ -219,9 +243,6 @@ class Chemistries(object):
                     # Get username from this row
                     username = current["Last Name"]
 
-                    #print tokens
-                    #print username
-
                     # Get date from this row
                     date_ordered = datetime.datetime.strptime(current['Date Ordered'], "%m/%d/%y");
                     if (date_ordered <= FIRST_BLOOD_DRAW):
@@ -245,14 +266,22 @@ class Chemistries(object):
 
                         result = cursor.fetchall()
 
-                        if (len(result) == 1):
+                        # There was no row found, so insert a new row!
+                        if (len(result) == 0):
+
+                            # Just insert the observation
+                            cursor.execute("INSERT INTO chem_observations (username, round, date) VALUES (%s,%s, %s)", (username, round, date_ordered))
+
+                            # Insert the data
+                            cursor.execute("INSERT INTO chem_values (observation_id, chemistry_id, value) VALUES (%s,%s, %s)", (cursor.lastrowid, mapping[id], self.Clean(current[id])))
+
+                        elif (len(result) == 1):
 
                             # There is data, skip insertion
                             print "Found round %d for username %s"%(round, username);
 
                             # Get the associated date
                             (value, old_date, chem_values_id, observation_id) = list(result)[0]
-                            print value, old_date
 
                             if (old_date is None):
                                 raise MyError('No date for username %s and round %d'%(username, round));
@@ -267,20 +296,6 @@ class Chemistries(object):
                                 cursor.execute("UPDATE chem_values "
                                                "SET value = (%s) "
                                                "WHERE chem_values_id = (%s)", (self.Clean(current[id]), chem_values_id))
-
-
-                        # There was no row found, so insert a new row!
-                        # TODO: we could check to see if the date already exists as well
-                        elif (len(result) == 0):
-
-                            # Just insert the observation
-                            cursor.execute("INSERT INTO chem_observations (username, round, date) VALUES (%s,%s, %s)", (username, round, date_ordered))
-
-                            # Insert the data
-                            cursor.execute("INSERT INTO chem_values (observation_id, chemistry_id, value) VALUES (%s,%s, %s)", (cursor.lastrowid, mapping[id], self.Clean(current[id])))
-
-                            # Get the last observation id and create the data tuple
-                            #data.append((cursor.lastrowid, mapping[id], self.Clean(current[id])))
 
                         else:
                             raise MyError('More than one entry! Bad!')
