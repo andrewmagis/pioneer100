@@ -23,6 +23,9 @@ class Chemistries(object):
 
             cursor = self.database.GetCursor()
 
+            tup = (','.join(fields),)
+            print tup
+
             # Get the field ids for these chemistries
             cursor.execute("SELECT chemistry_id FROM chem_chemistries as c "
                            "WHERE c.name IN (%s)", (','.join(fields),))
