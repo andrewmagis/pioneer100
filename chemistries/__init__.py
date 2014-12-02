@@ -150,6 +150,9 @@ class Chemistries(object):
                     # Get the last observation id and create the data tuple
                     data.append((cursor.lastrowid, mapping[id], self.Clean(value)))
 
+                else:
+                    print "Warning, this already existed!"
+
         # Insert the observations
         result = cursor.executemany("INSERT INTO chem_values (observation_id, chemistry_id, value) VALUES (%s,%s, %s)", data)
         self.database.Commit()
@@ -227,9 +230,6 @@ class Chemistries(object):
                     # Now we must loop over the ids
                     for id in data.keys():
 
-                        value = self.Clean(data[id])
-                        print id, value
-
                         # Make sure this is in the mapping
                         if (not id in mapping):
                             continue
@@ -259,7 +259,12 @@ class Chemistries(object):
                         # TODO: we could check to see if the date already exists as well
                         else:
 
-                            # Insert new row
-                            print "Inserting for username %s date %s"%(username, date_ordered)
-                            #self.InsertData(username, round, date_ordered, data, mapping)
+                            # Just insert the row
+                            cursor.execute("INSERT INTO chem_observations (username, round, date) VALUES (%s,%s, %s)", (username, round, date_ordered))
 
+                            # Get the last observation id and create the data tuple
+                            data.append((cursor.lastrowid, mapping[id], self.Clean(value)))
+
+        # Insert the observations
+        result = cursor.executemany("INSERT INTO chem_values (observation_id, chemistry_id, value) VALUES (%s,%s, %s)", data)
+        self.database.Commit()
