@@ -143,8 +143,16 @@ class Chemistries(object):
 
                 results = cursor.fetchall()
                 if (len(results) == 0):
-                    observations.append((username, round, date_ordered))
+
+                    # Just insert the row
+                    cursor.execute("INSERT INTO chem_observations (username, round, date) VALUES (%s,%s, %s)", (username, round, date_ordered))
+
+                    # Get the last observation id and create the data tuple
+                    data.append((cursor.lastrowid, mapping[id], value))
 
         # Insert the observations
-        result = cursor.executemany("INSERT INTO chem_observations (username, round, date) VALUES (%s,%s, %s)", observations)
+        result = cursor.executemany("INSERT INTO chem_values (observation_id, chemistry_id, value) VALUES (%s,%s, %s)", data)
         self.database.Commit()
+
+
+
