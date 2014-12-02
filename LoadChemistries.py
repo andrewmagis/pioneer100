@@ -39,13 +39,10 @@ def main(parser):
     #         "./db/GenovaSpreadsheets/Genova.4.11122014/Hood.VitaminD.Binary.11.10.14.txt",
     #         "./db/GenovaSpreadsheets/Genova.4.11122014/Hood.NutrientToxicElements.Binary.11.10.14.txt"]
 
-    """
     genova_files = ["./db/GenovaSpreadsheets/Genova.5.11212014/Hood.NutrEval.Binary.11.21.14.txt",
              "./db/GenovaSpreadsheets/Genova.5.11212014/Hood.MetSyn.Binary.11.21.14.txt",
              "./db/GenovaSpreadsheets/Genova.5.11212014/Hood.VitD.Binary.11.21.14.txt",
              "./db/GenovaSpreadsheets/Genova.5.11212014/Hood.NutrientToxicElements.Binary.11.21.14.txt"]
-    """
-    genova_files = ["./db/GenovaSpreadsheets/Genova.5.11212014/Hood.NutrEval.Binary.11.21.14.txt"]
 
     for f in genova_files:
         print "Loading file", f
