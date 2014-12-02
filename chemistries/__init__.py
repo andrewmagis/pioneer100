@@ -82,9 +82,6 @@ class Chemistries(object):
         observations = []
         data = []
 
-        print mapping
-        return
-
         with open(filename, 'rU') as f:
             for tokens in reader(f):
 
@@ -149,6 +146,9 @@ class Chemistries(object):
                     observations.append((username, round, submitted_date))
                     data.append()
 
+
+        print data
+        return
 
         # Insert the proteins
         cursor = self.database.GetCursor()
