@@ -17,6 +17,19 @@ class Chemistries(object):
     def __init__(self, database):
         self.database = database
 
+    def _get_field(self, round, field_id):
+
+        cursor = self.database.GetCursor()
+        cursor.execute("SELECT v.value "
+                       "FROM chem_observations as o, chem_values as v, chem_chemistries as c "
+                       "AND o.round = (%s) "
+                       "AND c.chemistry_id = (%s)"
+                       "AND v.observation_id = o.observation_id "
+                       "ORDER BY o.observation_id", (round,field_id,))
+
+        return np.array(list(cursor.fetchall()), dtype=[(username, float)])
+
+
     def _get_val(self, username, round, fields=None):
 
         # Make sure this is a list
@@ -26,16 +39,12 @@ class Chemistries(object):
 
             cursor = self.database.GetCursor()
 
-            format_strings = ','.join(['%s'] * len(fields))
-
             # Get the field ids for these chemistries
+            formatted = ','.join(['%s'] * len(fields))
             cursor.execute("SELECT chemistry_id FROM chem_chemistries as c "
-                           "WHERE c.name IN (%s)" % format_strings, tuple(fields))
+                           "WHERE c.name IN (%s)" % formatted, tuple(fields))
 
             result = cursor.fetchall();
-            print result
-
-            return
 
             cursor.execute("SELECT v.value FROM chem_observations as o, chem_values as v "
                            "WHERE o.username = (%s) "
