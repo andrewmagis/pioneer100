@@ -151,7 +151,7 @@ class Chemistries(object):
                     data.append((cursor.lastrowid, mapping[id], value))
 
         # Insert the observations
-        result = cursor.executemany("INSERT INTO chem_values (observation_id, chemistry_id, value) VALUES (%s,%s, %s)", data)
+        result = cursor.executemany("INSERT INTO chem_values (observation_id, chemistry_id, self.Clean(value)) VALUES (%s,%s, %s)", data)
         self.database.Commit()
 
 
