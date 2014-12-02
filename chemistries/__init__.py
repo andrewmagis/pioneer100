@@ -253,11 +253,14 @@ class Chemistries(object):
 
                             # Get the associated date
                             (value, new_date) = list(result)[0]
-                            print value, new_date
+                            print value, old_date
 
-
-                            if (new_date is None):
+                            if (old_date is None):
                                 raise MyError('No date for username %s and round %d'%(username, round));
+
+                            elif (date_ordered > old_date):
+
+                                print "Update data (%.3f, %s) with (%.3f, %s)"%(value, old_date, self.Clean(current[id]), date_ordered)
 
 
                         # There was no row found, so insert a new row!
