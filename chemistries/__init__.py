@@ -206,6 +206,9 @@ class Chemistries(object):
 
                     tokens = line.strip().split('\t')[:-9]
 
+                    # Convert into dictionary
+                    data = dict(zip([x.strip() for x in headers], [x.strip() for x in tokens]))
+
                     # Get username from this row
                     username = data["Last Name"]
 
