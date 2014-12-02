@@ -200,7 +200,7 @@ class Chemistries(object):
 
                 # Finally, load the data, removing the final 9 columns
                 else:
-                    
+
                     tokens = line.strip().split('\t')[:-9]
 
                     # Get username from this row
@@ -224,6 +224,8 @@ class Chemistries(object):
                         # Make sure this is in the mapping
                         if (not id in mapping):
                             continue
+
+                        print id, value
 
                         # Try to find this chem id in the values table
                         cursor.execute("SELECT v.value "
