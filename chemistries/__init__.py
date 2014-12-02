@@ -260,7 +260,7 @@ class Chemistries(object):
 
                             elif (date_ordered > old_date):
 
-                                print "Update data (%.3f, %s) with (%.3f, %s)"%(value, old_date, self.Clean(current[id]), date_ordered)
+                                print "Update data (%s, %s) with (%s, %s)"%(str(value), old_date, self.Clean(current[id]), date_ordered)
 
 
                         # There was no row found, so insert a new row!
