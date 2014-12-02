@@ -23,7 +23,7 @@ def main(parser):
 
     chem = Chemistries(database)
 
-    quest_files = ["./db/QuestSpreadsheets/Quest.4.11122014/all.quest.csv"]
+    quest_files = ["./db/QuestSpreadsheets/Quest.5.11212014/all.quest.csv"]
 
     for file in quest_files:
         chem.LoadQuest(file)
