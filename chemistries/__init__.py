@@ -195,7 +195,6 @@ class Chemistries(object):
                 # Load the headers, removing the final 9 columns
                 if (titles is None):
                     titles = line.strip().split('\t')[:-9]
-                    print titles
 
                 # Next load the identifiers, removing the final 9 columns
                 elif (headers is None):
@@ -208,13 +207,13 @@ class Chemistries(object):
                     tokens = line.strip().split('\t')[:-9]
 
                     # Get username from this row
-                    username = data["LAST NAME"]
+                    username = data["Last Name"]
 
                     print tokens
                     print username
 
                     # Get date from this row
-                    date_ordered = datetime.datetime.strptime(data['DATE ORDERED'], "%m/%d/%y");
+                    date_ordered = datetime.datetime.strptime(data['Date Ordered'], "%m/%d/%y");
                     if (date_ordered <= FIRST_BLOOD_DRAW):
                         round = 1
                     elif (date_ordered <= SECOND_BLOOD_DRAW):
