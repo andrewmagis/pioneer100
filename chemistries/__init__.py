@@ -158,9 +158,6 @@ class Chemistries(object):
 
                 elif (len(result) == 1):
 
-                    # There is data, skip insertion
-                    print "Found round %d for username %s"%(round, username);
-
                     # Get the associated date
                     (old_value, old_date, chem_values_id, observation_id) = list(result)[0]
 
@@ -169,7 +166,7 @@ class Chemistries(object):
 
                     elif (date_ordered > old_date):
 
-                        print "Update data (%s, %s) with (%s, %s)"%(str(value), old_date, self.Clean(value), date_ordered)
+                        print "Update username: %s round %s from (%s, %s) with (%s, %s)"%(username, round, str(old_value), old_date, self.Clean(value), date_ordered)
                         cursor.execute("UPDATE chem_observations "
                                        "SET date = (%s) "
                                        "WHERE observation_id = (%s)", (date_ordered, observation_id))
@@ -184,25 +181,6 @@ class Chemistries(object):
         # Insert the observations
         #result = cursor.executemany("INSERT INTO chem_values (observation_id, chemistry_id, value) VALUES (%s,%s, %s)", data)
         self.database.Commit()
-
-    def GetMeasurementByRound(self, measurement, username, round):
-
-        cursor = self.db.cursor()
-        cursor.execute("SELECT " + measurement + " FROM data5 WHERE USERNAME = (%s) and ROUND = (%s)", (username,round))
-        results = [];
-        for row in cursor:
-            results.append(row)
-
-        # Return nothing if it is not filled in
-        if (len(results)==0):
-            return None
-
-        # Error if there are multiple results
-        if (len(results)>1):
-            raise MyError('Multiple results back from database for %s %s %s'%(measurement, username, str(round)))
-
-        # Return the actual value
-        return results[0]
 
     def LoadGenova(self, filename):
 
