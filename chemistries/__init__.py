@@ -239,7 +239,7 @@ class Chemistries(object):
                             continue
 
                         # Try to find this chem id in the values table
-                        cursor.execute("SELECT v.value "
+                        cursor.execute("SELECT v.value, o.date "
                                        "FROM chem_values as v, chem_observations as o "
                                        "WHERE o.username = (%s) AND o.round = (%s) and v.chemistry_id = (%s) and v.observation_id = o.observation_id", (username, round, mapping[id]))
 
@@ -250,15 +250,15 @@ class Chemistries(object):
 
                             # There is data, skip insertion
                             print "Found round %d for username %s"%(round, username);
-                            print result
 
                             # Get the associated date
-                            db_date = result[0];
-                            if (db_date is None):
+                            (value, new_date) = result.pop()
+                            print value, new_date
+
+
+                            if (new_date is None):
                                 raise MyError('No date for username %s and round %d'%(username, round));
 
-                            # Update data
-                            #self.UpdateData(username, round, db_date, date_ordered, data, mapping)
 
                         # There was no row found, so insert a new row!
                         # TODO: we could check to see if the date already exists as well
