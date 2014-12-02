@@ -49,7 +49,7 @@ def main(parser):
 
     for f in genova_files:
         print "Loading file", f
-        database.LoadGenova(f)
+        chem.LoadGenova(f)
 
 
 if __name__ == "__main__":
