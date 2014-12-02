@@ -193,10 +193,12 @@ class Chemistries(object):
                 # Load the headers, removing the final 9 columns
                 if (titles is None):
                     titles = line.strip().split('\t')[:-9]
+                    print titles
 
                 # Next load the identifiers, removing the final 9 columns
                 elif (headers is None):
                     headers = line.strip().split('\t')[:-9]
+                    print headers
 
                 # Finally, load the data, removing the final 9 columns
                 else:
