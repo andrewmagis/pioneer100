@@ -244,7 +244,7 @@ class Chemistries(object):
                                        "WHERE o.username = (%s) AND o.round = (%s) and v.chemistry_id = (%s)", (username, round, mapping[id]))
 
                         result = cursor.fetchall()
-                        print result
+                        print username, round, mapping[id], result
 
                         if (len(result) != 0):
 
