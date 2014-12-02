@@ -79,6 +79,9 @@ class Chemistries(object):
         for (vendor_id, chem_id) in cursor:
             mapping[vendor_id] = chem_id
 
+        observations = []
+        data = []
+
         print mapping
 
         with open(filename, 'rU') as f:
@@ -140,27 +143,18 @@ class Chemistries(object):
                                "FROM chem_values as v, chem_observations as o "
                                "WHERE o.username = (%s) AND o.round = (%s) and v.chemistry_id = (%s)", (username, round, mapping[id]))
 
+                results = cursor.fetchall()
+                if (len(results) == 0):
+                    observations.append((username, round, submitted_date))
+                    data.append()
 
-                continue
 
-                # Get the value for this date and round
-                result = self.GetMeasurementByRound('DATE', username, round);
-                if (not result is None):
+        # Insert the proteins
+        cursor = self.database.GetCursor()
+        data = []
+        for p,c in zip(header, category):
+            data.append((p, c))
 
-                    # There is data, skip insertion
-                    #print "Found round %d for username %s"%(round, username);
-
-                    # Get the associated date
-                    db_date = result[0];
-                    if (db_date is None):
-                        raise MyError('No date for username %s and round %d'%(username, round));
-
-                    # Update data one at a time (yes inefficient, so shoot me)
-                    self.UpdateData(username, round, db_date, date_ordered, {id: value}, mapping)
-
-                # There was no row found, so insert a new row!
-                else:
-
-                    # Insert new row
-                    print "Cannot insert rows from Quest data [%s %s]"%(username, date_ordered)
-                    #raise MyError('Cannot insert data from Quest - add Genova first!');
+        # Insert into table
+        result = cursor.executemany("INSERT INTO prot_proteins (abbreviation, category) VALUES (%s,%s)", data)
+        self.database.Commit()
