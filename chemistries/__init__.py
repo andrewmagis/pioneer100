@@ -266,7 +266,7 @@ class Chemistries(object):
 
                             elif (date_ordered > old_date):
 
-                                print "Update data (%s, %s) with (%s, %s)"%(str(value), old_date, self.Clean(current[id]), date_ordered)
+                                print "Update username: %s round %s from (%s, %s) with (%s, %s)"%(username, round, str(value), old_date, self.Clean(current[id]), date_ordered)
                                 cursor.execute("UPDATE chem_observations "
                                                "SET date = (%s) "
                                                "WHERE observation_id = (%s)", (date_ordered, observation_id))
