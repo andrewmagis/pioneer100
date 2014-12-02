@@ -154,7 +154,7 @@ class Chemistries(object):
                     cursor.execute("INSERT INTO chem_observations (username, round, date) VALUES (%s,%s, %s)", (username, round, date_ordered))
 
                     # Insert the data
-                    cursor.execute("INSERT INTO chem_values (observation_id, chemistry_id, value) VALUES (%s,%s, %s)", (cursor.lastrowid, mapping[id], self.Clean(current[id])))
+                    cursor.execute("INSERT INTO chem_values (observation_id, chemistry_id, value) VALUES (%s,%s, %s)", (cursor.lastrowid, mapping[id], self.Clean(value)))
 
                 elif (len(result) == 1):
 
@@ -169,14 +169,14 @@ class Chemistries(object):
 
                     elif (date_ordered > old_date):
 
-                        print "Update data (%s, %s) with (%s, %s)"%(str(value), old_date, self.Clean(current[id]), date_ordered)
+                        print "Update data (%s, %s) with (%s, %s)"%(str(value), old_date, self.Clean(value), date_ordered)
                         cursor.execute("UPDATE chem_observations "
                                        "SET date = (%s) "
                                        "WHERE observation_id = (%s)", (date_ordered, observation_id))
 
                         cursor.execute("UPDATE chem_values "
                                        "SET value = (%s) "
-                                       "WHERE chem_values_id = (%s)", (self.Clean(current[id]), chem_values_id))
+                                       "WHERE chem_values_id = (%s)", (self.Clean(value), chem_values_id))
 
                 else:
                     raise MyError('More than one entry! Bad!')
