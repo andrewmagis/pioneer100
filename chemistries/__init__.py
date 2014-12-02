@@ -192,6 +192,7 @@ class Chemistries(object):
 
                 # Load the headers, removing the final 9 columns
                 if (titles is None):
+                    print "LOADING TITLES"
                     titles = line.strip().split('\t')[:-9]
                     print titles
 
