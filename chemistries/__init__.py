@@ -270,6 +270,10 @@ class Chemistries(object):
                             # Get the last observation id and create the data tuple
                             data.append((cursor.lastrowid, mapping[id], self.Clean(current[id])))
 
+                            self.database.Commit()
+                            cursor = self.database.GetCursor()
+
+
         # Insert the observations
         result = cursor.executemany("INSERT INTO chem_values (observation_id, chemistry_id, value) VALUES (%s,%s, %s)", data)
         self.database.Commit()
