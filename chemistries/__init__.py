@@ -239,12 +239,11 @@ class Chemistries(object):
                             continue
 
                         # Try to find this chem id in the values table
-                        cursor.execute("SELECT v.value, o.date "
+                        cursor.execute("SELECT v.value, o.date, v.chem_values_id, o.observation_id "
                                        "FROM chem_values as v, chem_observations as o "
                                        "WHERE o.username = (%s) AND o.round = (%s) and v.chemistry_id = (%s) and v.observation_id = o.observation_id", (username, round, mapping[id]))
 
                         result = cursor.fetchall()
-                        print username, round, mapping[id], result
 
                         if (len(result) == 1):
 
@@ -252,7 +251,7 @@ class Chemistries(object):
                             print "Found round %d for username %s"%(round, username);
 
                             # Get the associated date
-                            (value, old_date) = list(result)[0]
+                            (value, old_date, chem_values_id, observation_id) = list(result)[0]
                             print value, old_date
 
                             if (old_date is None):
@@ -261,11 +260,18 @@ class Chemistries(object):
                             elif (date_ordered > old_date):
 
                                 print "Update data (%s, %s) with (%s, %s)"%(str(value), old_date, self.Clean(current[id]), date_ordered)
+                                cursor.execute("UPDATE chem_observations "
+                                               "SET date = (%s) "
+                                               "WHERE observation_id = (%s)", (date_ordered, observation_id))
+
+                                cursor.execute("UPDATE chem_values "
+                                               "SET value = (%s) "
+                                               "WHERE chem_values_id = (%s)", (self.Clean(value), chem_values_id))
 
 
                         # There was no row found, so insert a new row!
                         # TODO: we could check to see if the date already exists as well
-                        elif (len(result)==0):
+                        elif (len(result) == 0):
 
                             # Just insert the observation
                             cursor.execute("INSERT INTO chem_observations (username, round, date) VALUES (%s,%s, %s)", (username, round, date_ordered))
