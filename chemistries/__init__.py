@@ -200,10 +200,8 @@ class Chemistries(object):
 
                 # Finally, load the data, removing the final 9 columns
                 else:
+                    
                     tokens = line.strip().split('\t')[:-9]
-
-                    # Convert into dictionary
-                    data = dict(zip([x.strip().upper() for x in headers], [x.strip().upper() for x in tokens]))
 
                     # Get username from this row
                     username = data["LAST NAME"]
@@ -220,35 +218,38 @@ class Chemistries(object):
                     else:
                         round = 3
 
-                    # Make sure this is in the mapping
-                    if (not id in mapping):
-                        continue
+                    # Now we must loop over the ids
+                    for id, value in zip(headers, tokens):
 
-                    # Try to find this chem id in the values table
-                    cursor.execute("SELECT v.value "
-                                   "FROM chem_values as v, chem_observations as o "
-                                   "WHERE o.username = (%s) AND o.round = (%s) and v.chemistry_id = (%s)", (username, round, mapping[id]))
+                        # Make sure this is in the mapping
+                        if (not id in mapping):
+                            continue
 
-                    results = cursor.fetchall()
+                        # Try to find this chem id in the values table
+                        cursor.execute("SELECT v.value "
+                                       "FROM chem_values as v, chem_observations as o "
+                                       "WHERE o.username = (%s) AND o.round = (%s) and v.chemistry_id = (%s)", (username, round, mapping[id]))
 
-                    if (not result is None):
+                        results = cursor.fetchall()
 
-                        # There is data, skip insertion
-                        print "Found round %d for username %s"%(round, username);
+                        if (not result is None):
 
-                        # Get the associated date
-                        db_date = result[0];
-                        if (db_date is None):
-                            raise MyError('No date for username %s and round %d'%(username, round));
+                            # There is data, skip insertion
+                            print "Found round %d for username %s"%(round, username);
 
-                        # Update data
-                        #self.UpdateData(username, round, db_date, date_ordered, data, mapping)
+                            # Get the associated date
+                            db_date = result[0];
+                            if (db_date is None):
+                                raise MyError('No date for username %s and round %d'%(username, round));
 
-                    # There was no row found, so insert a new row!
-                    # TODO: we could check to see if the date already exists as well
-                    else:
+                            # Update data
+                            #self.UpdateData(username, round, db_date, date_ordered, data, mapping)
 
-                        # Insert new row
-                        print "Inserting for username %s date %s"%(username, date_ordered)
-                        #self.InsertData(username, round, date_ordered, data, mapping)
+                        # There was no row found, so insert a new row!
+                        # TODO: we could check to see if the date already exists as well
+                        else:
+
+                            # Insert new row
+                            print "Inserting for username %s date %s"%(username, date_ordered)
+                            #self.InsertData(username, round, date_ordered, data, mapping)
 
