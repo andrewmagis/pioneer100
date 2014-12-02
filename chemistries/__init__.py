@@ -145,17 +145,6 @@ class Chemistries(object):
                 if (len(results) == 0):
                     observations.append((username, round, submitted_date))
 
-
-
-        print observations
-        return
-
-        # Insert the proteins
-        cursor = self.database.GetCursor()
-        data = []
-        for p,c in zip(header, category):
-            data.append((p, c))
-
-        # Insert into table
-        result = cursor.executemany("INSERT INTO prot_proteins (abbreviation, category) VALUES (%s,%s)", data)
+        # Insert the observations
+        result = cursor.executemany("INSERT INTO chem_observations (username, round, date) VALUES (%s,%s, %s)", observations)
         self.database.Commit()
