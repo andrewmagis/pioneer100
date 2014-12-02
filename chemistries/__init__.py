@@ -207,16 +207,16 @@ class Chemistries(object):
                     tokens = line.strip().split('\t')[:-9]
 
                     # Convert into dictionary
-                    data = dict(zip([x.strip() for x in headers], [x.strip() for x in tokens]))
+                    data = dict(zip([x.strip().lower() for x in headers], [x.strip().lower() for x in tokens]))
 
                     # Get username from this row
-                    username = data["Last Name"]
+                    username = data["last name"]
 
                     print tokens
                     print username
 
                     # Get date from this row
-                    date_ordered = datetime.datetime.strptime(data['Date Ordered'], "%m/%d/%y");
+                    date_ordered = datetime.datetime.strptime(data['date ordered'], "%m/%d/%y");
                     if (date_ordered <= FIRST_BLOOD_DRAW):
                         round = 1
                     elif (date_ordered <= SECOND_BLOOD_DRAW):
