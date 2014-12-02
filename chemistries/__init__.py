@@ -252,7 +252,7 @@ class Chemistries(object):
                             print "Found round %d for username %s"%(round, username);
 
                             # Get the associated date
-                            (value, new_date) = result.pop()
+                            (value, new_date) = list(result)[0]
                             print value, new_date
 
 
