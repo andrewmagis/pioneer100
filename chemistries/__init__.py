@@ -64,6 +64,11 @@ class Chemistries(object):
             print temp
             temp = '1'
 
+        try:
+            a = int(temp);
+        except:
+            print "COULD NOT CONVERT:", temp
+
         return temp;
 
     def LoadQuest(self, filename):
