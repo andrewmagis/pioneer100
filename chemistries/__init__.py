@@ -23,7 +23,7 @@ class Chemistries(object):
         cursor.execute("SELECT v.value "
                        "FROM chem_observations as o, chem_values as v, chem_chemistries as c "
                        "AND o.round = (%s) "
-                       "AND c.chemistry_id = (%s)"
+                       "AND c.chemistry_id = (%s) "
                        "AND v.observation_id = o.observation_id "
                        "ORDER BY o.observation_id", (round,field_id,))
 
