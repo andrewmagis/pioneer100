@@ -227,7 +227,7 @@ class Chemistries(object):
                     # Now we must loop over the ids
                     for id in data.keys():
 
-                        value = data[id]
+                        value = self.Clean(data[id])
                         print id, value
 
                         # Make sure this is in the mapping
