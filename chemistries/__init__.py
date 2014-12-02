@@ -28,7 +28,7 @@ class Chemistries(object):
 
             print fields
             tup = (','.join([x for x in fields]),)
-            print tup
+            print tuple(fields)
 
             # Get the field ids for these chemistries
             cursor.execute("SELECT chemistry_id FROM chem_chemistries as c "
