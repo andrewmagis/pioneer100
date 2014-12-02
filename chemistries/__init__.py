@@ -19,6 +19,9 @@ class Chemistries(object):
 
     def _get_val(self, username, round, fields=None):
 
+        # Make sure this is a list
+        assert isinstance(fields, (list, tuple))
+
         if (not fields is None):
 
             cursor = self.database.GetCursor()
