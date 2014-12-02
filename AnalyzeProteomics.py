@@ -41,7 +41,7 @@ def main(parser):
         return
 
     print "Getting chemistry data"
-    result = chem._get_val('1115268', 1, ('3_hydroxyisovaleric_acid'))
+    result = chem._get_val('1115268', 1, ['3_hydroxyisovaleric_acid'])
     return
 
     print "Getting proteomics data"
