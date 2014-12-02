@@ -25,7 +25,7 @@ class Chemistries(object):
 
             # Get the field ids for these chemistries
             cursor.execute("SELECT chemistry_id FROM chem_chemistries as c "
-                           "WHERE c.name IN (%s)", (tuple(fields)))
+                           "WHERE c.name IN (%s)", ','.join(fields))
 
             result = cursor.fetchall();
             print result
@@ -36,7 +36,6 @@ class Chemistries(object):
                            "WHERE o.username = (%s) "
                            "AND o.round = (%s) "
                            "AND v.observation_id = o.observation_id "
-                           "AND "
                            "ORDER BY o.observation_id", (username,round,))
 
         else:
