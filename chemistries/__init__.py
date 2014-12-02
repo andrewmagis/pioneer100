@@ -240,12 +240,12 @@ class Chemistries(object):
                                        "WHERE o.username = (%s) AND o.round = (%s) and v.chemistry_id = (%s)", (username, round, mapping[id]))
 
                         result = cursor.fetchall()
-                        print len(result)
 
-                        if (not result is None):
+                        if (len(result) != 0):
 
                             # There is data, skip insertion
                             print "Found round %d for username %s"%(round, username);
+                            print result
 
                             # Get the associated date
                             db_date = result[0];
