@@ -187,12 +187,13 @@ class Chemistries(object):
         observations = []
         data = []
 
+        print mapping
+
         with open(filename, 'rU') as f:
             for line in f:
 
                 # Load the headers, removing the final 9 columns
                 if (titles is None):
-                    print "LOADING TITLES"
                     titles = line.strip().split('\t')[:-9]
                     print titles
 
