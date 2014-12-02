@@ -35,7 +35,7 @@ class Chemistries(object):
         # Build numpy array out of result
         return np.array(r2[username]-r1[username], dtype=[(username, float)])
 
-    def Clean(self, value, username=None, round=None, date_ordered=None):
+    def Clean(self, value):
 
         temp = value.strip().strip('<').strip('>').strip(' ').strip('.');
 
@@ -67,11 +67,6 @@ class Chemistries(object):
         elif (temp.upper() == "YES"):
             print temp
             temp = '1'
-
-        try:
-            a = float(temp);
-        except:
-            print "COULD NOT CONVERT:", temp, username, round, date_ordered
 
         return temp;
 
@@ -157,7 +152,7 @@ class Chemistries(object):
                     cursor.execute("INSERT INTO chem_observations (username, round, date) VALUES (%s,%s, %s)", (username, round, date_ordered))
 
                     # Get the last observation id and create the data tuple
-                    data.append((cursor.lastrowid, mapping[id], self.Clean(value, username, round, date_ordered)))
+                    data.append((cursor.lastrowid, mapping[id], self.Clean(value)))
 
                 else:
                     print "Warning, this already existed!"
@@ -271,8 +266,11 @@ class Chemistries(object):
                             # Just insert the row
                             cursor.execute("INSERT INTO chem_observations (username, round, date) VALUES (%s,%s, %s)", (username, round, date_ordered))
 
+                            self.database.Commit()
+                            cursor = self.database.GetCursor()
+
                             # Get the last observation id and create the data tuple
-                            data.append((cursor.lastrowid, mapping[id], self.Clean(current[id], username, round, date_ordered)))
+                            data.append((cursor.lastrowid, mapping[id], self.Clean(current[id])))
 
         # Insert the observations
         result = cursor.executemany("INSERT INTO chem_values (observation_id, chemistry_id, value) VALUES (%s,%s, %s)", data)
