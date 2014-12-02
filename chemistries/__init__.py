@@ -56,16 +56,12 @@ class Chemistries(object):
 
         # Set A/B and binary entries to integers
         elif (temp.upper() == 'A'):
-            print temp
             temp = '0'
         elif (temp.upper() == 'B'):
-            print temp
             temp = '1'
         elif (temp.upper() == "NO"):
-            print temp
             temp = '0'
         elif (temp.upper() == "YES"):
-            print temp
             temp = '1'
 
         return temp;
@@ -254,9 +250,6 @@ class Chemistries(object):
                             cursor.execute("INSERT INTO chem_values (observation_id, chemistry_id, value) VALUES (%s,%s, %s)", (cursor.lastrowid, mapping[id], self.Clean(current[id])))
 
                         elif (len(result) == 1):
-
-                            # There is data, skip insertion
-                            print "Found round %d for username %s"%(round, username);
 
                             # Get the associated date
                             (value, old_date, chem_values_id, observation_id) = list(result)[0]
