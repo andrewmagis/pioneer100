@@ -225,8 +225,9 @@ class Chemistries(object):
                         round = 3
 
                     # Now we must loop over the ids
-                    for id, value in zip(headers, tokens):
+                    for id in data.keys():
 
+                        value = data[id]
                         print id, value
 
                         # Make sure this is in the mapping
