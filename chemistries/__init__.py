@@ -143,7 +143,7 @@ class Chemistries(object):
                 # Try to find this chem id in the values table
                 cursor.execute("SELECT v.value "
                                "FROM chem_values as v, chem_observations as o "
-                               "WHERE o.username = (%s) AND o.round = (%s) and v.chemistry_id = (%s)", (username, round, mapping[id]))
+                               "WHERE o.username = (%s) AND o.round = (%s) and v.chemistry_id = (%s) and v.observation_id = o.observation_id", (username, round, mapping[id]))
 
                 results = cursor.fetchall()
                 if (len(results) == 0):
@@ -241,7 +241,7 @@ class Chemistries(object):
                         # Try to find this chem id in the values table
                         cursor.execute("SELECT v.value "
                                        "FROM chem_values as v, chem_observations as o "
-                                       "WHERE o.username = (%s) AND o.round = (%s) and v.chemistry_id = (%s)", (username, round, mapping[id]))
+                                       "WHERE o.username = (%s) AND o.round = (%s) and v.chemistry_id = (%s) and v.observation_id = o.observation_id", (username, round, mapping[id]))
 
                         result = cursor.fetchall()
                         print username, round, mapping[id], result
