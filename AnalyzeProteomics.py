@@ -45,6 +45,7 @@ def main(parser):
 
     result = chem._get_field(1, 126)
     print result
+    print result.size
 
     return
 
