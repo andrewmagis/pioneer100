@@ -20,14 +20,14 @@ class Chemistries(object):
     def _get_field(self, round, field_id):
 
         cursor = self.database.GetCursor()
-        cursor.execute("SELECT v.value "
+        cursor.execute("SELECT o.username, v.value "
                        "FROM chem_observations as o, chem_values as v "
                        "WHERE o.round = (%s) "
                        "AND v.chemistry_id = (%s) "
                        "AND v.observation_id = o.observation_id "
                        "ORDER BY o.observation_id", (round,field_id,))
 
-        return np.array(list(cursor.fetchall()), dtype=[(str(field_id), float)])
+        return np.array(list(cursor.fetchall()), dtype=[(username, str, 10), (str(field_id), float)])
 
     def _get_fields(self, round, fields):
 
