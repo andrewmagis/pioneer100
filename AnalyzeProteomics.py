@@ -62,8 +62,8 @@ def main(parser):
     SECOND_BLOOD_DRAW=datetime(2014, 8, 1)
     THIRD_BLOOD_DRAW=datetime(2014, 11, 1)
 
-    result = qs.get_val('1115268', FIRST_BLOOD_DRAW)
-    print result['1115268']
+    result = qs.get_avg_val('1115268', FIRST_BLOOD_DRAW)
+    print result
 
 
 
