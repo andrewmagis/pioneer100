@@ -18,7 +18,7 @@ class QS(object):
 
     def get_val(self, username, start=None, stop=None):
 
-        if (start is None) and (end is None):
+        if (start is None) and (stop is None):
             cursor = self.database.GetCursor()
             cursor.execute("SELECT q.ACTIVITYCALORIES FROM qs as q WHERE USERNAME = (%s)", (username,))
 
