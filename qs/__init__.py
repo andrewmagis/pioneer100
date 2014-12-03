@@ -63,7 +63,7 @@ class QS(object):
             if (not result is None):
                 data.append(result)
 
-        return np.array(data, dtype=[(username, str, 8), ('activity', float)])
+        return np.array(data, dtype=[('username', str, 8), ('activity', float)])
 
     def GetActivity(self, username):
 
