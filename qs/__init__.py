@@ -59,6 +59,7 @@ class QS(object):
 
         data = []
         for prt in prts:
+            print prt
             result = self.get_avg_val(prt, start, stop)
             if (not result is None):
                 data.append(result)
