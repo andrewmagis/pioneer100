@@ -66,12 +66,18 @@ def main(parser):
     print q
 
     # This sucks, but ok merge it
+    data = []
     for username, value in zip(p['username'], p['99']):
         print username, value
 
         index = q['username'] == username
-        print index
+        if (np.sum(index)==1):
 
+            subset = q['activity'][index]
+            data.append((username, value, subset))
+
+    final = np.array(data, dtype=[('username', str, 8), ('value', float), ('activity', float)])
+    print final
 
 if __name__ == "__main__":
     main(ArgParser())
