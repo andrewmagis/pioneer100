@@ -37,6 +37,17 @@ class QS(object):
         # Return the data
         return np.array(list(cursor.fetchall()), dtype=[(username, float)])
 
+    def get_avg_val(self, username, start, stop):
+
+        # Get the data
+        activity = self.get_val(username, start, stop)
+
+        index = activity > 100
+        if (np.sum(index) < 40):
+            return None
+
+        mean_cals = scipy.nanmean(active_cals[index])
+        return (username, mean_cals)
 
     def GetActivity(self, username):
 
