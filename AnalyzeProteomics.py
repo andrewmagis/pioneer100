@@ -53,7 +53,7 @@ def main(parser):
     """
 
     print "Getting proteomics data"
-    result = prots._get_diff('1216743', 1, 2)
+    result = prots._get_field(1, 99)
     print result
 
     print "Getting qs data"
