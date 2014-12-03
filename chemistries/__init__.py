@@ -25,7 +25,7 @@ class Chemistries(object):
                        "WHERE o.round = (%s) "
                        "AND v.chemistry_id = (%s) "
                        "AND v.observation_id = o.observation_id "
-                       "ORDER BY o.observation_id", (round,field_id,))
+                       "ORDER BY o.username", (round,field_id,))
 
         return np.array(list(cursor.fetchall()), dtype=[('username', str, 8), (str(field_id), float)])
 
