@@ -62,7 +62,7 @@ def main(parser):
     SECOND_BLOOD_DRAW=datetime(2014, 8, 1)
     THIRD_BLOOD_DRAW=datetime(2014, 11, 1)
 
-    result = qs.get_activites(FIRST_BLOOD_DRAW, SECOND_BLOOD_DRAW)
+    result = qs.get_activities(FIRST_BLOOD_DRAW, SECOND_BLOOD_DRAW)
     print result
 
 
