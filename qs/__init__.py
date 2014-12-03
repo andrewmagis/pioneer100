@@ -42,11 +42,13 @@ class QS(object):
         # Get the data
         activity = self.get_val(username, start, stop)
 
-        index = activity > 100
+        print activity[username]
+
+        index = activity[username] > 100
         if (np.sum(index) < 40):
             return None
 
-        mean_cals = scipy.nanmean(active_cals[index])
+        mean_cals = scipy.nanmean(activity[username][index])
         return (username, mean_cals)
 
     def GetActivity(self, username):
