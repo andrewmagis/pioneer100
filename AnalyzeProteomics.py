@@ -53,8 +53,8 @@ def main(parser):
     """
 
     print "Getting proteomics data"
-    result = prots._get_field(1, 99)
-    print result
+    p = prots._get_field(1, 99)
+    print p
 
     print "Getting qs data"
     # Dates for blood draws for proteomics
@@ -62,8 +62,12 @@ def main(parser):
     SECOND_BLOOD_DRAW=datetime(2014, 8, 1)
     THIRD_BLOOD_DRAW=datetime(2014, 11, 1)
 
-    result = qs.get_activities(FIRST_BLOOD_DRAW, SECOND_BLOOD_DRAW)
-    print result
+    q = qs.get_activities(FIRST_BLOOD_DRAW, SECOND_BLOOD_DRAW)
+    print q
+
+    # This sucks, but ok merge it
+    for username, value in zip(p['username'], p['99']):
+        print username, value
 
 
 if __name__ == "__main__":
