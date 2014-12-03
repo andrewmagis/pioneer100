@@ -1,9 +1,16 @@
 # MySQL information (clearly insecure)
-HOSTNAME = 'localhost'
-USERNAME = 'amagis'
-PASSWORD = '3bbByr62ZqhdksVkH7Wy'
+# Old values
+#HOSTNAME = 'localhost'
+#USERNAME = 'amagis'
+#PASSWORD = '3bbByr62ZqhdksVkH7Wy'
+#DB = '100i'
+
+HOSTNAME = 'mysql'
+USERNAME = 'ipython'
+PASSWORD = 'docker-db'
 DB = '100i'
 
+<<<<<<< HEAD
 import logging
 import MySQLdb
 from MySQLdb import ProgrammingError, OperationalError, InterfaceError
@@ -12,7 +19,14 @@ import datetime, re
 from csv import reader
 import pandas
 from p100.range import Range
+=======
+import MySQLdb as mdb
+import numpy as np
+import datetime, re
+from csv import reader
+>>>>>>> master
 
+from p100.range import Range
 from p100.errors import MyError
 
 logger = logging.getLogger("p100.database")
