@@ -37,11 +37,12 @@ def main(parser):
     print "Measurement: %s"%(parser.measurement)
 
     # Loop over all the participants, and get the R1 and R2 metabolite + genetic score
-    x = participants.MetaboliteTraitCorrelation('Homocysteine levels', 'HOMOCYSTEINE_CARDIOVASCULAR_QUEST', 1e-50)
+    #x = participants.MetaboliteTraitCorrelation('Homocysteine levels', 'HOMOCYSTEINE_CARDIOVASCULAR_QUEST', 1e-50)
+    x = participants.MetaboliteTraitCorrelation('COMT', 'HOMOCYSTEINE_CARDIOVASCULAR_QUEST', 1)
     data = []
 
     # Now we get the supplementation level for each of these people
-    for (prt, round1, round2, score) in x:
+    for prt, gender, round1, round2, round3, score in x:
 
         # Get the compliance for vitamin D and supplementation level
         gender = participants.participants[prt].gender
@@ -60,7 +61,7 @@ def main(parser):
 
         data.append((prt, gender, round1, round2, score, anxiety, depression, stress))
 
-    x = np.array(data, dtype=[('Username', np.str, 10), ('Gender', np.str, 1), ('Round1', float), ('Round2', float), ('Score', float), ('Anxiety', float), ('Depression', float), ('Stress', 'float')])
+    x = np.array(data, dtype=[('Username', np.str, 10), ('Gender', np.str, 1), ('Round1', float), ('Round2', float), ('Score', float), ('Anxiety', float), ('Depression', float), ('Stress', float)])
 
     for (username, gender, round1, round2, score, anxiety, depression, stress) in x:
         print username, gender, round1, round2, score, anxiety, depression, stress
