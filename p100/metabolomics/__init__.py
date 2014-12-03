@@ -1,5 +1,7 @@
 
 from datetime import date, datetime, timedelta as td
+import logging
+
 import fitbit
 from p100.errors import MyError
 
@@ -7,13 +9,45 @@ import numpy as np
 import scipy
 import math
 
+logger = logging.getLogger("p100.metabolomics")
 class Metabolomics(object):
-
     def __init__(self, database):
+        logger.debug("Creating a Metabolomics object")
         self.database = database
+
+    def GetData(self, username=None, round=None):
+        """
+        Returns a dataframe with the metabolomic data for
+        a given user and round(if provided).
+        """
+        logger.debug("GetData( %s, %s )" %(username, round))
+        q_string = """
+        SELECT mo.username, mo.round, imputed as value, biochemical as metabolite_name,
+                super_pathway, sub_pathway, hmdb
+        FROM meta_values mv, meta_observation mo, meta_metabolite mm
+        WHERE mm.metabolite_id = mv.metabolite_id
+        and mo.observation_id = mv.observation_id"""
+        if username is None:
+            var_tup = []
+        else:
+            q_string += " and mo.username = %s "
+            var_tup = [username]
+
+        if round is not None:
+            q_string += " and mo.round = %s"
+            var_tup += [round]
+        return self.database.GetDataFrame( q_string, tuple(var_tup) )
+
+    def Clean(self, value):
+
+        new_value = value.strip().strip("'").strip('"')
+        if (len(new_value) == 0):
+            return None
+        return new_value
 
     def Compile(self):
 
+        raise MyError("Is this used?")
         username = '2682430'
         round = 1
 
@@ -36,51 +70,6 @@ class Metabolomics(object):
         # Build numpy structured array of scores
         x = np.array(data, dtype=[('Username', np.str, 10), ('Gender', np.str, 1), ('Round1', float), ('Round2', float), ('Round3', float), ('Score', float)])
 
-
-    def GetData(self, username):
-
-        # Get the cursor
-        cursor = self.database.GetCursor();
-
-        cursor.execute("SELECT * FROM metabolomics WHERE username = (%s) ORDER BY ROUND", (username,))
-        result = None
-        columns = [d[0] for d in cursor.description]
-
-        # Concatenate all the tuples together
-        result = []
-        for row in cursor:
-            result.append(row)
-
-        if (len(result)>0):
-            result = zip(*result)
-
-        if (result is None):
-            return {}
-
-        if (len(result)==0):
-            return {}
-
-        # Now convert each value into a numpy array
-        final = {}
-        for key, values in zip(columns, result):
-            if (key == "USERNAME"):
-                continue;
-            if (key == "ROUND"):
-                final[key] = np.array(values, dtype=np.object)
-                continue;
-
-            try:
-                final[key] = np.array(values, dtype=np.float)
-            except:
-                final[key] = np.array(values, dtype=np.object)
-        return final
-
-    def Clean(self, value):
-
-        new_value = value.strip().strip("'").strip('"')
-        if (len(new_value) == 0):
-            return None
-        return new_value
 
     def LoadMetabolomicsData(self, filename):
 
