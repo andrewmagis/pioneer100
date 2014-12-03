@@ -41,7 +41,8 @@ def main(parser):
         return
 
     print "Getting chemistry data"
-    #result = chem._get_val('1115268', 1, ('3_hydroxyisovaleric_acid', 'vitamin_d',))
+    result = chem._get_fields(1, ('3_hydroxyisovaleric_acid', 'vitamin_d',))
+    return
 
     result = chem._get_field(1, 126)
     print result

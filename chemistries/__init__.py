@@ -29,38 +29,29 @@ class Chemistries(object):
 
         return np.array(list(cursor.fetchall()), dtype=[(str(field_id), float)])
 
-
-    def _get_val(self, username, round, fields=None):
+    def _get_fields(self, round, fields):
 
         # Make sure this is a list
         assert isinstance(fields, (list, tuple))
 
-        if (not fields is None):
+        cursor = self.database.GetCursor()
 
-            cursor = self.database.GetCursor()
+        # Get the field ids for these chemistries
+        formatted = ','.join(['%s'] * len(fields))
+        cursor.execute("SELECT chemistry_id FROM chem_chemistries as c "
+                       "WHERE c.name IN (%s)" % formatted, tuple(fields))
 
-            # Get the field ids for these chemistries
-            formatted = ','.join(['%s'] * len(fields))
-            cursor.execute("SELECT chemistry_id FROM chem_chemistries as c "
-                           "WHERE c.name IN (%s)" % formatted, tuple(fields))
+        result = cursor.fetchall();
+        data = []
 
-            result = cursor.fetchall();
+        # Loop over each id
+        for id in result:
+            data.append(self._get_field(round, id))
 
-            cursor.execute("SELECT v.value FROM chem_observations as o, chem_values as v "
-                           "WHERE o.username = (%s) "
-                           "AND o.round = (%s) "
-                           "AND v.observation_id = o.observation_id "
-                           "ORDER BY o.observation_id", (username,round,))
-
-        else:
-
-            cursor = self.database.GetCursor()
-            cursor.execute("SELECT v.value FROM chem_observations as o, chem_values as v "
-                           "WHERE o.username = (%s) AND o.round = (%s) AND v.observation_id = o.observation_id "
-                           "ORDER BY o.observation_id", (username,round,))
+        print data
 
         # Build numpy array out of result
-        return np.array(list(cursor.fetchall()), dtype=[(username, float)])
+        #return np.array(list(cursor.fetchall()), dtype=[(username, float)])
 
     def _get_diff(self, username, round1, round2):
 
