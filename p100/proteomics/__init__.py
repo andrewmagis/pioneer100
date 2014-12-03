@@ -1,6 +1,6 @@
 
 from datetime import date, datetime, timedelta as td
-from errors import MyError
+from p100.errors import MyError
 
 import numpy as np
 import scipy

@@ -1,7 +1,7 @@
 
 from datetime import date, datetime, timedelta as td
 import fitbit
-from errors import MyError
+from p100.errors import MyError
 
 import numpy as np
 import scipy
