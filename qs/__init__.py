@@ -42,14 +42,28 @@ class QS(object):
         # Get the data
         activity = self.get_val(username, start, stop)
 
-        print activity[username]
-
         index = activity[username] > 100
         if (np.sum(index) < 40):
             return None
 
         mean_cals = scipy.nanmean(activity[username][index])
         return (username, mean_cals)
+
+    def get_activities(self, start, stop):
+
+        cursor = self.database.GetCursor()
+
+        # Get the participant ids
+        cursor.execute("SELECT username FROM participants")
+        prts = cursor.fetchall()
+
+        data = []
+        for prt in prts:
+            result = self.get_avg_val(prt, start, stop)
+            if (not result is None):
+                data.append(result)
+
+        return np.array(data, dtype=[(username, str, 8), ('activity', float)])
 
     def GetActivity(self, username):
 
