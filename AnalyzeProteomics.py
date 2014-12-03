@@ -69,7 +69,7 @@ def main(parser):
     for username, value in zip(p['username'], p['99']):
         print username, value
 
-        index = q['username'] = username
+        index = q['username'] == username
         print index
 
 
