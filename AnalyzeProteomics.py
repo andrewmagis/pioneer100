@@ -40,6 +40,7 @@ def main(parser):
         prots.LoadData(parser.filename, parser.category)
         return
 
+    """
     print "Getting chemistry data"
     result = chem._get_fields(1, ('3_hydroxyisovaleric_acid', 'vitamin_d',))
     return
@@ -49,6 +50,7 @@ def main(parser):
     print result.size
 
     return
+    """
 
     print "Getting proteomics data"
     result = prots._get_diff('1115268', 1, 2)
