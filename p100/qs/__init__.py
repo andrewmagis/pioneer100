@@ -37,7 +37,7 @@ class QS(object):
         # Return the data
         return np.array(list(cursor.fetchall()), dtype=[(username, float)])
 
-    def get_avg_val(self, username, start, stop):
+    def get_avg_val(self, username, start=None, stop=None):
 
         # Get the data
         activity = self.get_val(username, start, stop)
