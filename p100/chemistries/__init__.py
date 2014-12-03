@@ -17,15 +17,41 @@ class Chemistries(object):
     def __init__(self, database):
         self.database = database
 
-    def _get_val(self, username, round):
+    def _get_field(self, round, field_id):
 
         cursor = self.database.GetCursor()
-        cursor.execute("SELECT v.value FROM chem_observations as o, chem_values as v "
-                       "WHERE o.username = (%s) AND o.round = (%s) AND v.observation_id = o.observation_id "
-                       "ORDER BY o.observation_id", (username,round,))
+        cursor.execute("SELECT o.username, v.value "
+                       "FROM chem_observations as o, chem_values as v "
+                       "WHERE o.round = (%s) "
+                       "AND v.chemistry_id = (%s) "
+                       "AND v.observation_id = o.observation_id "
+                       "ORDER BY o.username", (round,field_id,))
+
+        return np.array(list(cursor.fetchall()), dtype=[('username', str, 8), (str(field_id), float)])
+
+    def _get_fields(self, round, fields):
+
+        # Make sure this is a list
+        assert isinstance(fields, (list, tuple))
+
+        cursor = self.database.GetCursor()
+
+        # Get the field ids for these chemistries
+        formatted = ','.join(['%s'] * len(fields))
+        cursor.execute("SELECT chemistry_id FROM chem_chemistries as c "
+                       "WHERE c.name IN (%s)" % formatted, tuple(fields))
+
+        result = cursor.fetchall();
+        data = []
+
+        # Loop over each id
+        for id in result:
+            data.append(self._get_field(round, id))
+
+        print data
 
         # Build numpy array out of result
-        return np.array(list(cursor.fetchall()), dtype=[(username, float)])
+        #return np.array(list(cursor.fetchall()), dtype=[(username, float)])
 
     def _get_diff(self, username, round1, round2):
 
@@ -136,6 +162,13 @@ class Chemistries(object):
                 if (not id in mapping):
                     continue
 
+                # Convert value
+                new_value = self.Clean(value)
+
+                # Do not insert Nones
+                if (new_value is None):
+                    continue
+
                 # Try to find this chem id in the values table
                 cursor.execute("SELECT v.value, o.date, v.chem_values_id, o.observation_id "
                                "FROM chem_values as v, chem_observations as o "
@@ -150,7 +183,7 @@ class Chemistries(object):
                     cursor.execute("INSERT INTO chem_observations (username, round, date) VALUES (%s,%s, %s)", (username, round, date_ordered))
 
                     # Insert the data
-                    cursor.execute("INSERT INTO chem_values (observation_id, chemistry_id, value) VALUES (%s,%s, %s)", (cursor.lastrowid, mapping[id], self.Clean(value)))
+                    cursor.execute("INSERT INTO chem_values (observation_id, chemistry_id, value) VALUES (%s,%s, %s)", (cursor.lastrowid, mapping[id], new_value))
 
                 elif (len(result) == 1):
 
@@ -162,14 +195,14 @@ class Chemistries(object):
 
                     elif (date_ordered > old_date):
 
-                        print "Update username: %s round %s from (%s, %s) with (%s, %s)"%(username, round, str(old_value), old_date, self.Clean(value), date_ordered)
+                        print "Update username: %s round %s from (%s, %s) with (%s, %s)"%(username, round, str(old_value), old_date, new_value, date_ordered)
                         cursor.execute("UPDATE chem_observations "
                                        "SET date = (%s) "
                                        "WHERE observation_id = (%s)", (date_ordered, observation_id))
 
                         cursor.execute("UPDATE chem_values "
                                        "SET value = (%s) "
-                                       "WHERE chem_values_id = (%s)", (self.Clean(value), chem_values_id))
+                                       "WHERE chem_values_id = (%s)", (new_value, chem_values_id))
 
                 else:
                     raise MyError('More than one entry! Bad!')
@@ -231,6 +264,13 @@ class Chemistries(object):
                         if (not id in mapping):
                             continue
 
+                        # Convert value
+                        new_value = self.Clean(current[id])
+
+                        # Do not insert Nones
+                        if (new_value is None):
+                            continue
+
                         # Try to find this chem id in the values table
                         cursor.execute("SELECT v.value, o.date, v.chem_values_id, o.observation_id "
                                        "FROM chem_values as v, chem_observations as o "
@@ -245,26 +285,26 @@ class Chemistries(object):
                             cursor.execute("INSERT INTO chem_observations (username, round, date) VALUES (%s,%s, %s)", (username, round, date_ordered))
 
                             # Insert the data
-                            cursor.execute("INSERT INTO chem_values (observation_id, chemistry_id, value) VALUES (%s,%s, %s)", (cursor.lastrowid, mapping[id], self.Clean(current[id])))
+                            cursor.execute("INSERT INTO chem_values (observation_id, chemistry_id, value) VALUES (%s,%s, %s)", (cursor.lastrowid, mapping[id], new_value))
 
                         elif (len(result) == 1):
 
                             # Get the associated date
-                            (value, old_date, chem_values_id, observation_id) = list(result)[0]
+                            (old_value, old_date, chem_values_id, observation_id) = list(result)[0]
 
                             if (old_date is None):
                                 raise MyError('No date for username %s and round %d'%(username, round));
 
                             elif (date_ordered > old_date):
 
-                                print "Update username: %s round %s from (%s, %s) with (%s, %s)"%(username, round, str(value), old_date, self.Clean(current[id]), date_ordered)
+                                print "Update username: %s round %s from (%s, %s) with (%s, %s)"%(username, round, str(old_value), old_date, new_value, date_ordered)
                                 cursor.execute("UPDATE chem_observations "
                                                "SET date = (%s) "
                                                "WHERE observation_id = (%s)", (date_ordered, observation_id))
 
                                 cursor.execute("UPDATE chem_values "
                                                "SET value = (%s) "
-                                               "WHERE chem_values_id = (%s)", (self.Clean(current[id]), chem_values_id))
+                                               "WHERE chem_values_id = (%s)", (new_value, chem_values_id))
 
                         else:
                             raise MyError('More than one entry! Bad!')

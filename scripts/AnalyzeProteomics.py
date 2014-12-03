@@ -3,16 +3,20 @@
 # System imports
 import argparse
 from datetime import datetime
+import numpy as np
 
 # Import the database class
 from database import Database
 from participant import ParticipantDB
 from qs import QS
 from proteomics import Proteomics
+from chemistries import Chemistries
 
 # Import DBSnp class
 from dbsnp import DBSnp
 from clinvar import Clinvar
+
+
 
 def ArgParser():
     parser = argparse.ArgumentParser()
@@ -26,8 +30,11 @@ def main(parser):
     # Open connection to MySQL database
     database = Database()
 
-    # Create the QS object
+    # Get proteomics object
     prots = Proteomics(database)
+
+    # Get chemistry object
+    chem = Chemistries(database)
 
     # Create the QS object
     qs = QS(database)
@@ -36,9 +43,21 @@ def main(parser):
         prots.LoadData(parser.filename, parser.category)
         return
 
-    print "Getting proteomics data"
-    result = prots._get_diff('1115268', 1, 2)
+    """
+    print "Getting chemistry data"
+    result = chem._get_fields(1, ('3_hydroxyisovaleric_acid', 'vitamin_d',))
+    return
+
+    result = chem._get_field(1, 189)
     print result
+    print result.size
+
+    return
+    """
+
+    print "Getting proteomics data"
+    p = prots._get_field(1, 99)
+    print p
 
     print "Getting qs data"
     # Dates for blood draws for proteomics
@@ -46,23 +65,22 @@ def main(parser):
     SECOND_BLOOD_DRAW=datetime(2014, 8, 1)
     THIRD_BLOOD_DRAW=datetime(2014, 11, 1)
 
-    result = qs.get_val('1115268', FIRST_BLOOD_DRAW)
-    print result['1115268']
+    q = qs.get_activities(FIRST_BLOOD_DRAW, SECOND_BLOOD_DRAW)
+    print q
 
-    return
+    # This sucks, but ok merge it
+    data = []
+    for username, value in zip(p['username'], p['99']):
+        print username, value
 
-    # Load the DBSnp database
-    dbsnp = DBSnp(database)
+        index = q['username'] == username
+        if (np.sum(index)==1):
 
-    # Open connection to Clinvar database
-    clinvar_db = Clinvar(database)
+            subset = q['activity'][index]
+            data.append((username, value, subset))
 
-    # Load the participants
-    participants = ParticipantDB(database, None, None, None, clinvar_db, dbsnp)
-
-    # Now we can analyze the proteomics data
-
-
+    final = np.array(data, dtype=[('username', str, 8), ('value', float), ('activity', float)])
+    print final
 
 if __name__ == "__main__":
     main(ArgParser())

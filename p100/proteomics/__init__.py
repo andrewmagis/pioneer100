@@ -11,6 +11,18 @@ class Proteomics(object):
     def __init__(self, database):
         self.database = database
 
+    def _get_field(self, round, field_id):
+
+        cursor = self.database.GetCursor()
+        cursor.execute("SELECT o.username, v.norm_value "
+                       "FROM prot_observations as o, prot_values as v "
+                       "WHERE o.round = (%s) "
+                       "AND v.protein_id = (%s) "
+                       "AND v.observation_id = o.observation_id "
+                       "ORDER BY o.username", (round,field_id,))
+
+        return np.array(list(cursor.fetchall()), dtype=[('username', str, 8), (str(field_id), float)])
+
     def _get_val(self, username, round):
 
         cursor = self.database.GetCursor()

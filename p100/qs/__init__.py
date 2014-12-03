@@ -18,7 +18,7 @@ class QS(object):
 
     def get_val(self, username, start=None, stop=None):
 
-        if (start is None) and (end is None):
+        if (start is None) and (stop is None):
             cursor = self.database.GetCursor()
             cursor.execute("SELECT q.ACTIVITYCALORIES FROM qs as q WHERE USERNAME = (%s)", (username,))
 
@@ -37,6 +37,33 @@ class QS(object):
         # Return the data
         return np.array(list(cursor.fetchall()), dtype=[(username, float)])
 
+    def get_avg_val(self, username, start, stop):
+
+        # Get the data
+        activity = self.get_val(username, start, stop)
+
+        index = activity[username] > 100
+        if (np.sum(index) < 40):
+            return None
+
+        mean_cals = scipy.nanmean(activity[username][index])
+        return (username, mean_cals)
+
+    def get_activities(self, start, stop):
+
+        cursor = self.database.GetCursor()
+
+        # Get the participant ids
+        cursor.execute("SELECT username FROM participants")
+        prts = cursor.fetchall()
+
+        data = []
+        for prt in prts:
+            result = self.get_avg_val(list(prt)[0], start, stop)
+            if (not result is None):
+                data.append(result)
+
+        return np.array(data, dtype=[('username', str, 8), ('activity', float)])
 
     def GetActivity(self, username):
 
