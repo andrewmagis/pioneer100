@@ -1,15 +1,21 @@
 # MySQL information (clearly insecure)
-HOSTNAME = 'localhost'
-USERNAME = 'amagis'
-PASSWORD = '3bbByr62ZqhdksVkH7Wy'
+# Old values
+#HOSTNAME = 'localhost'
+#USERNAME = 'amagis'
+#PASSWORD = '3bbByr62ZqhdksVkH7Wy'
+#DB = '100i'
+
+HOSTNAME = 'mysql'
+USERNAME = 'ipython'
+PASSWORD = 'docker-db'
 DB = '100i'
 
-import MySQLdb
+import MySQLdb as mdb
 import numpy as np
 import datetime, re
 from csv import reader
-from p100.range import Range
 
+from p100.range import Range
 from p100.errors import MyError
 
 FIRST_BLOOD_DRAW=datetime.datetime(2014, 6, 24)
@@ -20,7 +26,7 @@ class Database(object):
     def __init__(self):
 
         # Open MySQL connection
-        self.db = MySQLdb.connect(host=HOSTNAME, user=USERNAME, passwd=PASSWORD, db=DB)
+        self.db = mdb.connect(host=HOSTNAME, user=USERNAME, passwd=PASSWORD, db=DB)
 
     def __del__(self):
 

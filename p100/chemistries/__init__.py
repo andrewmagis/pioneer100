@@ -1,23 +1,40 @@
 
+# System imports
 from datetime import date, datetime, timedelta as td
-from p100.errors import MyError
-
-import datetime, re
-from csv import reader
-
 import numpy as np
 import scipy
-import math
+import math, re
+import pandas, pandas.io
 
-FIRST_BLOOD_DRAW=datetime.datetime(2014, 6, 24)
-SECOND_BLOOD_DRAW=datetime.datetime(2014, 9, 30)
+# Codebase imports
+from p100.errors import MyError
+
+FIRST_BLOOD_DRAW=datetime(2014, 6, 24)
+SECOND_BLOOD_DRAW=datetime(2014, 9, 30)
 
 class Chemistries(object):
 
     def __init__(self, database):
         self.database = database
 
-    def _get_field(self, round, field_id):
+    def _get_field_by_name(self, round, field_name):
+
+        cursor = self.database.GetCursor()
+        cursor.execute("SELECT o.username, v.value "
+                       "FROM chem_observations as o, chem_values as v, chem_chemistries as c "
+                       "WHERE o.round = (%s) "
+                       "AND c.name = (%s) "
+                       "AND v.chemistry_id = c.chemistry_id "
+                       "AND v.observation_id = o.observation_id "
+                       "ORDER BY o.username", (round,field_name,))
+
+        # Create the np array
+        array = np.array(list(cursor.fetchall()), dtype=[('username', str, 8), (str(field_name), float)])
+
+        # Build pandas Series
+        return pandas.DataFrame(array[str(field_name)], index=array['username'], columns=[field_name])
+
+    def _get_field_by_id(self, round, field_id):
 
         cursor = self.database.GetCursor()
         cursor.execute("SELECT o.username, v.value "
@@ -27,7 +44,11 @@ class Chemistries(object):
                        "AND v.observation_id = o.observation_id "
                        "ORDER BY o.username", (round,field_id,))
 
-        return np.array(list(cursor.fetchall()), dtype=[('username', str, 8), (str(field_id), float)])
+        # Create the np array
+        array = np.array(list(cursor.fetchall()), dtype=[('username', str, 8), (str(field_id), float)])
+
+        # Build pandas Series
+        return pandas.DataFrame(array[str(field_id)], index=array['username'], columns=[str(field_id)])
 
     def _get_fields(self, round, fields):
 
@@ -150,7 +171,7 @@ class Chemistries(object):
                 submitted_date = tokens[9];
 
                 # Convert submitted date to datetime
-                date_ordered = datetime.datetime.strptime(submitted_date, "%m/%d/%Y");
+                date_ordered = datetime.strptime(submitted_date, "%m/%d/%Y");
                 if (date_ordered <= FIRST_BLOOD_DRAW):
                     round = 1
                 elif (date_ordered <= SECOND_BLOOD_DRAW):
@@ -249,7 +270,7 @@ class Chemistries(object):
                     username = current["Last Name"]
 
                     # Get date from this row
-                    date_ordered = datetime.datetime.strptime(current['Date Ordered'], "%m/%d/%y");
+                    date_ordered = datetime.strptime(current['Date Ordered'], "%m/%d/%y");
                     if (date_ordered <= FIRST_BLOOD_DRAW):
                         round = 1
                     elif (date_ordered <= SECOND_BLOOD_DRAW):

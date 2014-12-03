@@ -1,11 +1,14 @@
 
+# System imports
 from datetime import date, datetime, timedelta as td
-import fitbit
-from p100.errors import MyError
-
 import numpy as np
 import scipy
 import math
+import pandas, pandas.io
+import fitbit
+
+# Codebase imports
+from p100.errors import MyError
 
 OWNER_KEY = '0fcad4c11b0944e790b9043effd5ef41'
 OWNER_SECRET = 'b90405040b274d93b4c504052489e1a9'
@@ -63,7 +66,8 @@ class QS(object):
             if (not result is None):
                 data.append(result)
 
-        return np.array(data, dtype=[('username', str, 8), ('activity', float)])
+        array = np.array(data, dtype=[('username', str, 8), ('activity', float)])
+        return pandas.DataFrame(array['activity'], index=array['username'], columns=['activity'])
 
     def GetActivity(self, username):
 
