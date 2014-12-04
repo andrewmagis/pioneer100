@@ -37,13 +37,13 @@ class Genome(object):
     def __init__(self):
 
         # GRCh37 files
-        self.GRCh37_fasta_filename = './db/Homo_sapiens.GRCh37.68.genome.fa'
-        self.GRCh37_gene_filename = './db/Homo_sapiens.GRCh37.75.gene.gtf.gz'
-        self.GRCh37_gtf_filename = './db/Homo_sapiens.GRCh37.75.gtf.gz'
+        self.GRCh37_fasta_filename = '/local/data/db/Homo_sapiens.GRCh37.68.genome.fa'
+        self.GRCh37_gene_filename = '/local/data/db/Homo_sapiens.GRCh37.75.gene.gtf.gz'
+        self.GRCh37_gtf_filename = '/local/data/db/Homo_sapiens.GRCh37.75.gtf.gz'
 
-        self.GRCh38_fasta_filename = './db/Homo_sapiens.GRCh38.76.genome.fa'
-        self.GRCh38_gene_filename = './db/Homo_sapiens.GRCh38.76.gene.gtf.gz'
-        self.GRCh38_gtf_filename = './db/Homo_sapiens.GRCh38.76.gtf.gz'
+        self.GRCh38_fasta_filename = '/local/data/db/Homo_sapiens.GRCh38.76.genome.fa'
+        self.GRCh38_gene_filename = '/local/data/db/Homo_sapiens.GRCh38.76.gene.gtf.gz'
+        self.GRCh38_gtf_filename = '/local/data/db/Homo_sapiens.GRCh38.76.gtf.gz'
 
         # Data structures for the GRCh37 assembly
         self.GRCh37_gene = None

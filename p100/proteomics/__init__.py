@@ -14,16 +14,17 @@ class Proteomics(object):
     def __init__(self, database):
         self.database = database
 
-    def _get_field_by_name(self, round, field_name):
+    def _get_field_by_name(self, round, field_name, category):
 
         cursor = self.database.GetCursor()
         cursor.execute("SELECT o.username, v.norm_value "
                        "FROM prot_observations as o, prot_values as v, prot_proteins as p "
                        "WHERE o.round = (%s) "
                        "AND p.abbreviation = (%s) "
+                       "AND p.category = (%s) "
                        "AND v.protein_id = p.protein_id "
                        "AND v.observation_id = o.observation_id "
-                       "ORDER BY o.username", (round,field_name,))
+                       "ORDER BY o.username", (round,field_name,category,))
 
         # Create the np array
         array = np.array(list(cursor.fetchall()), dtype=[('username', str, 8), (field_name, float)])
@@ -46,6 +47,27 @@ class Proteomics(object):
 
         # Build pandas Series
         return pandas.DataFrame(array[str(field_id)], index=array['username'], columns=[str(field_id)])
+
+    def _get_all_fields(self, round, category="Inflammation"):
+
+        cursor = self.database.GetCursor()
+        cursor.execute("SELECT abbreviation "
+                       "FROM prot_proteins "
+                       "WHERE category = (%s)", (category,))
+
+        headers = np.array(list(cursor.fetchall()), dtype=[('name', str, 128)])
+
+        result = None
+        # Now loop over the database and retrieve all of it for this round
+        for name in headers['name']:
+
+            current = self._get_field_by_name(round, name, category)
+            if (result is None):
+                result = current
+            else:
+                result = result.join(current)
+
+        return result
 
     def _get_val(self, username, round):
 

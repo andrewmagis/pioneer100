@@ -106,8 +106,10 @@ class ParticipantDB(object):
 
             if (not result is None):
                 data.append(result)
+                print "Processed %s"%(key)
+            else:
+                print "SKIPPED %s"%(key)
 
-            print "Processed %s"%(key)
 
         # Build numpy structured array of scores
         x = np.array(data, dtype=[('Username', np.str, 10), ('Gender', np.str, 1), ('Round1', float), ('Round2', float), ('Round3', float), ('Score', float)])
