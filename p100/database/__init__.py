@@ -10,6 +10,11 @@ USERNAME = 'ipython'
 PASSWORD = 'docker-db'
 DB = '100i'
 
+import logging
+import MySQLdb
+from MySQLdb import ProgrammingError, OperationalError, InterfaceError
+import pandas
+from p100.range import Range
 import MySQLdb as mdb
 import numpy as np
 import datetime, re
@@ -18,15 +23,16 @@ from csv import reader
 from p100.range import Range
 from p100.errors import MyError
 
+logger = logging.getLogger("p100.database")
+
 FIRST_BLOOD_DRAW=datetime.datetime(2014, 6, 24)
 SECOND_BLOOD_DRAW=datetime.datetime(2014, 9, 30)
 
 class Database(object):
 
-    def __init__(self):
-
-        # Open MySQL connection
-        self.db = mdb.connect(host=HOSTNAME, user=USERNAME, passwd=PASSWORD, db=DB)
+    def __init__(self, host=HOSTNAME, user=USERNAME, passwd=PASSWORD, db=DB):
+        self.host, self.user, self.passwd, self.db_name = host,user,passwd,db
+        self._db = None
 
     def __del__(self):
 
@@ -44,15 +50,81 @@ class Database(object):
              cursor.execute("SELECT " + ','.join(field) + " FROM " + table + " WHERE " + key + " = (%s) ORDER BY " + orderby, (value,))
         return cursor
 
+    def GetDataFrame(self, q_string, var_tup=None):
+        """
+        Given a select query return a pandas dataframe corresponding to that query.
+        Columns are the columns from the query, you must set the index on the dataframe
+        manually, i.e. >>df = df.set_index("index_column") 
+
+        q_string is a select query
+        var_tup is a tuple containing values to be passed to the query
+
+        example:
+            >> Database_obj = Database()
+            >> q = "SELECT * from table where table_id = %s"
+            >> v = ( 1, )
+            >> df = Database_obj.GetDataFrame( q, v)
+        """
+        def map_to_dict( results, field_names):
+            res_dict = {}
+            for fn in field_names:
+                res_dict[fn] = []
+            for res in results:
+                for fn, f in zip(field_names, res):
+                    res_dict[fn].append(f)
+            return res_dict
+        def map_to_df( results, field_names):
+            return pandas.DataFrame.from_dict(map_to_dict( results, field_names ))
+        with self.db as cursor:
+            logger.debug("Query: %s, %r" % (q_string,var_tup))
+            cursor.execute(q_string,var_tup)
+            results = cursor.fetchall()
+            field_names = [i[0] for i in cursor.description]
+        if len(results) == 0:
+            return None
+        else:
+            return map_to_df( results, field_names )
+
     def GetCursor(self):
         return self.db.cursor();
 
     def Commit(self):
         self.db.commit();
 
-    def GetCompliance(self, username):
+    def Close(self):
+        """
+        Closes the database connection
+        """
+        logger.debug("Closing database connection")
+        self.db.close()
 
-        cursor = self.db.cursor()
+    def _GetNewConnection(self):
+        """
+        Creates a new database connection
+        """
+        logger.debug("Creating a db connection")
+        return MySQLdb.connect(host=self.host,
+                user=self.user, passwd=self.passwd, db=self.db_name)
+
+    @property
+    def db( self ):
+        """
+        Returns a functioning mysqldb connection, if we're lucky
+        """
+        if self._db is None:
+            self._db = self._GetNewConnection()
+        try:
+            self._db.ping()
+        except (OperationalError, InterfaceError):
+            logger.exception("Looks like the db is not responding. Trying to recover.")
+            try:
+                self._db.close()
+            except ProgrammingError:
+                logger.info("Database is closed, attempting to recover")
+            self._db = self._GetNewConnection()
+        return self._db
+
+    def GetCompliance(self, username):
 
         # Get the cursor
         cursor = self.db.cursor();
