@@ -71,14 +71,15 @@ class Participant(object):
         # Get the measurement
         (dates, values, range) = self.GetMeasurement(measurement)
 
-
         # Check for CHOLESTEROL, DIABETES, or HYPERTENSION
         if ("CHOLESTEROL" in measurement) or ("TRIGLYCERIDES" in measurement):
             (med_dates, med_values, med_range) = self.GetMeasurement("MEDICATION_CHOLESTEROL")
-            print med_dates, med_values
+            print self.username, med_dates, med_values, med_values.size
             if (med_values.size == 1) and (med_values == 1):
                 return None
-            if (med_values.size == 2) and (med_values[1]==1):
+            if (med_values.size == 2) and ((med_values[0]==1) or (med_values[1]==1)):
+                return None
+            if (med_values.size == 3) and ((med_values[0]==1) or (med_values[1]==1)):
                 return None
 
         # Check for CHOLESTEROL, DIABETES, or HYPERTENSION
@@ -89,7 +90,6 @@ class Participant(object):
                 return None
             if (med_values.size == 2) and (med_values[1]==1):
                 return None
-
 
         if (values.size == 0):
             return None
