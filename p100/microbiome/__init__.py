@@ -27,75 +27,98 @@ class Microbiome(object):
         """
         Returns a dataframe with the microbiomic data for
         a given user and round(if provided) aggregated to the agg_to
-        level.  If perv is true, the it returns the aggregated
+        level.  If perc is true, the it returns the aggregated
         percentages, otherwise the counts.
         """
-        logger.debug("GetData( %s, %s, %s, %s  )" %( username,
-            rnd,  agg_to, perc))
-        #this part puts together the bits needed to get the taxonomic
-        #labels
+        logger.debug("GetData( %s, %s, %s, %s  )" %( username, rnd,  agg_to, perc))
         cut = self.tax.index(agg_to) + 1
-        select_stmt = ['`kd`.`tax_label` AS `kingdom`',
-                '`ph`.`tax_label` AS `phylum`',
-                '`cl`.`tax_label` AS `class`',
-                '`ord`.`tax_label` AS `order`',
-                '`fam`.`tax_label` AS `family`',
-                '`gen`.`tax_label` AS `genus`',
-                '`spc`.`tax_label` AS `species`']
-        from_stmt = ['`mb_taxonomy_labels` `kd`',
-                '`mb_taxonomy_labels` `ph`',
-                '`mb_taxonomy_labels` `cl`',
-                '`mb_taxonomy_labels` `ord`',
-                '`mb_taxonomy_labels` `fam`',
-                '`mb_taxonomy_labels` `gen`',
-                '`mb_taxonomy_labels` `spc`']
-        where_stmt = ['`kd`.`tax_level` = "kingdom" and `kd`.`tax_label_id` = tx.kingdom',
-                 '`ph`.`tax_level` = "phylum"  and `ph`.`tax_label_id` = tx.phylum',
-                 '`cl`.`tax_level` = "class" and `cl`.`tax_label_id` = tx.class',
-                 '`ord`.`tax_level` = "order" and `ord`.`tax_label_id` =tx.order',
-                 '`fam`.`tax_level` = "family" and `fam`.`tax_label_id` = tx.family',
-                 '`gen`.`tax_level` = "genus" and `gen`.`tax_label_id` = tx.genus',
-                 '`spc`.`tax_level` = "species" and `spc`.`tax_label_id` = tx.species']
-
-        tax_id = self.tax[:cut]
-        ss = ','.join(select_stmt[:len(tax_id)])
-        fs = ','.join(from_stmt[:len(tax_id)])
-        ws = ' and '.join(where_stmt[:len(tax_id)])
-        #this works with the taxonomic ids
-        s = ['tx.%s as %s_id' % (t,t) for t in self.tax[:cut]]
-        s_stmt = ','.join(s) 
-
+        #the trimmed list of taxonomies
+        tr_tax = self.tax[:cut]
+        #this part puts together the bits needed to get the taxonomic
+        #SELECT .
+        select_stmt = ['%s.tax_label AS `%s`' % (t[:3], t) for t in tr_tax]#labels
+        select_stmt += ['tx.`%s` as %s_id' % (t,t) for t in tr_tax]#ids
+        select_stmt += [ 'obs.observation_id', 'obs.username', 'obs.round' ]
         if perc:
-            s_stmt += ", SUM(lvl.percentage) as value"
+            select_stmt += ["SUM(lvl.percentage) as value"]
         else:
-            s_stmt += ", SUM(lvl.read_counts) as value"
-        q_string = "SELECT obs.observation_id, obs.username, obs.round, " 
-        q_string += s_stmt + ',' 
-        q_string +=  ss 
-        q_string += " FROM mb_observation obs, mb_taxonomy tx, mb_levels lvl, "
-        q_string += fs 
-        q_string += """
-            WHERE obs.observation_id = lvl.observation_id and 
-            tx.taxonomy_id = lvl.taxonomy_id and
-            lvl.read_counts > 0 and """ + ws
+            select_stmt += ["SUM(lvl.read_counts) as value"]
+        #FROM
+        from_stmt = ['mb_taxonomy_labels %s' % (t[:3],) for t in tr_tax]
+        from_stmt += ['mb_observation obs', 'mb_taxonomy tx', 'mb_levels lvl']
+        #WHERE
+        where_stmt =  ['%s.tax_level = "%s"' %  (t[:3], t) for t in tr_tax]
+        where_stmt += ['%s.tax_label_id = tx.%s' %  (t[:3], t) for t in tr_tax]
+        where_stmt += ['obs.observation_id = lvl.observation_id', 
+                       'tx.taxonomy_id = lvl.taxonomy_id', 'lvl.read_counts > 0']
+        #GROUP
+        group_stmt = [ "obs.observation_id" ] + ['%s_id' % t for  t in tr_tax]
+
+        #variables
         if username and rnd:
-            q_string += " and obs.round = %s and obs.username = %s "
+            where_stmt +=  ["obs.round = %s","obs.username = %s"]
             var_tup = (rnd, username)
         elif username:
-            q_string += " and obs.username = %s "
-            var_tup = (username,)
+            where_stmt +=  ["obs.username = %s"]
+            var_tup = ( username)
         elif rnd:
-            q_string += " and obs.round = %s "
+            where_stmt +=  ["obs.round = %s"]
             var_tup = (rnd, )
         else:
             var_tup = None
-        q_string += " GROUP BY obs.observation_id, " + ','.join(['%s_id' % t for t in self.tax[:cut]])
+
+        statements = (', '.join( select_stmt ), ', '.join( from_stmt ), 
+                ' and '.join( where_stmt ), ', '.join( group_stmt ) )
+
+        q_string = """
+        SELECT %s
+        FROM %s
+        WHERE %s
+        GROUP BY %s
+        """ % (', '.join( select_stmt ), ', '.join( from_stmt ), 
+                ' and '.join( where_stmt ), ', '.join( group_stmt ) )
+
         res = self.database.GetDataFrame(q_string, var_tup)
         #reorder the columns, they get messy
         column_order = ['observation_id', 'username', 'round']
-        column_order += self.tax[:cut]
-        column_order += ["%s_id" % x for x in self.tax[:cut]]
+        column_order += tr_tax 
+        column_order += ["%s_id" % x for x in tr_tax]
         column_order += ['value']
         column_order += [x for x in res.columns if x not in column_order]
         return res[column_order]
 
+    def get_taxonomy_names(self, up_to=None):
+        if up_to:
+            return self.tax[:(self.tax.index(up_to) + 1)]
+        else:
+            return self.tax
+
+    def username_vectors( self, dataframe):
+        """
+        Given a dataframe as generated by GetData,
+            return a new dataframe where the index
+            is a string representation of the full path to the
+            taxa and the column name is the username,
+            or username-round in the case of multiple rounds
+        """
+        utax =  [x for x in self.tax if x in dataframe.columns]
+        unames = dataframe.username.unique()
+        rnds = dataframe['round'].unique()
+
+        result = {}
+        for uname in unames:
+            for rnd in rnds:
+                udf = dataframe[(dataframe.username == uname) &
+                        (dataframe['round'] == rnd)]
+                if len(udf.index)>0:
+                    d = udf[utax + ['value']].to_dict(orient="split")['data']
+                    if len(rnds) > 1:
+                        key = "%s-%i" % (uname, rnd)
+                    else:
+                        key = uname
+                    result[key] = {}
+                    for row in d:
+                        trimmed = [a[:3] for a in row[:-2]] + row[-2:-1]
+                        sub_key = '>'.join( trimmed )
+                        result[key][sub_key] =  row[-1]
+        return pandas.DataFrame.from_dict( result )
