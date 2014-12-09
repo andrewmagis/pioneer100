@@ -10,9 +10,11 @@ import numpy as np
 import scipy
 import math, re
 import pandas, pandas.io
+from ete2 import Tree
 
 # Codebase imports
 from p100.errors import MyError
+import time
 
 logger = logging.getLogger("p100.microbiome")
 
@@ -22,14 +24,15 @@ class Microbiome(object):
         logger.debug("Creating a Microbiome object")
         self.database = database
 
-    def GetData(self, username=None, rnd=None, agg_to='species',
-            perc=True):
+    def GetData(self,username=None, rnd=None, agg_to='species',
+            perc=True, observation_id=None):
         """
         Returns a dataframe with the microbiomic data for
         a given user and round(if provided) aggregated to the agg_to
         level.  If perc is true, the it returns the aggregated
         percentages, otherwise the counts.
         """
+
         logger.debug("GetData( %s, %s, %s, %s  )" %( username, rnd,  agg_to, perc))
         cut = self.tax.index(agg_to) + 1
         #the trimmed list of taxonomies
@@ -55,17 +58,18 @@ class Microbiome(object):
         group_stmt = [ "obs.observation_id" ] + ['%s_id' % t for  t in tr_tax]
 
         #variables
-        if username and rnd:
-            where_stmt +=  ["obs.round = %s","obs.username = %s"]
-            var_tup = (rnd, username)
-        elif username:
+        var_list = []
+
+        if observation_id:
+            where_stmt +=  ["obs.observation_id"]
+            var_list += [int(observation_id)]
+        if username:
             where_stmt +=  ["obs.username = %s"]
-            var_tup = ( username)
-        elif rnd:
+            var_list += [str(int(username))]
+        if rnd:
             where_stmt +=  ["obs.round = %s"]
-            var_tup = (rnd, )
-        else:
-            var_tup = None
+            var_list += [int(rnd)]
+        var_tup = tuple( var_list )
 
         statements = (', '.join( select_stmt ), ', '.join( from_stmt ), 
                 ' and '.join( where_stmt ), ', '.join( group_stmt ) )
@@ -122,3 +126,35 @@ class Microbiome(object):
                         sub_key = '>'.join( trimmed )
                         result[key][sub_key] =  row[-1]
         return pandas.DataFrame.from_dict( result )
+
+    def get_unifrac_matrix( self, observation_ids, tree_file, weighted =
+            True):
+        q_string = """
+            SELECT tx.OTU, lvl.observation_id, lvl.percentage
+            FROM mb_taxonomy tx, mb_levels lvl
+            WHERE tx.taxonomy_id = lvl.taxonomy_id
+            and lvl.observation_id in (%s)
+            and lvl.percentage > 0
+            ORDER BY lvl.observation_id
+        """
+        q_string = q_string % (', '.join(['%s' for x in observation_ids]))
+        df_source = self.database.GetDataFrame( q_string, tuple( map(int, observation_ids) ) )
+        otus = df_source.OTU.unique()
+        logger.debug( otus )
+        tree = self._load_tree( tree_file )
+        return ( df_source, tree)
+        def gt():
+            from time import gmtime, strftime
+            return strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
+        logger.debug( "pruning [%s]" % (  gt(),) )
+        new_tree = tree.prune( map(str,otus) )
+        logger.debug("done pruning [%s]" % (  gt(),))
+
+        return #dataframe containing distances
+
+    def _load_tree( self, tree_file ):
+        """
+        Given a path to a tree in nvformat, return the tree
+        """
+
+        return Tree( tree_file )
