@@ -8,11 +8,12 @@ import pandas, pandas.io
 
 # Codebase imports
 from p100.errors import MyError
+from p100.utils.dataframeops import DataFrameOps
 
 FIRST_BLOOD_DRAW=datetime(2014, 6, 24)
 SECOND_BLOOD_DRAW=datetime(2014, 9, 30)
 
-class Chemistries(object):
+class Chemistries(DataFrameOps):
 
     def __init__(self, database):
         self.database = database
