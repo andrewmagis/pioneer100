@@ -13,9 +13,12 @@ import pandas, pandas.io
 
 # Codebase imports
 from p100.errors import MyError
+from p100.utils.dataframeops import DataFrameOps
 
 logger = logging.getLogger("p100.metabolomics")
-class Metabolomics(object):
+
+class Metabolomics(DataFrameOps):
+
     def __init__(self, database):
         logger.debug("Creating a Metabolomics object")
         self.database = database
@@ -82,3 +85,22 @@ class Metabolomics(object):
         # Build pandas Series
         return pandas.DataFrame(array[str(field_id)], index=array['username'], columns=[str(field_id)])
 
+    def _get_all_fields(self, round):
+
+        cursor = self.database.GetCursor()
+        cursor.execute("SELECT biochemical "
+                       "FROM meta_metabolite")
+
+        headers = np.array(list(cursor.fetchall()), dtype=[('name', str, 128)])
+
+        result = None
+        # Now loop over the database and retrieve all of it for this round
+        for name in headers['name']:
+
+            current = self._get_field_by_name(round, name)
+            if (result is None):
+                result = current
+            else:
+                result = result.join(current)
+
+        return result

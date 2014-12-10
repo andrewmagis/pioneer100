@@ -8,8 +8,9 @@ import pandas, pandas.io
 
 # Codebase imports
 from p100.errors import MyError
+from p100.utils.dataframeops import DataFrameOps
 
-class Proteomics(object):
+class Proteomics(DataFrameOps):
 
     def __init__(self, database):
         self.database = database
@@ -61,6 +62,9 @@ class Proteomics(object):
         # Now loop over the database and retrieve all of it for this round
         for name in headers['name']:
 
+            if ("Ctrl" in name):
+                continue
+
             current = self._get_field_by_name(round, name, category)
             if (result is None):
                 result = current
@@ -69,48 +73,32 @@ class Proteomics(object):
 
         return result
 
-    def _get_val(self, username, round):
+    def _get_all_diff(self, roundA, roundB, category="Inflammation"):
 
-        cursor = self.database.GetCursor()
-        cursor.execute("SELECT v.norm_value FROM prot_observations as o, prot_values as v "
-                       "WHERE o.username = (%s) AND o.round = (%s) AND v.observation_id = o.observation_id "
-                       "ORDER BY o.observation_id", (username,round,))
+        # Get these two rounds
+        dataA = self._get_all_fields(roundA, category)
+        dataB = self._get_all_fields(roundB, category)
 
-        # Build numpy array out of result
-        return np.array(list(cursor.fetchall()), dtype=[(username, float)])
+        # Now take the difference of the rounds and drop any that have data missing
+        return (dataB - dataA)
 
-    def _get_diff(self, username, round1, round2):
+    def _get_diff_by_id(self, roundA, roundB, field_id):
 
-        r1 = self._get_val(username, round1)
-        r2 = self._get_val(username, round2)
+        # Get these two rounds
+        dataA = self._get_field_by_id(roundA, field_id)
+        dataB = self._get_field_by_id(roundB, field_id)
 
-        # Build numpy array out of result
-        return np.array(r2[username]-r1[username], dtype=[(username, float)])
+        # Now take the difference of the rounds and drop any that have data missing
+        return (dataB - dataA).dropna()
 
-    # Ignore this function
-    def GetNormalized(self, username, round):
+    def _get_diff_by_name(self, roundA, roundB, field_name, category):
 
-        # Get the protein control ids as well as the ct values
-        cursor = self.database.GetCursor()
-        cursor.execute("SELECT v.protein_id, v.ct_value FROM prot_observations as o, prot_values as v "
-                       "WHERE o.username = (%s) AND o.round = (%s) AND v.observation_id = o.observation_id "
-                       "ORDER BY o.observation_id", (username,round,))
+        # Get these two rounds
+        dataA = self._get_field_by_name(roundA, field_name, category)
+        dataB = self._get_field_by_name(roundB, field_name, category)
 
-        # Create an array with the control ids and the values
-        temp = np.array(list(cursor.fetchall()), dtype=[('protein_id', int), ('ct_value', float)])
-
-        # Get the control values for each protein
-        controls = []
-        for protein_id in temp['protein_id']:
-            cursor.execute("SELECT c.negative_control,c.interplate_control "
-                           "FROM prot_controls as c "
-                           "WHERE c.protein_id = (%s)", (protein_id,))
-            controls.append(list(cursor.fetchall()))
-
-        controls = np.array(controls, dtype=[('negative_control', float), ('interplate_control', float)])
-
-        # Calculate the mean negative control value
-        mean_negative_controls = np.mean(controls['negative_control'], axis=1)
+        # Now take the difference of the rounds and drop any that have data missing
+        return (dataB - dataA).dropna()
 
     def Clean(self, value):
 
@@ -119,16 +107,16 @@ class Proteomics(object):
             return None
         return new_value
 
-    def LoadData(self, filename, category=None):
+    def LoadData(self, filename, category):
 
         # Ignore this function
-        raise MyError('LoadData function disabled')
+        #raise MyError('LoadData function disabled')
 
         header = None
-        category = None
         alldata = {}
         neg_control = []
         interplate_control = []
+        ext_control_index = None
 
         # Load all the data into a data structure to start
         with open(filename, 'rU') as f:
@@ -139,9 +127,9 @@ class Proteomics(object):
                     header = line.strip().split('\t')
                     header = [x.split('_')[1].strip().replace('-', '_').replace(' ', '_') for x in header[2:]]
 
-                # Get category row next
-                elif (category is None):
-                    category= line.strip().split('\t')[2:]
+                    # Get index of ext control
+                    ext_control_index = header.index('Ext_Ctrl')
+                    print "Extension control: ", ext_control_index
 
                 else:
 
@@ -150,9 +138,27 @@ class Proteomics(object):
 
                     # Get controls
                     if (username == "Negative Control"):
-                        neg_control.append(tokens[2:])
+
+                        # Create a numpy array out of this
+                        temp = np.array(tokens[2:],dtype=float)
+
+                        # Subtract out the ext_control
+                        temp -= temp[ext_control_index]
+
+                        # Now append the negative control
+                        neg_control.append(temp)
+
                     elif (username == "Interplate Control"):
-                        interplate_control.append(tokens[2:])
+
+                        # Create a numpy array out of this
+                        temp = np.array(tokens[2:],dtype=float)
+
+                        # Subtract out the ext_control
+                        temp -= temp[ext_control_index]
+
+                        # Now append the negative control
+                        interplate_control.append(temp)
+
                     else:
 
                         round = int(tokens[1].strip())
@@ -168,21 +174,29 @@ class Proteomics(object):
         # Insert the proteins
         cursor = self.database.GetCursor()
         data = []
-        for p,c in zip(header, category):
-            data.append((p, c))
+        for p in header:
+
+            # Try to find this protein first
+            cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s) AND category = (%s)", (p, category))
+            results = cursor.fetchall()
+
+            # If I don't find, it, insert it
+            if (len(results)==0):
+                data.append((p, category))
 
         # Insert into table
-        result = cursor.executemany("INSERT INTO prot_proteins (abbreviation, category) VALUES (%s,%s)", data)
-        self.database.Commit()
+        if (len(data)>0):
+            result = cursor.executemany("INSERT INTO prot_proteins (abbreviation, category) VALUES (%s,%s)", data)
+            self.database.Commit()
 
         # Next add in the controls
         cursor = self.database.GetCursor()
         data = []
         for negative, plate in zip(neg_control, interplate_control):
-            for protein, cat, neg_value, plate_value, in zip(header, category, negative, plate):
+            for protein, neg_value, plate_value, in zip(header, negative, plate):
 
                 # Get the protein_id for this abbreviation
-                cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s) and category = (%s) LIMIT 1", (protein,cat,))
+                cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s) and category = (%s) LIMIT 1", (protein,category,))
 
                 # Append variables to tuple
                 tup = cursor.fetchone() + (neg_value, plate_value)
@@ -203,7 +217,7 @@ class Proteomics(object):
         cursor = self.database.GetCursor()
         data = []
         for username in alldata.keys():
-            for round in alldata[username].keys():
+            for round in sorted(alldata[username].keys()):
                 if (round == 1):
                     data.append((username, round, FIRST_BLOOD_DRAW))
                 elif (round == 2):
@@ -219,26 +233,38 @@ class Proteomics(object):
         cursor = self.database.GetCursor()
         data = []
 
-        for username in alldata.keys():
-            for round in alldata[username].keys():
+        for username in sorted(alldata.keys()):
+            for round in sorted(alldata[username].keys()):
+
+                # Make a copy
+                temp = np.array(alldata[username][round])
+
+                # Subtract the extension control from this entire row
+                temp -= temp[ext_control_index]
+
+                # Subtract the dIPC from this entire row (already normalized by extension control)
+                temp -= mean_interplate_control_array
+
+                # Subtract this value from the negative control
+                temp = mean_neg_control_array-temp
 
                 # Get normalized data
-                norm_data = np.power(2, np.subtract(mean_neg_control_array, alldata[username][round]))
+                norm_data = np.power(2, temp)
 
                 # Loop over the observations
-                for protein, cat, value, norm in zip(header, category, alldata[username][round], norm_data):
+                for protein, value, norm in zip(header, alldata[username][round], norm_data):
 
                     # Get the protein_id for this abbreviation
-                    cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s) AND category = (%s) LIMIT 1", (protein,cat,))
-                    protein_id = cursor.fetchone()
+                    cursor.execute("SELECT protein_id FROM prot_proteins WHERE abbreviation = (%s) AND category = (%s) LIMIT 1", (protein,category,))
+                    protein_id = list(cursor.fetchone())[0]
 
                     # Get the control id
                     cursor.execute("SELECT prot_control_id FROM prot_controls WHERE protein_id = (%s) LIMIT 1", protein_id)
-                    prot_control_id = cursor.fetchone()
+                    prot_control_id = list(cursor.fetchone())[0]
 
                     # Get the observation id
                     cursor.execute("SELECT observation_id FROM prot_observations WHERE username = (%s) AND round = (%s) LIMIT 1", (username,round))
-                    observation_id = cursor.fetchone()
+                    observation_id = list(cursor.fetchone())[0]
 
                     # Append variables to tuple
                     data.append((observation_id, protein_id, prot_control_id, value, norm))
