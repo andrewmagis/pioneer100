@@ -10,6 +10,7 @@ import numpy as np
 import scipy
 import math, re
 import pandas, pandas.io
+import statsmodels
 
 # Codebase imports
 from p100.errors import MyError
@@ -78,6 +79,32 @@ class Metabolomics(DataFrameOps):
 
         # Build pandas Series
         return pandas.DataFrame(array[str(field_id)], index=array['username'], columns=[str(field_id)])
+
+    def _get_all_signrank(self, roundA, roundB):
+
+        cursor = self.database.GetCursor()
+        cursor.execute("SELECT biochemical "
+                       "FROM meta_metabolite")
+
+        headers = np.array(list(cursor.fetchall()), dtype=[('name', str, 128)])
+
+        result = []
+        names = []
+        # Now loop over the database and retrieve all of it for this round
+        for name in headers['name']:
+
+            # Perform the signed rank test (non-parametric)
+            result.append(self._get_signrank_by_name(roundA, roundB, name))
+            names.append(name)
+
+        # Create the np array
+        array = np.array(result, dtype=[('z_value', float), ('p_value', float), ('meanA', float), ('meanB', float), ('stdA', float), ('stdB', float)])
+        (accepted, corrected, unused1, unused2) = statsmodels.sandbox.stats.multicomp.multipletests(array['p_value'], method="fdr_bh")
+
+        # Build pandas dataframe with corrected p-values
+        temp = pandas.DataFrame(array, index=names, columns=['z_value', 'p_value', 'fdr', 'meanA', 'meanB', 'stdA', 'stdB'])
+        temp['fdr'] = pandas.Series(corrected, index=temp.index)
+        return temp.sort('fdr', ascending=True)
 
     def _get_all_fields(self, round):
 
