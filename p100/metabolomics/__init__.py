@@ -20,7 +20,7 @@ class Metabolomics(object):
         logger.debug("Creating a Metabolomics object")
         self.database = database
 
-    def GetData(self, username=None, round=None):
+    def GetData(self, username=None, round=None, metabolite_id=None):
         """
         Returns a dataframe with the metabolomic data for
         a given user and round(if provided).
@@ -28,19 +28,25 @@ class Metabolomics(object):
         logger.debug("GetData( %s, %s )" %(username, round))
         q_string = """
         SELECT mo.username, mo.round, imputed as value, biochemical as metabolite_name,
-                super_pathway, sub_pathway, hmdb
+                super_pathway, sub_pathway, hmdb, mm.metabolite_id
         FROM meta_values mv, meta_observation mo, meta_metabolite mm
         WHERE mm.metabolite_id = mv.metabolite_id
-        and mo.observation_id = mv.observation_id"""
-        if username is None:
-            var_tup = []
-        else:
-            q_string += " and mo.username = %s "
-            var_tup = [username]
+        and mo.observation_id = mv.observation_id
+        """
 
+        conditions = []
+        var_tup = []
+        if username is not None:
+            conditions.append("mo.username = %s ")
+            var_tup += [username]
         if round is not None:
-            q_string += " and mo.round = %s"
+            conditions.append("mo.round = %s")
             var_tup += [round]
+        if metabolite_id is not None:
+            conditions.append("mm.metabolite_id = %s")
+            var_tup += [metabolite_id]
+        q_string = ' and '.join( [ q_string ] + conditions )
+        var_tup = tuple( var_tup )
         return self.database.GetDataFrame( q_string, tuple(var_tup) )
 
     def _get_field_by_name(self, round, field_name):
