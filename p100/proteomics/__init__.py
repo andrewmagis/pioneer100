@@ -3,6 +3,8 @@
 from datetime import date, datetime, timedelta as td
 import numpy as np
 import scipy
+from scipy import stats
+import statsmodels
 import math
 import pandas, pandas.io
 
@@ -73,6 +75,51 @@ class Proteomics(DataFrameOps):
 
         return result
 
+    def _get_signrank_by_name(self, roundA, roundB, field_name, category = "Inflammation"):
+
+        r1 = self._get_field_by_name(roundA, field_name, category)
+        r2 = self._get_field_by_name(roundB, field_name, category)
+
+        # Merge the two in a dataframe
+        data = r1.join(r2, lsuffix='_r1', rsuffix='_r2')
+
+        # Drop rows with NaN values
+        data.dropna()
+
+        # Separate out the data
+        d1 = data[field_name+'_r1']
+        d2 = data[field_name+'_r2']
+
+        z_stat, p_val = stats.ranksums(d1, d2)
+        return (z_stat, p_val, np.mean(d1), np.mean(d2), np.std(d1), np.std(d2))
+
+    def _get_all_signrank(self, roundA, roundB, category="Inflammation"):
+
+        cursor = self.database.GetCursor()
+        cursor.execute("SELECT abbreviation "
+                       "FROM prot_proteins "
+                       "WHERE category = (%s)", (category,))
+
+        headers = np.array(list(cursor.fetchall()), dtype=[('name', str, 128)])
+
+        result = []
+        names = []
+        # Now loop over the database and retrieve all of it for this round
+        for name in headers['name']:
+
+            # Perform the signed rank test (non-parametric)
+            result.append(self._get_signrank_by_name(roundA, roundB, name))
+            names.append(name)
+
+        # Create the np array
+        array = np.array(result, dtype=[('z_value', float), ('p_value', float), ('meanA', float), ('meanB', float), ('stdA', float), ('stdB', float)])
+        (accepted, corrected, unused1, unused2) = statsmodels.sandbox.stats.multicomp.multipletests(array['p_value'], method="fdr_bh")
+
+        # Build pandas dataframe with corrected p-values
+        temp = pandas.DataFrame(array, index=names, columns=['z_value', 'p_value', 'fdr', 'meanA', 'meanB', 'stdA', 'stdB'])
+        temp['fdr'] = pandas.Series(corrected, index=temp.index)
+        return temp.sort('fdr', ascending=True)
+
     def _get_all_diff(self, roundA, roundB, category="Inflammation"):
 
         # Get these two rounds
@@ -99,6 +146,53 @@ class Proteomics(DataFrameOps):
 
         # Now take the difference of the rounds and drop any that have data missing
         return (dataB - dataA).dropna()
+
+    def _get_participant_by_name(self, round, username, category):
+
+        cursor = self.database.GetCursor()
+        cursor.execute("SELECT c.abbreviation, v.norm_value "
+                       "FROM prot_observations as o, prot_values as v, prot_proteins as c "
+                       "WHERE o.round = (%s) "
+                       "AND c.category = (%s) "
+                       "AND o.username = (%s) "
+                       "AND v.protein_id = c.protein_id "
+                       "AND v.observation_id = o.observation_id "
+                       "ORDER BY c.abbreviation", (round,category,username,))
+
+        # Create the np array
+        array = np.array(list(cursor.fetchall()), dtype=[('metabolite', str, 128), (str(username), float)])
+
+        # Build pandas Series
+        return pandas.DataFrame(array[str(username)], index=array['metabolite'], columns=[str(username)])
+
+    def _get_all_participants(self, round, category="Inflammation"):
+
+        cursor = self.database.GetCursor()
+        cursor.execute("SELECT username "
+                       "FROM participants")
+
+        headers = np.array(list(cursor.fetchall()), dtype=[('username', str, 128)])
+
+        result = None
+        # Now loop over the database and retrieve all of it for this round
+        for username in headers['username']:
+
+            current = self._get_participant_by_name(round, username, category)
+            if (result is None):
+                result = current
+            else:
+                result = result.join(current)
+
+        return result
+
+    def _get_all_diff_participant(self, roundA, roundB, category="Inflammation"):
+
+        # Get these two rounds
+        dataA = self._get_all_participants(roundA, category)
+        dataB = self._get_all_participants(roundB, category)
+
+        # Now take the difference of the rounds and drop any that have data missing
+        return (dataB - dataA)
 
     def Clean(self, value):
 

@@ -10,6 +10,7 @@ import numpy as np
 import scipy
 import math, re
 import pandas, pandas.io
+import statsmodels
 
 # Codebase imports
 from p100.errors import MyError
@@ -85,6 +86,32 @@ class Metabolomics(DataFrameOps):
         # Build pandas Series
         return pandas.DataFrame(array[str(field_id)], index=array['username'], columns=[str(field_id)])
 
+    def _get_all_signrank(self, roundA, roundB):
+
+        cursor = self.database.GetCursor()
+        cursor.execute("SELECT biochemical "
+                       "FROM meta_metabolite")
+
+        headers = np.array(list(cursor.fetchall()), dtype=[('name', str, 128)])
+
+        result = []
+        names = []
+        # Now loop over the database and retrieve all of it for this round
+        for name in headers['name']:
+
+            # Perform the signed rank test (non-parametric)
+            result.append(self._get_signrank_by_name(roundA, roundB, name))
+            names.append(name)
+
+        # Create the np array
+        array = np.array(result, dtype=[('z_value', float), ('p_value', float), ('meanA', float), ('meanB', float), ('stdA', float), ('stdB', float)])
+        (accepted, corrected, unused1, unused2) = statsmodels.sandbox.stats.multicomp.multipletests(array['p_value'], method="fdr_bh")
+
+        # Build pandas dataframe with corrected p-values
+        temp = pandas.DataFrame(array, index=names, columns=['z_value', 'p_value', 'fdr', 'meanA', 'meanB', 'stdA', 'stdB'])
+        temp['fdr'] = pandas.Series(corrected, index=temp.index)
+        return temp.sort('fdr', ascending=True)
+
     def _get_all_fields(self, round):
 
         cursor = self.database.GetCursor()
@@ -98,6 +125,43 @@ class Metabolomics(DataFrameOps):
         for name in headers['name']:
 
             current = self._get_field_by_name(round, name)
+            if (result is None):
+                result = current
+            else:
+                result = result.join(current)
+
+        return result
+
+    def _get_participant_by_name(self, round, username):
+
+        cursor = self.database.GetCursor()
+        cursor.execute("SELECT c.biochemical, v.imputed "
+                       "FROM meta_observation as o, meta_values as v, meta_metabolite as c "
+                       "WHERE o.round = (%s) "
+                       "AND o.username = (%s) "
+                       "AND v.metabolite_id = c.metabolite_id "
+                       "AND v.observation_id = o.observation_id "
+                       "ORDER BY c.biochemical", (round,username,))
+
+        # Create the np array
+        array = np.array(list(cursor.fetchall()), dtype=[('metabolite', str, 128), (str(username), float)])
+
+        # Build pandas Series
+        return pandas.DataFrame(array[str(username)], index=array['metabolite'], columns=[str(username)])
+
+    def _get_all_participants(self, round):
+
+        cursor = self.database.GetCursor()
+        cursor.execute("SELECT username "
+                       "FROM participants")
+
+        headers = np.array(list(cursor.fetchall()), dtype=[('username', str, 128)])
+
+        result = None
+        # Now loop over the database and retrieve all of it for this round
+        for username in headers['username']:
+
+            current = self._get_participant_by_name(round, username)
             if (result is None):
                 result = current
             else:
