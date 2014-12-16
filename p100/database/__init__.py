@@ -23,7 +23,7 @@ from csv import reader
 from p100.range import Range
 from p100.errors import MyError
 
-logger = logging.getLogger("p100.database")
+l_logger = logging.getLogger("p100.database")
 
 FIRST_BLOOD_DRAW=datetime.datetime(2014, 6, 24)
 SECOND_BLOOD_DRAW=datetime.datetime(2014, 9, 30)
@@ -32,6 +32,7 @@ class Database(object):
 
     def __init__(self, host=HOSTNAME, user=USERNAME, passwd=PASSWORD, db=DB):
         self.host, self.user, self.passwd, self.db_name = host,user,passwd,db
+        logger.debug( "DataBase %s,%s,%s" % (self.host, self.user, self.db_name ))
         self._db = None
 
     def __del__(self):
@@ -76,7 +77,7 @@ class Database(object):
         def map_to_df( results, field_names):
             return pandas.DataFrame.from_dict(map_to_dict( results, field_names ))
         with self.db as cursor:
-            logger.debug("Query: %s, %r" % (q_string,var_tup))
+            l_logger.debug("Query: %s, %r" % (q_string,var_tup))
             cursor.execute(q_string,var_tup)
             results = cursor.fetchall()
             field_names = [i[0] for i in cursor.description]
@@ -95,14 +96,14 @@ class Database(object):
         """
         Closes the database connection
         """
-        logger.debug("Closing database connection")
+        l_logger.debug("Closing database connection")
         self.db.close()
 
     def _GetNewConnection(self):
         """
         Creates a new database connection
         """
-        logger.debug("Creating a db connection")
+        l_logger.debug("Creating a db connection")
         return MySQLdb.connect(host=self.host,
                 user=self.user, passwd=self.passwd, db=self.db_name)
 
@@ -116,11 +117,11 @@ class Database(object):
         try:
             self._db.ping()
         except (OperationalError, InterfaceError):
-            logger.exception("Looks like the db is not responding. Trying to recover.")
+            l_logger.exception("Looks like the db is not responding. Trying to recover.")
             try:
                 self._db.close()
             except ProgrammingError:
-                logger.info("Database is closed, attempting to recover")
+                l_logger.info("Database is closed, attempting to recover")
             self._db = self._GetNewConnection()
         return self._db
 
