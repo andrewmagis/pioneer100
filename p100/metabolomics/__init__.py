@@ -15,12 +15,12 @@ import pandas, pandas.io
 from p100.errors import MyError
 from p100.utils.dataframeops import DataFrameOps
 
-logger = logging.getLogger("p100.metabolomics")
+l_logger = logging.getLogger("p100.metabolomics")
 
 class Metabolomics(DataFrameOps):
 
     def __init__(self, database):
-        logger.debug("Creating a Metabolomics object")
+        l_logger.debug("Creating a Metabolomics object")
         self.database = database
 
     def GetData(self, username=None, round=None, metabolite_id=None):
@@ -28,7 +28,7 @@ class Metabolomics(DataFrameOps):
         Returns a dataframe with the metabolomic data for
         a given user and round(if provided).
         """
-        logger.debug("GetData( %s, %s )" %(username, round))
+        l_logger.debug("GetData( %s, %s )" %(username, round))
         q_string = """
         SELECT mo.username, mo.round, imputed as value, biochemical as metabolite_name,
                 super_pathway, sub_pathway, hmdb, mm.metabolite_id

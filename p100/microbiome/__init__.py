@@ -16,12 +16,12 @@ from ete2 import Tree
 from p100.errors import MyError
 import time
 
-logger = logging.getLogger("p100.microbiome")
+l_logger = logging.getLogger("p100.microbiome")
 
 class Microbiome(object):
     tax = ['kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species']
     def __init__(self, database):
-        logger.debug("Creating a Microbiome object")
+        l_logger.debug("Creating a Microbiome object")
         self.database = database
 
     def GetData(self,username=None, rnd=None, agg_to='species',
@@ -33,7 +33,7 @@ class Microbiome(object):
         percentages, otherwise the counts.
         """
 
-        logger.debug("GetData( %s, %s, %s, %s  )" %( username, rnd,  agg_to, perc))
+        l_logger.debug("GetData( %s, %s, %s, %s  )" %( username, rnd,  agg_to, perc))
         cut = self.tax.index(agg_to) + 1
         #the trimmed list of taxonomies
         tr_tax = self.tax[:cut]
@@ -140,15 +140,15 @@ class Microbiome(object):
         q_string = q_string % (', '.join(['%s' for x in observation_ids]))
         df_source = self.database.GetDataFrame( q_string, tuple( map(int, observation_ids) ) )
         otus = df_source.OTU.unique()
-        logger.debug( otus )
+        l_logger.debug( otus )
         tree = self._load_tree( tree_file )
         return ( df_source, tree)
         def gt():
             from time import gmtime, strftime
             return strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
-        logger.debug( "pruning [%s]" % (  gt(),) )
+        l_logger.debug( "pruning [%s]" % (  gt(),) )
         new_tree = tree.prune( map(str,otus) )
-        logger.debug("done pruning [%s]" % (  gt(),))
+        l_logger.debug("done pruning [%s]" % (  gt(),))
 
         return #dataframe containing distances
 
