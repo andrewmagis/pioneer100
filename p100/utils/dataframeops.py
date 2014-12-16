@@ -25,6 +25,24 @@ class DataFrameOps(object):
         # Now take the difference of the rounds and drop any that have data missing
         return (dataB - dataA).dropna()
 
+    def _get_diff_participant(self, roundA, roundB, username):
+
+         # Get these two rounds
+        dataA = self._get_participant_by_name(roundA, username)
+        dataB = self._get_participant_by_name(roundB, username)
+
+        # Now take the difference of the rounds and drop any that have data missing
+        return (dataB - dataA).dropna()
+
+    def _get_all_diff_participant(self, roundA, roundB):
+
+        # Get these two rounds
+        dataA = self._get_all_participants(roundA)
+        dataB = self._get_all_participants(roundB)
+
+        # Now take the difference of the rounds and drop any that have data missing
+        return (dataB - dataA)
+
     def _get_all_diff(self, roundA, roundB):
 
         # Get these two rounds

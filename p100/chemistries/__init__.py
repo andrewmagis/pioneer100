@@ -35,6 +35,43 @@ class Chemistries(DataFrameOps):
         # Build pandas Series
         return pandas.DataFrame(array[str(field_name)], index=array['username'], columns=[field_name])
 
+    def _get_participant_by_name(self, round, username):
+
+        cursor = self.database.GetCursor()
+        cursor.execute("SELECT c.name, v.value "
+                       "FROM chem_observations as o, chem_values as v, chem_chemistries as c "
+                       "WHERE o.round = (%s) "
+                       "AND o.username = (%s) "
+                       "AND v.chemistry_id = c.chemistry_id "
+                       "AND v.observation_id = o.observation_id "
+                       "ORDER BY c.name", (round,username,))
+
+        # Create the np array
+        array = np.array(list(cursor.fetchall()), dtype=[('chemistry', str, 128), (str(username), float)])
+
+        # Build pandas Series
+        return pandas.DataFrame(array[str(username)], index=array['chemistry'], columns=[str(username)])
+
+    def _get_all_participants(self, round):
+
+        cursor = self.database.GetCursor()
+        cursor.execute("SELECT username "
+                       "FROM participants")
+
+        headers = np.array(list(cursor.fetchall()), dtype=[('username', str, 128)])
+
+        result = None
+        # Now loop over the database and retrieve all of it for this round
+        for username in headers['username']:
+
+            current = self._get_participant_by_name(round, username)
+            if (result is None):
+                result = current
+            else:
+                result = result.join(current)
+
+        return result
+
     def _get_field_by_id(self, round, field_id):
 
         cursor = self.database.GetCursor()

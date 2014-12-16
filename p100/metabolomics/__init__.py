@@ -125,3 +125,40 @@ class Metabolomics(DataFrameOps):
                 result = result.join(current)
 
         return result
+
+    def _get_participant_by_name(self, round, username):
+
+        cursor = self.database.GetCursor()
+        cursor.execute("SELECT c.biochemical, v.imputed "
+                       "FROM meta_observation as o, meta_values as v, meta_metabolite as c "
+                       "WHERE o.round = (%s) "
+                       "AND o.username = (%s) "
+                       "AND v.metabolite_id = c.metabolite_id "
+                       "AND v.observation_id = o.observation_id "
+                       "ORDER BY c.biochemical", (round,username,))
+
+        # Create the np array
+        array = np.array(list(cursor.fetchall()), dtype=[('metabolite', str, 128), (str(username), float)])
+
+        # Build pandas Series
+        return pandas.DataFrame(array[str(username)], index=array['metabolite'], columns=[str(username)])
+
+    def _get_all_participants(self, round):
+
+        cursor = self.database.GetCursor()
+        cursor.execute("SELECT username "
+                       "FROM participants")
+
+        headers = np.array(list(cursor.fetchall()), dtype=[('username', str, 128)])
+
+        result = None
+        # Now loop over the database and retrieve all of it for this round
+        for username in headers['username']:
+
+            current = self._get_participant_by_name(round, username)
+            if (result is None):
+                result = current
+            else:
+                result = result.join(current)
+
+        return result

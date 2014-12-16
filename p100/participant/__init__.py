@@ -4,11 +4,49 @@ from participant import Participant
 import numpy as np
 from scipy import stats
 import math
+from datetime import date, datetime, timedelta as td
+import logging
+import pandas, pandas.io
+from dateutil.relativedelta import relativedelta
 
 # Reports that I can generate
 from p100.pdf.pharmacogeneticsreport import PharmacogeneticsReport
 from p100.pdf.diseasereport import DiseaseReport
 from p100.pdf import TransitionsReport
+
+logger = logging.getLogger("p100.participants")
+
+class Participants(object):
+
+    def __init__(self, database):
+        logger.debug("Creating a Participants object")
+        self.database = database
+
+    def _get_all_participants(self):
+
+        cursor = self.database.GetCursor()
+        result = cursor.execute("SELECT p.username, p.gender, p.birthdate "
+                       "FROM prt_participant as p "
+                       "ORDER BY p.username")
+
+        # Calculate the ages for all participants
+        final = []
+        today = datetime.today()
+        usernames = []
+        for (username, gender, birthdate) in cursor:
+
+            final.append((gender, relativedelta(today, birthdate).years))
+            usernames.append(username)
+
+        # Create the np array
+        array = np.array(final, dtype=[('gender', str, 1), ('age', int)])
+
+        # Create a temp dataframe with a categorical variable for gender
+        temp = pandas.DataFrame(array['age'], index=usernames, columns=['age'])
+        temp['gender'] = pandas.Categorical.from_array(array['gender']).codes
+
+        # Build pandas Series
+        return temp
 
 class ParticipantDB(object):
 
@@ -27,6 +65,8 @@ class ParticipantDB(object):
         self.LoadMeasurements()
         self.ranges = database.LoadRanges()
         self.LoadParticipants()
+
+
 
     def AddParticipant(self, username, gender, race, fitbit_key, fitbit_secret, genome_id, path, assembly):
 

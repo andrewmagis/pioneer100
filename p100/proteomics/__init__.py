@@ -147,6 +147,53 @@ class Proteomics(DataFrameOps):
         # Now take the difference of the rounds and drop any that have data missing
         return (dataB - dataA).dropna()
 
+    def _get_participant_by_name(self, round, username, category):
+
+        cursor = self.database.GetCursor()
+        cursor.execute("SELECT c.abbreviation, v.norm_value "
+                       "FROM prot_observations as o, prot_values as v, prot_proteins as c "
+                       "WHERE o.round = (%s) "
+                       "AND c.category = (%s) "
+                       "AND o.username = (%s) "
+                       "AND v.protein_id = c.protein_id "
+                       "AND v.observation_id = o.observation_id "
+                       "ORDER BY c.abbreviation", (round,category,username,))
+
+        # Create the np array
+        array = np.array(list(cursor.fetchall()), dtype=[('metabolite', str, 128), (str(username), float)])
+
+        # Build pandas Series
+        return pandas.DataFrame(array[str(username)], index=array['metabolite'], columns=[str(username)])
+
+    def _get_all_participants(self, round, category="Inflammation"):
+
+        cursor = self.database.GetCursor()
+        cursor.execute("SELECT username "
+                       "FROM participants")
+
+        headers = np.array(list(cursor.fetchall()), dtype=[('username', str, 128)])
+
+        result = None
+        # Now loop over the database and retrieve all of it for this round
+        for username in headers['username']:
+
+            current = self._get_participant_by_name(round, username, category)
+            if (result is None):
+                result = current
+            else:
+                result = result.join(current)
+
+        return result
+
+    def _get_all_diff_participant(self, roundA, roundB, category="Inflammation"):
+
+        # Get these two rounds
+        dataA = self._get_all_participants(roundA, category)
+        dataB = self._get_all_participants(roundB, category)
+
+        # Now take the difference of the rounds and drop any that have data missing
+        return (dataB - dataA)
+
     def Clean(self, value):
 
         new_value = value.strip().strip("'").strip('"')
