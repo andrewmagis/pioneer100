@@ -71,7 +71,7 @@ class Proteomics(DataFrameOps):
             if (result is None):
                 result = current
             else:
-                result = result.join(current)
+                result = result.join(current, how='outer')
 
         return result
 
@@ -181,7 +181,7 @@ class Proteomics(DataFrameOps):
             if (result is None):
                 result = current
             else:
-                result = result.join(current)
+                result = result.join(current, how='outer')
 
         return result
 
