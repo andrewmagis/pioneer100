@@ -27,7 +27,7 @@ class Chemistries(DataFrameOps):
         """
         l_logger.debug("GetData( %s, %s, %s )" %( username, round, chemistry_id ))
         q_string = """
-        SELECT co.username, co.round, value, name
+        SELECT co.username, co.round, value, name, cv.chemistry_id
         FROM chem_values cv, chem_observations co, chem_chemistries cc
         WHERE cc.chemistry_id = cv.chemistry_id
         and co.observation_id = cv.observation_id
