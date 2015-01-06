@@ -86,7 +86,7 @@ class Metabolomics(DataFrameOps):
         var_tup = []
         if username is not None:
             conditions.append("mo.username = %s ")
-            var_tup += [username]
+            var_tup += [ultername]
         if round is not None:
             conditions.append("mo.round = %s")
             var_tup += [round]
@@ -125,7 +125,9 @@ class Metabolomics(DataFrameOps):
              'rsum_p_value': pval,
              'rsum_zstat':zstat,
              'ttest_p_value': tpval,
-             'ttest_t_score': tscore
+             'ttest_t_score': tscore,
+             'set_1_mean' : set_1_limited_df['value'].mean(),
+             'set_2_mean' : set_2_limited_df['value'].mean()
              }
             met_results.append(met_info)
         met_df = pandas.DataFrame(met_results)
