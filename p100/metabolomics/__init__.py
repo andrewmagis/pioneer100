@@ -86,7 +86,7 @@ class Metabolomics(DataFrameOps):
         var_tup = []
         if username is not None:
             conditions.append("mo.username = %s ")
-            var_tup += [ultername]
+            var_tup += [username]
         if round is not None:
             conditions.append("mo.round = %s")
             var_tup += [round]
