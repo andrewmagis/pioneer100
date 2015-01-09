@@ -178,7 +178,7 @@ class VCF(object):
                 continue
 
             # Filter for a pass quality
-            # TODO: Allow for VLQ variants as well if the user requests
+            # TODO: Allow for VLQ variants as well (if the user requests)
             if (vcf.quality == "PASS"):
                 vcfs.append(vcf)
 
