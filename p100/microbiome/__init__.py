@@ -127,34 +127,75 @@ class Microbiome(object):
                         result[key][sub_key] =  row[-1]
         return pandas.DataFrame.from_dict( result )
 
-    def get_unifrac_matrix( self, observation_ids, tree_file, weighted =
-            True):
+    def GetUnifracScore(self, observation_ids = None, usernames = None,
+            rounds = None, weighted=True):
+        """
+        returns the unifrac scores associated with the given by the
+        inputs
+        Note, it is observation_ids or usernames or usernames and
+        rounds
+
+        for example to compare username 555 between r1 and r2
+
+        uf = mic.GetUnifracScore( usernames=('555', '555'),
+        rounds=(1,2) )
+
+        to get 2 different observations
+
+        uf = miv.GetUnifracScore( observation_ids=(1,2) )
+        """
+
         q_string = """
-            SELECT tx.OTU, lvl.observation_id, lvl.percentage
-            FROM mb_taxonomy tx, mb_levels lvl
-            WHERE tx.taxonomy_id = lvl.taxonomy_id
-            and lvl.observation_id in (%s)
-            and lvl.percentage > 0
-            ORDER BY lvl.observation_id
-        """
-        q_string = q_string % (', '.join(['%s' for x in observation_ids]))
-        df_source = self.database.GetDataFrame( q_string, tuple( map(int, observation_ids) ) )
-        otus = df_source.OTU.unique()
-        l_logger.debug( otus )
-        tree = self._load_tree( tree_file )
-        return ( df_source, tree)
-        def gt():
-            from time import gmtime, strftime
-            return strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
-        l_logger.debug( "pruning [%s]" % (  gt(),) )
-        new_tree = tree.prune( map(str,otus) )
-        l_logger.debug("done pruning [%s]" % (  gt(),))
+        SELECT   o1.observation_id as observation_id1, o1.username as username1, o1.round as round1, 
+                 o2.observation_id as observation_id2, o2.username as username2, o2.round as round2, 
+                 u.weighted as value
+        FROM mb_observation o1, mb_observation o2, mb_unifrac u
+        WHERE o1.observation_id = u.observation_id_1 and
+        o2.observation_id = u.observation_id_2"""
+        where_stmt = []
+        forward = []
+        backward = []
+        if usernames is not None and len(usernames) == 2:
+            where_stmt.append("( (o1.username = %s) and (o2.username = %s))")
+            forward += list( usernames )
+            backward += list(  usernames[::-1] )
+        if rounds is not None and len(rounds) == 2:
+            where_stmt.append( "( (o1.round = %s )  and (o2.round = %s))")
+            forward += list(  rounds )
+            backward += list(  rounds[::-1] )
+        if observation_ids is not None and len(observation_ids) == 2:
+            where_stmt.append( "( (o1.observation_id = %s )  and (o2.observation_id = %s))")
+            forward += list(  observation_ids )
+            backward += list(  observation_ids[::-1] )
 
-        return #dataframe containing distances
+        forward_stmt = '(' + ' AND '.join( where_stmt) + ')' 
+        forward_stmt += ' OR ' + forward_stmt 
+        if len(forward) > 0:
+            q_string += ' AND (' + forward_stmt + ')'    
+        args = tuple( forward + backward )
+        return self.database.GetDataFrame( q_string, args )
 
-    def _load_tree( self, tree_file ):
+    def GetUnifracMatrix(self, by_uname_rnd=False):
         """
-        Given a path to a tree in nvformat, return the tree
-        """
+        Returns the complete unifrac matrix
 
-        return Tree( tree_file )
+        if by_uname_rnd
+            returns the matrix indexed by username-round
+        """
+        def map1_name_rnd( row):
+            return "%s-%i" % (row.username1, row.round1)
+        def map2_name_rnd( row ):
+            return "%s-%i" % (row.username2, row.round2)
+        uf = self.GetUnifracScore()
+        if by_uname_rnd:
+            uf['ur1'] = uf.apply(map1_name_rnd, axis=1)
+            uf['ur2'] = uf.apply(map2_name_rnd, axis=1)
+            new_us = uf.pivot(index='ur1',
+                columns='ur2', values='value')
+        else:
+            new_us = uf.pivot(index='observation_id1',
+                columns='observation_id2', values='value')
+        new_us[new_us.index[0]] = np.nan
+        new_us = new_us[new_us.index.tolist()].fillna(0.0)
+        new_us = new_us + new_us.transpose()
+        return new_us

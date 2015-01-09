@@ -19,6 +19,33 @@ class Chemistries(DataFrameOps):
     def __init__(self, database):
         self.database = database
 
+    def GetData(self, username=None, round=None, chemistry_id=None):
+        """
+        Returns a dataframe with the BMI data for
+        a given user and round(if provided).
+        """
+        l_logger.debug("GetData( %s, %s, %s )" %( username, round, chemistry_id ))
+        q_string = """
+        SELECT co.username, co.round, value, name, cv.chemistry_id
+        FROM chem_values cv, chem_observations co, chem_chemistries cc
+        WHERE cc.chemistry_id = cv.chemistry_id
+        and co.observation_id = cv.observation_id
+        """
+        conditions = []
+        var_tup = []
+        if username is not None:
+            conditions.append("co.username = %s ")
+            var_tup += [username]
+        if round is not None:
+            conditions.append("co.round = %s")
+            var_tup += [round]
+        if chemistry_id is not None:
+            conditions.append("cc.chemistry_id = %s")
+            var_tup += [chemistry_id]
+        q_string = ' and '.join( [ q_string ] + conditions )
+        var_tup = tuple( var_tup )
+        return self.database.GetDataFrame( q_string, tuple(var_tup) )
+
     def _get_unit_by_name(self, field_name):
 
         cursor = self.database.GetCursor()

@@ -11,13 +11,57 @@ import scipy
 import math, re
 import pandas, pandas.io
 import statsmodels
+import scipy.stats as scistats
 
 # Codebase imports
 from p100.errors import MyError
 from p100.utils.dataframeops import DataFrameOps
+from multiprocessing import Pool
 
 l_logger = logging.getLogger("p100.metabolomics")
 
+def partition_dataframe(dataframe,  username_set_1, username_set_2=None):
+    limited_df = dataframe.set_index('username', drop=False)
+    set_1_limited_df = limited_df.loc[username_set_1]
+    #remove where we have no record for usernames, otherwise fubars difference
+    set_1_limited_df = set_1_limited_df.dropna(axis=0) 
+    if username_set_2 is None:
+        set_2_limited_df = limited_df.drop(set_1_limited_df.index)
+    else:
+        set_2_limited_df = limited_df.loc[username_set_2]
+        #remove where we have no record for usernames
+        set_2_limited_df = set_2_limited_df.dropna(axis=0) 
+    return (set_1_limited_df, set_2_limited_df )
+
+def sub_part( args ):
+    def _map_uname_rnd( row):
+        #print row
+        return "%s-%i" % (row['username'], row['round'])
+    df, met_id, username_set_1, username_set_2, round = args
+    limited_df = df[df.metabolite_id == met_id]
+    if round is None:
+        cut_dfs = []
+        for rnd in limited_df['round'].unique():
+            rnd_df = limited_df[limited_df['round'] == rnd]
+            (s1l_df, s2l_df) = partition_dataframe( rnd_df, username_set_1, username_set_2 )
+            s1l_df['uname_rnd'] = s1l_df.apply( _map_uname_rnd, axis=1 )
+            s2l_df['uname_rnd'] = s2l_df.apply( _map_uname_rnd, axis=1 )
+            s1l_df = s1l_df.set_index('uname_rnd')
+            s2l_df = s2l_df.set_index('uname_rnd')
+            cut_dfs.append(( s1l_df, s2l_df ))
+        set_1_limited_df = pandas.concat( [a for a,_ in cut_dfs], axis=0 )
+        set_2_limited_df = pandas.concat( [b for _,b in cut_dfs], axis=0 )
+    else:
+        (s1l_df, s2l_df) = partition_dataframe( limited_df, username_set_1, username_set_2 )
+
+        s1l_df['uname_rnd'] = s1l_df.apply( _map_uname_rnd, axis=1 )
+        s2l_df['uname_rnd'] = s2l_df.apply( _map_uname_rnd, axis=1 )
+        s1l_df = s1l_df.set_index('uname_rnd')
+        s2l_df = s2l_df.set_index('uname_rnd')
+
+        set_1_limited_df, set_2_limited_df = s1l_df, s2l_df
+    return (set_1_limited_df, set_2_limited_df)
+            
 class Metabolomics(DataFrameOps):
 
     def __init__(self, database):
@@ -31,7 +75,7 @@ class Metabolomics(DataFrameOps):
         """
         l_logger.debug("GetData( %s, %s )" %(username, round))
         q_string = """
-        SELECT mo.username, mo.round, imputed as value, biochemical as metabolite_name,
+        SELECT mo.observation_id, mo.username, mo.round, imputed as value, biochemical as metabolite_name,
                 super_pathway, sub_pathway, hmdb, mm.metabolite_id
         FROM meta_values mv, meta_observation mo, meta_metabolite mm
         WHERE mm.metabolite_id = mv.metabolite_id
@@ -50,8 +94,82 @@ class Metabolomics(DataFrameOps):
             conditions.append("mm.metabolite_id = %s")
             var_tup += [metabolite_id]
         q_string = ' and '.join( [ q_string ] + conditions )
-        var_tup = tuple( var_tup )
         return self.database.GetDataFrame( q_string, tuple(var_tup) )
+
+    def GetAssociationsByUsername(self, username_set_1, username_set_2=None, round=None, nprocs=5):
+        """
+        Given a set(or 2 sets) of usernames, return the t-test and ranksums
+        for that partitioning. Also returns the benjamini-hochberg corrections for both
+
+
+        Given a single username set, returns comparison for that set and the difference of the whole set.
+
+        round - restricts the results to a single round
+
+        Returns a dataframe containing results for each metabolite
+        
+        Note on z/t-scores:
+            if negative then set_1 has the higher values and vice-versa
+        """
+        met_results = []
+        l_logger.debug("Partitioning tables")
+        partitions = self.GetPartitionsByUsername( username_set_1, username_set_2, round, nprocs=nprocs )
+        l_logger.debug("Calculating statistics")
+        for set_1_limited_df, set_2_limited_df in partitions:
+            zstat, pval = scistats.ranksums( set_2_limited_df['value'], set_1_limited_df['value'] )
+            tscore, tpval = scistats.ttest_ind( set_2_limited_df['value'], set_1_limited_df['value'] )
+            met_info = {'met_id': set_2_limited_df['metabolite_id'][0], 
+             'met_name':set_2_limited_df['metabolite_name'][0], 
+             'n_set_1': len(set_1_limited_df['metabolite_name']),
+             'n_set_2': len(set_2_limited_df['metabolite_name']),
+             'rsum_p_value': pval,
+             'rsum_zstat':zstat,
+             'ttest_p_value': tpval,
+             'ttest_t_score': tscore,
+             'set_1_mean' : set_1_limited_df['value'].mean(),
+             'set_2_mean' : set_2_limited_df['value'].mean()
+             }
+            met_results.append(met_info)
+        met_df = pandas.DataFrame(met_results)
+        #shortcut
+        mt = statsmodels.sandbox.stats.multicomp.multipletests
+        (accepted, corrected, unused1, unused2) = mt(met_df['rsum_p_value'].fillna(1), method="fdr_bh")
+        met_df['rsum_corrected'] = corrected
+        met_df['rsum_rejected'] = accepted
+        (accepted, corrected, unused1, unused2) =mt(met_df['ttest_p_value'].fillna(1), method="fdr_bh")
+        met_df['ttest_corrected'] = corrected
+        met_df['ttest_rejected'] = accepted
+
+        return met_df
+
+    def GetPartitionsByUsername( self, username_set_1, username_set_2=None, round=None, met_id = None, df=None, nprocs=5):
+        """
+        Given a set(or 2 sets) of usernames for thatr returns a list of dataframe pairs for that partitioning.
+
+        i.e. [(set_1_df_met_1, set_2_df_met_1),(set_1_df_met_2, set_2_df_met_2), ... ]
+
+        Options
+        -------
+        Given a single username set, returns comparison for that set and the difference of the whole set.
+        met_id - only performs partitioning for that metabolite (default:all)
+        round - restricts the results to a single round (default:all)
+        df - performs partitioning on given dataframe (i.e. you have your own subset)
+        """
+
+
+        if df is None:
+            df = self.GetData(round=round,metabolite_id=met_id)
+        ids = df.metabolite_id.unique()
+        p = Pool(nprocs)
+        #note the sub_part function is declared at the top of the module and is not
+        #part of the class.
+        #this is necessary in order to get the subprocess map to work
+        #from some cheap hand tuning, appears to top out at 5
+        return p.map( sub_part, [  (df, met_id, username_set_1, username_set_2, round) for met_id in ids ] )
+
+    def _map_uname_rnd(self, row):
+        #print row
+        return "%s-%i" % (row['username'], row['round'])
 
     def _get_field_by_name(self, round, field_name):
 

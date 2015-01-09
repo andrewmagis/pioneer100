@@ -32,8 +32,8 @@ class Database(object):
 
     def __init__(self, host=HOSTNAME, user=USERNAME, passwd=PASSWORD, db=DB):
         self.host, self.user, self.passwd, self.db_name = host,user,passwd,db
-        l_logger.debug( "DataBase %s,%s,%s" % (self.host, self.user, self.db_name ))
         self._db = None
+        l_logger.debug( "DataBase %s,%s,%s" % (self.host, self.user, self.db_name ))
 
     def __del__(self):
 
