@@ -6,7 +6,7 @@ import pandas, pandas.io
 from p100.errors import MyError
 from p100.clients.client import Client
 
-class Clients(object):
+class Genetics(object):
 
     def __init__(self, database):
         self.database = database
