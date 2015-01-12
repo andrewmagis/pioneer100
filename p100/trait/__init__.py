@@ -4,6 +4,7 @@ from p100.variant import Variant
 class Trait:
 
     def __init__(self, trait, pvalue):
+        
         self.trait = trait
         self.variants = {}
         self.scores = []
