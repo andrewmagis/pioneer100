@@ -4,7 +4,7 @@ from scipy import stats
 import pandas, pandas.io
 
 from p100.errors import MyError
-from p100.clients.client import Client
+from p100.genotypes import Genotypes
 
 class Genetics(object):
 
@@ -24,11 +24,10 @@ class Genetics(object):
         for (username,) in cursor.fetchall():
 
             # Create the client object
-            c = Client(username, self.database)
+            gt = Genotypes(username, self.database)
 
             # Process the trait
-            print username
-            result = c.LoadTrait(trait_name, pvalue, suppress_errors)
+            result = gt.LoadTrait(trait_name, pvalue, suppress_errors)
 
             # Store the results
             if (not result is None):
