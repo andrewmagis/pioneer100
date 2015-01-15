@@ -9,6 +9,8 @@ from csv import reader
 
 # Codebase imports
 from p100.errors import MyError
+from p100.range import Range
+from p100.participant import Participants
 from p100.utils.dataframeops import DataFrameOps
 
 FIRST_BLOOD_DRAW=datetime(2014, 6, 24)
@@ -60,6 +62,17 @@ class Chemistries(DataFrameOps):
             (unit,) = result[0]
             return unit
 
+    def _get_range_by_name(self, field_name):
+
+        cursor = self.database.GetCursor()
+        cursor.execute("SELECT r.min_value, r.max_value, r.range_type, r.range_level, r.gender "
+                       "FROM chem_ranges as r, chem_chemistries as c "
+                       "WHERE c.name = (%s) "
+                       "AND r.chemistry_id = c.chemistry_id "
+                       "ORDER BY r.min_value", (field_name,))
+
+        return Range(list(cursor.fetchall()))
+
     def _get_field_by_name(self, round, field_name):
 
         cursor = self.database.GetCursor()
@@ -93,6 +106,27 @@ class Chemistries(DataFrameOps):
 
         # Build pandas Series
         return pandas.DataFrame(array[str(username)], index=array['chemistry'], columns=[str(username)])
+
+    def _get_out_of_range(self, round, field_name):
+
+        prts = Participants(self.database)
+        prt_data = prts._get_all_participants()
+        r = self._get_range_by_name(field_name)
+        data = self._get_field_by_name(round, field_name)
+
+        # Now find those individuals that are out of range
+        oor1 = []
+        for prt in data.index:
+            value = data.loc[prt,field_name]
+            gender = prt_data.loc[prt, 'gender']
+            (rtype, rlevel) = r.state(value, gender);
+            if (rtype=='R' or rtype=='Y') and (rlevel=='HIGH'):
+                oor1.append((prt, value))
+
+        array = np.array(oor1, dtype=[('username', str, 8), ('round1', float)])
+        oor1 = pandas.DataFrame(array['round1'], index=array['username'], columns=['round1'])
+        return oor1
+
 
     def _get_all_participants(self, round):
 

@@ -27,6 +27,7 @@ class Genetics(object):
             gt = Genotypes(username, self.database)
 
             # Process the trait
+            print username
             result = gt.LoadTrait(trait_name, pvalue, suppress_errors)
 
             # Store the results
