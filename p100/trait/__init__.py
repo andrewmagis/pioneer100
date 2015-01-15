@@ -1,13 +1,15 @@
 from p100.errors import MyError
 from p100.variant import Variant
 
+import numpy as np
+import pandas, pandas.io
+
 class Trait:
 
     def __init__(self, trait, pvalue):
         
         self.trait = trait
         self.variants = {}
-        self.scores = []
         self.unit = None
         self.actual_unit = None
         self.display = None
@@ -63,8 +65,6 @@ class Trait:
                 else:
                     raise MyError('Found multiple variants at using rsid=%s in VCF file %s'%(key, vcf.filename))
 
-                #self.variants[key].Print()
-
                 # Accumulate the score for this trait
                 self.score += self.variants[key].score
 
@@ -73,6 +73,20 @@ class Trait:
                 e.Print()
 
         return True
+
+    def GetScores(self):
+
+        result = []
+
+        # Return a dataframe of variant scores
+        for key in self.variants.keys():
+            result.append((key, self.variants[key].score))
+
+        # Create the np array
+        array = np.array(result, dtype=[('rsid', str, 16), ('genotype', float)])
+
+        # Build pandas Series
+        return pandas.DataFrame(array['genotype'], index=array['rsid'], columns=['genotype'])
 
     def Print(self):
         for key in sorted(self.variants.keys()):
