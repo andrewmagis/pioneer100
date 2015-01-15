@@ -15,6 +15,7 @@ from p100.utils.dataframeops import DataFrameOps
 
 FIRST_BLOOD_DRAW=datetime(2014, 6, 24)
 SECOND_BLOOD_DRAW=datetime(2014, 9, 30)
+l_logger = logging.getLogger("p100.chemistries")
 
 class Chemistries(DataFrameOps):
 
