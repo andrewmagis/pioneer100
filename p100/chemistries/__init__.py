@@ -13,6 +13,8 @@ from p100.range import Range
 from p100.participant import Participants
 from p100.utils.dataframeops import DataFrameOps
 
+import logging
+
 FIRST_BLOOD_DRAW=datetime(2014, 6, 24)
 SECOND_BLOOD_DRAW=datetime(2014, 9, 30)
 l_logger = logging.getLogger("p100.chemistries")
