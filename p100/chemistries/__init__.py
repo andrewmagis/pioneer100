@@ -13,8 +13,81 @@ from p100.range import Range
 from p100.participant import Participants
 from p100.utils.dataframeops import DataFrameOps
 
+from multiprocessing import Pool
+import statsmodels
+import scipy.stats as scistats
+import logging
+
+
 FIRST_BLOOD_DRAW=datetime(2014, 6, 24)
 SECOND_BLOOD_DRAW=datetime(2014, 9, 30)
+l_logger = logging.getLogger("p100.chemistries")
+
+
+def partition_dataframe(dataframe,  username_set_1, username_set_2=None):
+    limited_df = dataframe.set_index('username', drop=False)
+        
+    try:
+        set_1_limited_df = limited_df.loc[username_set_1]
+        #remove where we have no record for usernames, otherwise fubars difference
+        set_1_limited_df = set_1_limited_df.dropna(axis=0) 
+    except KeyError:
+        return (None, None)
+    if username_set_2 is None:
+        set_2_limited_df = limited_df.drop(set_1_limited_df.index)
+    else:
+        try:
+            set_2_limited_df = limited_df.loc[username_set_2]
+        except KeyError:
+            return (None, None)
+
+        #remove where we have no record for usernames
+        set_2_limited_df = set_2_limited_df.dropna(axis=0) 
+    return (set_1_limited_df, set_2_limited_df )
+
+def sub_part( args ):
+    def _map_uname_rnd( row):
+        #print row
+        return "%s-%i" % (row['username'], row['round'])
+    try:
+        df, chem_id, username_set_1, username_set_2, round = args
+        #l_logger.debug( 'sub_part' +  (', '.join(['%s' for a in args ]) % (args)))
+        limited_df = df[df.chemistry_id == chem_id]
+        #l_logger.debug(len(limited_df))
+        if round is None:
+            cut_dfs = []
+            for rnd in limited_df['round'].unique():
+                rnd_df = limited_df[limited_df['round'] == rnd]
+                (s1l_df, s2l_df) = partition_dataframe( rnd_df, username_set_1, username_set_2 )
+               
+            if s1l_df is not None and s2l_df is not None:
+                s1l_df['uname_rnd'] = s1l_df.apply( _map_uname_rnd, axis=1 )
+                s2l_df['uname_rnd'] = s2l_df.apply( _map_uname_rnd, axis=1 )
+                s1l_df = s1l_df.set_index('uname_rnd')
+                s2l_df = s2l_df.set_index('uname_rnd')
+                cut_dfs.append(( s1l_df, s2l_df ))
+            try:
+                set_1_limited_df = pandas.concat( [a for a,_ in cut_dfs], axis=0 )
+                set_2_limited_df = pandas.concat( [b for _,b in cut_dfs], axis=0 )
+            except ValueError:
+                l_logger.exception( 'sub_part' +  (', '.join(['%s' for a in args ]) % (args)))
+                set_1_limited_df = None
+                set_2_limited_df = None 
+        else:
+            (s1l_df, s2l_df) = partition_dataframe( limited_df, username_set_1, username_set_2 )
+            if s1l_df is not None and s2l_df is not None:
+                s1l_df['uname_rnd'] = s1l_df.apply( _map_uname_rnd, axis=1 )
+                s2l_df['uname_rnd'] = s2l_df.apply( _map_uname_rnd, axis=1 )
+                s1l_df = s1l_df.set_index('uname_rnd')
+                s2l_df = s2l_df.set_index('uname_rnd')
+
+            set_1_limited_df, set_2_limited_df = s1l_df, s2l_df
+    except:
+        l_logger.exception("Shit")
+        l_logger.error('limited_df.index %r' %limited_df.index )
+        l_logger.error('%s' % chem_id)
+        return (None, None) 
+    return (set_1_limited_df, set_2_limited_df)
 
 class Chemistries(DataFrameOps):
 
@@ -48,6 +121,79 @@ class Chemistries(DataFrameOps):
         var_tup = tuple( var_tup )
         return self.database.GetDataFrame( q_string, tuple(var_tup) )
 
+    def GetAssociationsByUsername(self, username_set_1, username_set_2=None, round=None, nprocs=5):
+        """
+        Given a set(or 2 sets) of usernames, return the t-test and ranksums
+        for that partitioning. Also returns the benjamini-hochberg corrections for both
+
+
+        Given a single username set, returns comparison for that set and the difference of the whole set.
+
+        round - restricts the results to a single round
+
+        Returns a dataframe containing results for each metabolite
+        
+        Note on z/t-scores:
+            if negative then set_1 has the higher values and vice-versa
+        """
+        chem_results = []
+        l_logger.debug("Partitioning tables")
+        partitions = self.GetPartitionsByUsername( username_set_1, username_set_2, round, nprocs=nprocs )
+        l_logger.debug("Calculating statistics")
+        for set_1_limited_df, set_2_limited_df in partitions:
+            if set_1_limited_df is not None and set_2_limited_df is not None:
+                zstat, pval = scistats.ranksums( set_2_limited_df['value'], set_1_limited_df['value'] )
+                tscore, tpval = scistats.ttest_ind( set_2_limited_df['value'], set_1_limited_df['value'] )
+                chem_info = {'met_id': set_2_limited_df['chemistry_id'][0], 
+                 'chem_name':set_2_limited_df['name'][0], 
+                 'n_set_1': len(set_1_limited_df['name']),
+                 'n_set_2': len(set_2_limited_df['name']),
+                 'rsum_p_value': pval,
+                 'rsum_zstat':zstat,
+                 'ttest_p_value': tpval,
+                 'ttest_t_score': tscore,
+                 'set_1_mean' : set_1_limited_df['value'].mean(),
+                 'set_2_mean' : set_2_limited_df['value'].mean()
+                }
+                chem_results.append(chem_info)
+        chem_df = pandas.DataFrame(chem_results)
+        #shortcut
+        mt = statsmodels.sandbox.stats.multicomp.multipletests
+        (accepted, corrected, unused1, unused2) = mt(chem_df['rsum_p_value'].fillna(1), method="fdr_bh")
+        chem_df['rsum_corrected'] = corrected
+        chem_df['rsum_rejected'] = accepted
+        (accepted, corrected, unused1, unused2) =mt(chem_df['ttest_p_value'].fillna(1), method="fdr_bh")
+        chem_df['ttest_corrected'] = corrected
+        chem_df['ttest_rejected'] = accepted
+
+        return chem_df
+
+    def GetPartitionsByUsername( self, username_set_1, username_set_2=None, round=None, chem_id = None, df=None, nprocs=5):
+        """
+        Given a set(or 2 sets) of usernames for thatr returns a list of dataframe pairs for that partitioning.
+
+        i.e. [(set_1_df_met_1, set_2_df_met_1),(set_1_df_met_2, set_2_df_met_2), ... ]
+
+        Options
+        -------
+        Given a single username set, returns comparison for that set and the difference of the whole set.
+        chem_id - only performs partitioning for that metabolite (default:all)
+        round - restricts the results to a single round (default:all)
+        df - performs partitioning on given dataframe (i.e. you have your own subset)
+        """
+
+        l_logger.debug("GetPartitionsByUsername(%r,%r,%r,%r,%r,%r)" %(username_set_1, username_set_2,
+                round, chem_id , df, nprocs))
+        if df is None:
+            df = self.GetData(round=round, chemistry_id=chem_id)
+        ids = df.chemistry_id.unique()
+        p = Pool(nprocs)
+        #note the sub_part function is declared at the top of the module and is not
+        #part of the class.
+        #this is necessary in order to get the subprocess map to work
+        #from some cheap hand tuning, appears to top out at 5
+        return p.map( sub_part, [  (df, chem_id, username_set_1, username_set_2, round) for chem_id in ids ] )
+    
     def _get_unit_by_name(self, field_name):
 
         cursor = self.database.GetCursor()

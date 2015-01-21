@@ -157,6 +157,8 @@ class Metabolomics(DataFrameOps):
         """
 
 
+        l_logger.debug("GetPartitionsByUsername(%r,%r,%r,%r,%r,%r)" %(username_set_1, username_set_2,
+                round, met_id , df, nprocs))
         if df is None:
             df = self.GetData(round=round,metabolite_id=met_id)
         ids = df.metabolite_id.unique()
