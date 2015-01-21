@@ -25,6 +25,14 @@ class DataFrameOps(object):
         # Now take the difference of the rounds and drop any that have data missing
         return (dataB - dataA).dropna()
 
+    def _get_percent_by_name(self, roundA, roundB, field_name):
+
+         # Get these two rounds
+        dataA = self._get_field_by_name(roundA, field_name)
+        dataB = self._get_field_by_name(roundB, field_name)
+
+        return ((dataB - dataA) / dataA).dropna()
+
     def _get_diff_participant(self, roundA, roundB, username):
 
          # Get these two rounds

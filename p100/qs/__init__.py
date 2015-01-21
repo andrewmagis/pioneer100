@@ -299,6 +299,8 @@ class QS(object):
         if (current_date is None):
             current_date = FIRST_FITBIT_DATE
 
+        print current_date
+
         # Get the delta
         delta = today - current_date.date()
 
@@ -388,8 +390,8 @@ class QS(object):
         key = None
         secret = None
 
-        result = self.database.Get('participants', 'username', username)
-        for (username, assembly, gender, race, fitbit_key, fitbit_secret) in result:
+        result = self.database.Get('prt_participant', 'username', username)
+        for (entry, username, gender, dob, race, fitbit_key, fitbit_secret, genome_id, path, assembly ) in result:
             if (key is None):
                 key = fitbit_key
             else:
