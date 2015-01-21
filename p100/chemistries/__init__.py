@@ -249,7 +249,7 @@ class Chemistries(DataFrameOps):
         # Build pandas Series
         return pandas.DataFrame(array[str(username)], index=array['chemistry'], columns=[str(username)])
 
-    def _get_out_of_range(self, round, field_name):
+    def _get_out_of_range(self, round, field_name, type=['R', 'Y'], levels=['HIGH']):
 
         prts = Participants(self.database)
         prt_data = prts._get_all_participants()
@@ -262,11 +262,11 @@ class Chemistries(DataFrameOps):
             value = data.loc[prt,field_name]
             gender = prt_data.loc[prt, 'gender']
             (rtype, rlevel) = r.state(value, gender);
-            if (rtype=='R' or rtype=='Y') and (rlevel=='HIGH'):
+            if (rtype in type) and (rlevel in levels):
                 oor1.append((prt, value))
 
-        array = np.array(oor1, dtype=[('username', str, 8), ('round1', float)])
-        oor1 = pandas.DataFrame(array['round1'], index=array['username'], columns=['round1'])
+        array = np.array(oor1, dtype=[('username', str, 8), ('round'+str(round), float)])
+        oor1 = pandas.DataFrame(array['round'+str(round)], index=array['username'], columns=['round'+str(round)])
         return oor1
 
 
