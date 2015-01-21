@@ -26,7 +26,6 @@ l_logger = logging.getLogger("p100.chemistries")
 
 def partition_dataframe(dataframe,  username_set_1, username_set_2=None):
     limited_df = dataframe.set_index('username', drop=False)
-        
     try:
         set_1_limited_df = limited_df.loc[username_set_1]
         #remove where we have no record for usernames, otherwise fubars difference
@@ -51,21 +50,18 @@ def sub_part( args ):
         return "%s-%i" % (row['username'], row['round'])
     try:
         df, chem_id, username_set_1, username_set_2, round = args
-        #l_logger.debug( 'sub_part' +  (', '.join(['%s' for a in args ]) % (args)))
         limited_df = df[df.chemistry_id == chem_id]
-        #l_logger.debug(len(limited_df))
         if round is None:
             cut_dfs = []
             for rnd in limited_df['round'].unique():
                 rnd_df = limited_df[limited_df['round'] == rnd]
                 (s1l_df, s2l_df) = partition_dataframe( rnd_df, username_set_1, username_set_2 )
-               
-            if s1l_df is not None and s2l_df is not None:
-                s1l_df['uname_rnd'] = s1l_df.apply( _map_uname_rnd, axis=1 )
-                s2l_df['uname_rnd'] = s2l_df.apply( _map_uname_rnd, axis=1 )
-                s1l_df = s1l_df.set_index('uname_rnd')
-                s2l_df = s2l_df.set_index('uname_rnd')
-                cut_dfs.append(( s1l_df, s2l_df ))
+                if s1l_df is not None and s2l_df is not None:
+                    s1l_df['uname_rnd'] = s1l_df.apply( _map_uname_rnd, axis=1 )
+                    s2l_df['uname_rnd'] = s2l_df.apply( _map_uname_rnd, axis=1 )
+                    s1l_df = s1l_df.set_index('uname_rnd')
+                    s2l_df = s2l_df.set_index('uname_rnd')
+                    cut_dfs.append(( s1l_df, s2l_df ))
             try:
                 set_1_limited_df = pandas.concat( [a for a,_ in cut_dfs], axis=0 )
                 set_2_limited_df = pandas.concat( [b for _,b in cut_dfs], axis=0 )
