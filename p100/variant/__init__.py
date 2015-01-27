@@ -16,7 +16,7 @@ class Variant(object):
 
     def __init__(self, entry=None, rsid=None, trait=None, chr=None, start=None, end=None, gene=None, vc=None, assembly=None, pubmed=None, allele=None,
                  reference=None, inheritance=None, effect_type=None, haplotype=None, odds_beta=None, unit=None, pval=None,
-                 interaction=None, intervention=None, gender=None, ancestry=None, note_generic=None, note_effect0=None, note_effect1=None, note_effect2=None):
+                 interaction=None, intervention=None, gender=None, ancestry=None, note_generic=None, note_effect0=None, note_effect1=None, note_effect2=None, category=None):
 
         self.rsid = rsid
         self.chr = chr
@@ -43,6 +43,7 @@ class Variant(object):
         self.note_effect0 = note_effect0
         self.note_effect1 = note_effect1
         self.note_effect2 = note_effect2
+        self.category = category
 
         # Additional values that do not exist until a genotype is added
         self.vcf = None
@@ -397,12 +398,12 @@ class Variant(object):
             return
 
         command = "INSERT INTO variant (rsid, trait, chr, start, end, gene, vc, assembly, pubmed, allele, reference, inheritance, effect_type, haplotype, " \
-                  "odds_beta, unit, pval, interaction, intervention, gender, ancestry, note_generic, note_effect0, note_effect1, note_effect2) VALUES " \
-                  "(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                  "odds_beta, unit, pval, interaction, intervention, gender, ancestry, note_generic, note_effect0, note_effect1, note_effect2, category) VALUES " \
+                  "(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
 
         data = (self.rsid, self.trait, self.chr, self.start, self.end, self.gene, self.vc, self.assembly, self.pubmed, self.allele, self.reference, self.inheritance, self.effect_type,
                 self.haplotype, self.odds_beta, self.unit, self.pval, self.interaction, self.intervention, self.gender, self.ancestry,
-                self.note_generic, self.note_effect0, self.note_effect1, self.note_effect2)
+                self.note_generic, self.note_effect0, self.note_effect1, self.note_effect2, self.category)
 
         cursor = database.GetCursor()
         cursor.execute(command, data)
@@ -415,7 +416,7 @@ class Variant(object):
                     end INT NOT NULL, gene VARCHAR(512), vc VARCHAR(16) NOT NULL, assembly VARCHAR(16) NOT NULL, pubmed VARCHAR(512) NOT NULL, allele VARCHAR(512) NOT NULL, \
                     reference VARCHAR(512) NOT NULL, inheritance VARCHAR(16), effect_type VARCHAR(16) NOT NULL, haplotype INT, odds_beta FLOAT NOT NULL, unit VARCHAR(16), \
                     pval DOUBLE NOT NULL,  interaction VARCHAR(512), intervention VARCHAR(512), gender VARCHAR(16), ancestry VARCHAR(128), \
-                    note_generic TEXT, note_effect0 TEXT, note_effect1 TEXT, note_effect2 TEXT)"
+                    note_generic TEXT, note_effect0 TEXT, note_effect1 TEXT, note_effect2 TEXT, category VARCHAR(45))"
 
         # First create columns
         database.Command(command)

@@ -28,6 +28,8 @@ from util import calc_table_col_widths
 from common import *
 import numpy as np
 
+from p100.trait import Trait
+
 from operator import attrgetter
 
 class MyTheme(DefaultTheme):
@@ -674,9 +676,10 @@ circulatory system - may already be starting.");
         
 class GeneticsReport(object):
 
-    def __init__(self, participant):
+    def __init__(self, vcf, database):
 
-        self.participant = participant;
+        self.vcf = vcf;
+        self.database = database
 
         self.theme = MyTheme;
         self.title = "Beta Genetics Report"
@@ -699,7 +702,7 @@ class GeneticsReport(object):
         canvas.saveState()
         
         canvas.setFont('Helvetica',10)
-        canvas.drawString(0.5*inch, 11.4*inch, "Name: %s"%(self.participant.username));
+        canvas.drawString(0.5*inch, 11.4*inch, "Name: %s"%(self.vcf.username));
         #canvas.drawString(0.5*inch, 11.2*inch, "Gender: %s"%(self.gender));
         #canvas.drawString(0.5*inch, 11.0*inch, "DOB: %s"%(self.dob));
         
@@ -716,7 +719,7 @@ class GeneticsReport(object):
         canvas.saveState()
         
         canvas.setFont('Helvetica',10)
-        canvas.drawString(0.5*inch, 11.4*inch, "Name: %s"%(self.participant.username));
+        canvas.drawString(0.5*inch, 11.4*inch, "Name: %s"%(self.vcf.username));
         #canvas.drawString(0.5*inch, 11.2*inch, "Gender: %s"%(self.gender));
         #canvas.drawString(0.5*inch, 11.0*inch, "DOB: %s"%(self.dob));
         
@@ -756,9 +759,12 @@ class GeneticsReport(object):
         table = Table(variant_table, [500], hAlign='CENTER', style=variant_style)
         story.append(table);
         
-    def ProcessTrait(self, story, trait):
-    
-        trait = self.participant.ProcessActionable(trait);
+    def ProcessTrait(self, story, title):
+
+        #trait = self.participant.ProcessActionable(trait);
+        trait = Trait(title, 1)
+        trait.Load(self.database)
+        trait.ProcessVCF(self.vcf, True)
 
         variant_table = [['Gene', 'Identifier', 'Allele', 'You', 'Description']] # this is the header row
         variant_style = [];
@@ -773,7 +779,7 @@ class GeneticsReport(object):
         count = 1;
         for key in trait.variants.keys():
             variant = trait.variants[key];
-            variant_table.append([Paragraph(variant.reported_genes, h2), variant.dbsnp, variant.risk_allele, variant.genotype, Paragraph(variant.notes, h2)])
+            variant_table.append([Paragraph(variant.gene, h2), variant.rsid, variant.allele, variant.genotype, Paragraph(variant.note_generic, h2)])
             
             variant_style.append(('VALIGN', (0,count), (-1,count), 'MIDDLE'));
             variant_style.append(('ALIGN',(0,count),(-1,count),'CENTER'));
@@ -786,23 +792,23 @@ class GeneticsReport(object):
             if (variant.effect == 2):
             
                 # If the variant is protective
-                if (variant.risk_type == "protective"):
+                if (variant.effect_type == "protective"):
                     variant_style.append(('BACKGROUND', (0, count), (-1, count), self.strong_effect_protective));
-                elif (variant.risk_type == "risk"):
+                elif (variant.effect_type == "risk"):
                     variant_style.append(('BACKGROUND', (0, count), (-1, count), self.strong_effect_risk));
                 else:
-                    print "Warning, unknown risk value: %s"%(variant.risk_type);
+                    print "Warning, unknown risk value: %s"%(variant.effect_type);
                     variant_style.append(('BACKGROUND', (0, count), (-1, count), self.bad_variant));
 
             elif (variant.effect == 1):
             
                 # If the variant is protective
-                if (variant.risk_type == "protective"):
+                if (variant.effect_type == "protective"):
                     variant_style.append(('BACKGROUND', (0, count), (-1, count), self.weak_effect_protective));
-                elif (variant.risk_type == "risk"):
+                elif (variant.effect_type == "risk"):
                     variant_style.append(('BACKGROUND', (0, count), (-1, count), self.weak_effect_risk));
                 else:
-                    print "Warning, unknown risk value: %s"%(variant.risk_type);
+                    print "Warning, unknown risk value: %s"%(variant.effect_type);
                     variant_style.append(('BACKGROUND', (0, count), (-1, count), self.bad_variant));            
             
             else:
@@ -1236,8 +1242,8 @@ tendinopathy.", h2));
         #story.append(PageBreak())
         #story.append(Paragraph('Last heading', h1))
         
-        output_dir = './results';
-        output_filename = output_dir + '/' + self.participant.username + '.report.pdf';
+        output_dir = './geneticsreports';
+        output_filename = output_dir + '/' + self.vcf.username + '.report.pdf';
         
         doc_template_args = self.theme.doc_template_args()
         doc = SimpleDocTemplate(output_filename, title=self.title, author=self.author, **doc_template_args)
