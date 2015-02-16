@@ -9,6 +9,7 @@ import fitbit
 
 # Codebase imports
 from p100.errors import MyError
+from p100.participant import Participants
 
 OWNER_KEY = '0fcad4c11b0944e790b9043effd5ef41'
 OWNER_SECRET = 'b90405040b274d93b4c504052489e1a9'
@@ -39,6 +40,34 @@ class QS(object):
 
         # Return the data
         return np.array(list(cursor.fetchall()), dtype=[(username, float)])
+
+    def get_val_date(self, username):
+
+        cursor = self.database.GetCursor()
+        cursor.execute("SELECT q.DATE, q.ACTIVITYCALORIES FROM qs as q WHERE USERNAME = (%s)", (username,))
+
+        # Return the data
+        array = np.array(list(cursor.fetchall()), dtype=[('date', datetime), (username, float)])
+        return pandas.DataFrame(array[username], index=array['date'], columns=[username])
+
+    def get_all_val_date(self):
+
+        prt = Participants(self.database)
+        prt_data = prt._get_all_participants()
+
+        data = None
+        for username in prt_data.index:
+
+            # Get the data for this participant
+            current = self.get_val_date(username)
+
+            if (data is None):
+                data = current
+            else:
+                data = data.join(current)
+
+        return data.dropna(1)
+    
 
     def get_avg_val(self, username, start=None, stop=None):
 

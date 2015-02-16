@@ -43,7 +43,8 @@ class Participants(object):
 
         # Create a temp dataframe with a categorical variable for gender
         temp = pandas.DataFrame(array['age'], index=usernames, columns=['age'])
-        temp['gender'] = pandas.Categorical.from_array(array['gender']).codes
+        #temp['gender'] = pandas.Categorical.from_array(array['gender']).codes
+        temp['gender'] = array['gender']
 
         # Build pandas Series
         return temp

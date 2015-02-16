@@ -23,7 +23,7 @@ class Range(object):
             if (max_value is None):
                 max_value = float("inf")
 
-            if (range_gender == 'B') or (gender == range_gender):
+            if (gender == range_gender):
 
                 if (value >= min_value) and (value <= max_value):
 
