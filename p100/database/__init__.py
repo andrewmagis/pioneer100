@@ -1,21 +1,15 @@
-# MySQL information (clearly insecure)
-# Old values
-#HOSTNAME = 'localhost'
-#USERNAME = 'amagis'
-#PASSWORD = '3bbByr62ZqhdksVkH7Wy'
-#DB = '100i'
 
-HOSTNAME = 'mysql'
-USERNAME = 'ipython'
-PASSWORD = 'docker-db'
-DB = '100i'
-
+REGION = 'us-west-2'
+BUCKET = 'p100-analytics'
+CREDENTIALS = 'db-credentials-2015-02-17'
 import logging
 import MySQLdb
-from MySQLdb import ProgrammingError, OperationalError, InterfaceError
+#from MySQLdb import ProgrammingError, OperationalError, InterfaceError
+from psycopg2 import ProgrammingError, OperationalError, InterfaceError
+import psycopg2 as mdb
 import pandas
 from p100.range import Range
-import MySQLdb as mdb
+#import MySQLdb as mdb
 import numpy as np
 import datetime, re
 from csv import reader
@@ -27,21 +21,48 @@ l_logger = logging.getLogger("p100.database")
 
 FIRST_BLOOD_DRAW=datetime.datetime(2014, 6, 24)
 SECOND_BLOOD_DRAW=datetime.datetime(2014, 9, 30)
+import boto.kms
+import boto
+from boto.s3.key import Key
+import json
+
+
+def get_credentials( credentials_file, bucket, REGION ):
+    """
+    This method hit the s3 bucket and pulls down the credentials
+    file which is encrypted by a kms key that this iam role has
+    decrypt privileges to.
+    """
+    s3 = boto.connect_s3()
+    b = s3.get_bucket(bucket)
+    k = Key(b)
+    k.key = credentials_file
+    kms = boto.kms.connect_to_region(REGION)
+    return json.loads(kms.decrypt(k.get_contents_as_string())['Plaintext'])
+
+
 
 class Database(object):
 
-    def __init__(self, host=HOSTNAME, user=USERNAME, passwd=PASSWORD, db=DB):
-        self.host, self.user, self.passwd, self.db_name = host,user,passwd,db
+    def __init__(self, host=None, user=None, passwd=None, db=None,
+                    port=None, credentials=CREDENTIALS, bucket=BUCKET, region=REGION):
+        if user is None and credentials is not None:
+            cred = get_credentials( credentials, bucket, region)
+            self.host = cred['host']
+            self.user = cred['user']
+            self.passwd = cred['password']
+            self.port = cred['port']
+            self.db_name = cred['database']
+        else:
+            self.host, self.user, self.passwd, self.db_name, self.port = host,user,passwd,db,port
         self._db = None
         l_logger.debug( "DataBase %s,%s,%s" % (self.host, self.user, self.db_name ))
 
     def __del__(self):
-
         # Close the database
         self.db.close()
 
     def Get(self, table, key, value, field='*', orderby=None):
-
         # Get the cursor
         cursor = self.db.cursor()
 
@@ -76,11 +97,11 @@ class Database(object):
             return res_dict
         def map_to_df( results, field_names):
             return pandas.DataFrame.from_dict(map_to_dict( results, field_names ))
-        with self.db as cursor:
-            l_logger.debug("Query: %s, %r" % (q_string,var_tup))
-            cursor.execute(q_string,var_tup)
-            results = cursor.fetchall()
-            field_names = [i[0] for i in cursor.description]
+        cursor = self.GetCursor()
+        l_logger.debug("Query: %s, %r" % (q_string,var_tup))
+        cursor.execute(q_string,var_tup)
+        results = cursor.fetchall()
+        field_names = [i[0] for i in cursor.description]
         if len(results) == 0:
             return None
         else:
@@ -104,18 +125,28 @@ class Database(object):
         Creates a new database connection
         """
         l_logger.debug("Creating a db connection")
-        return MySQLdb.connect(host=self.host,
-                user=self.user, passwd=self.passwd, db=self.db_name)
+        return mdb.connect(host=self.host,
+                user=self.user, 
+                password=self.passwd, 
+                database=self.db_name,
+                port=self.port
+                )
+        """
+        'host':"wellnessdb.cwypimiwd4pq.us-west-2.rds.amazonaws.com",        
+                     'port':"5432",                                                     
+                                   'user':"wellnessdbadmin",                                         
+                                                  'database':"wellnessdb",  'password':"N6DPJqy74TnRNTcnMLG6"  """
 
     @property
     def db( self ):
         """
         Returns a functioning mysqldb connection, if we're lucky
         """
+        #TODO: backoff
         if self._db is None:
             self._db = self._GetNewConnection()
         try:
-            self._db.ping()
+            self._db.isolation_level
         except (OperationalError, InterfaceError):
             l_logger.exception("Looks like the db is not responding. Trying to recover.")
             try:

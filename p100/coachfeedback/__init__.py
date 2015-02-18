@@ -119,10 +119,10 @@ class Feedback(DataFrameOps):
         curr = self.database.GetDataFrame(q_string,  (username, round))
         if curr is not None:
             return curr['observation_id'].unique()[0]
-        with self.database.db as cursor:
-            q_string = """INSERT into coach_feedback_observations( username, round ) VALUES( %s, %s )"""
-            cursor.execute( q_string, (username, round ))
-            return cursor.lastrowid
+        cursor = self.database.GetCursor()
+        q_string = """INSERT into coach_feedback_observations( username, round ) VALUES( %s, %s ) RETURNING observation_id"""
+        cursor.execute( q_string, (username, round ))
+        return cursor.fetchone()[0]
 
     def AddFeedback(self, description, datatype_id):
         description = description.strip()
@@ -136,10 +136,10 @@ class Feedback(DataFrameOps):
         curr = self.database.GetDataFrame(q_string, (description, datatype_id))
         if curr is not None:
             return curr['feedback_id'].unique()[0]
-        with self.database.db as cursor:
-            q_string = """INSERT into coach_feedback( description, datatype_id ) VALUES( %s, %s )"""
-            cursor.execute( q_string,  (description, datatype_id))
-            return cursor.lastrowid
+        cursor = self.database.GetCursor()
+        q_string = """INSERT into coach_feedback( description, datatype_id ) VALUES( %s, %s ) RETURNING feedback_id"""
+        cursor.execute( q_string,  (description, datatype_id))
+        return cursor.fetchone()[0]
 
 
     def AddValue( self, feedback_id, observation_id, value):
@@ -159,16 +159,18 @@ class Feedback(DataFrameOps):
             WHERE cf_values_id = %s """
             tup = ( vid, value )
             l_logger.debug( "%s, %r" % (q_string, tup) )
-            with self.database.db as cursor:
-                cursor.execute( q_string,tup )
+            cursor = self.database.GetCursor()
+            cursor.execute( q_string,tup )
             return vid
         else:
             q_string = """INSERT INTO coach_feedback_values(observation_id, feedback_id, value )
-                VALUES(%s,%s,%s)"""
+                VALUES(%s,%s,%s)
+                RETURNING cf_values_id
+                """
             tup =  (observation_id, feedback_id, value)
-            with self.database.db as cursor:
-                cursor.execute( q_string,tup )
-                return cursor.lastrowid
+            cursor = self.database.GetCursor()
+            cursor.execute( q_string,tup )
+            return cursor.fetchone()[0]
 
     def DeleteValue( self, cf_values_id ):
         q_string = """
@@ -177,20 +179,18 @@ class Feedback(DataFrameOps):
         WHERE cf_values_id = %s"""
         tup = ( int(cf_values_id), )
         l_logger.debug( "%s, %r" % (q_string, tup) )
-        with self.database.db as cursor:
-            cursor.execute( q_string,tup )
+        cursor = self.database.GetCursor()
+        cursor.execute( q_string,tup )
 
 
     def _cleanup(self):
         q_string = """DELETE from coach_feedback_values WHERE 1=1"""
-        with self.database.db as cursor:
-            cursor.execute( q_string, None )
+        cursor = self.database.GetCursor()
+        cursor.execute( q_string, None )
         q_string = """DELETE from coach_feedback WHERE 1=1"""
-        with self.database.db as cursor:
-            cursor.execute( q_string, None )
+        cursor.execute( q_string, None )
         q_string = """DELETE from coach_feedback_observations WHERE 1=1"""
-        with self.database.db as cursor:
-            cursor.execute( q_string, None )
+        cursor.execute( q_string, None )
 
 
 
