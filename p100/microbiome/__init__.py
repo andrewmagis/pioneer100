@@ -96,8 +96,6 @@ class Microbiome(object):
         FROM mb_taxonomy_labels
         WHERE tax_level IN %s """ % in_str
         df = self.database.GetDataFrame( q_string, tuple( tr_tax ) )
-        l_logger.debug(q_string)
-        l_logger.debug(df)
         for tax in tr_tax:
             df.columns = [tax, 'tax_label_id']
             res = res.join(df.set_index('tax_label_id'), on='%s_id' % tax)
