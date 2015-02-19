@@ -5,7 +5,7 @@ CREDENTIALS = 'db-credentials-2015-02-17'
 import logging
 import MySQLdb
 #from MySQLdb import ProgrammingError, OperationalError, InterfaceError
-from psycopg2 import ProgrammingError, OperationalError, InterfaceError
+from psycopg2 import ProgrammingError, OperationalError, InterfaceError, InternalError
 import psycopg2 as mdb
 import pandas
 from p100.range import Range
@@ -147,7 +147,7 @@ class Database(object):
             self._db = self._GetNewConnection()
         try:
             self._db.isolation_level
-        except (OperationalError, InterfaceError):
+        except (OperationalError, InterfaceError, InternalError):
             l_logger.exception("Looks like the db is not responding. Trying to recover.")
             try:
                 self._db.close()

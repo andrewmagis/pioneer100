@@ -39,23 +39,23 @@ class Microbiome(object):
         tr_tax = self.tax[:cut]
         #this part puts together the bits needed to get the taxonomic
         #SELECT .
-        select_stmt = ['%s.tax_label AS `%s`' % (t[:3], t) for t in tr_tax]#labels
-        select_stmt += ['tx.`%s` as %s_id' % (t,t) for t in tr_tax]#ids
+        #select_stmt = ['%s.tax_label AS %s' % (t[:3], t) for t in tr_tax]#labels
+        select_stmt = ['tx.%s as %s_id' % (t,t) for t in tr_tax]#ids
         select_stmt += [ 'obs.observation_id', 'obs.username', 'obs.round' ]
+        group_stmt = ['tx.%s' % (t,) for t in tr_tax]#ids
+        group_stmt += [ 'obs.observation_id', 'obs.username', 'obs.round' ]
+
         if perc:
             select_stmt += ["SUM(lvl.percentage) as value"]
         else:
             select_stmt += ["SUM(lvl.read_counts) as value"]
         #FROM
-        from_stmt = ['mb_taxonomy_labels %s' % (t[:3],) for t in tr_tax]
-        from_stmt += ['mb_observation obs', 'mb_taxonomy tx', 'mb_levels lvl']
+        from_stmt = ['mb_observation obs', 'mb_taxonomy tx', 'mb_levels lvl']
         #WHERE
-        where_stmt =  ['%s.tax_level = "%s"' %  (t[:3], t) for t in tr_tax]
-        where_stmt += ['%s.tax_label_id = tx.%s' %  (t[:3], t) for t in tr_tax]
-        where_stmt += ['obs.observation_id = lvl.observation_id', 
+        where_stmt = ['obs.observation_id = lvl.observation_id', 
                        'tx.taxonomy_id = lvl.taxonomy_id', 'lvl.read_counts > 0']
         #GROUP
-        group_stmt = [ "obs.observation_id" ] + ['%s_id' % t for  t in tr_tax]
+        #group_stmt = [ "obs.observation_id" ] + ['%s_id' % t for  t in tr_tax]
 
         #variables
         var_list = []
@@ -85,10 +85,29 @@ class Microbiome(object):
         res = self.database.GetDataFrame(q_string, var_tup)
         #reorder the columns, they get messy
         column_order = ['observation_id', 'username', 'round']
+        #column_order += tr_tax 
+        column_order += ["%s_id" % x for x in tr_tax]
+        column_order += ['value']
+        column_order += [x for x in res.columns if x not in column_order]
+        
+        in_str = '(' + ','.join( ['%s' for x in tr_tax] ) + ')'
+        q_string = """
+        SELECT tax_label_id, tax_label
+        FROM mb_taxonomy_labels
+        WHERE tax_level IN %s """ % in_str
+        df = self.database.GetDataFrame( q_string, tuple( tr_tax ) )
+        l_logger.debug(q_string)
+        l_logger.debug(df)
+        for tax in tr_tax:
+            df.columns = [tax, 'tax_label_id']
+            res = res.join(df.set_index('tax_label_id'), on='%s_id' % tax)
+
+        column_order = ['observation_id', 'username', 'round']
         column_order += tr_tax 
         column_order += ["%s_id" % x for x in tr_tax]
         column_order += ['value']
         column_order += [x for x in res.columns if x not in column_order]
+
         return res[column_order]
 
     def get_taxonomy_names(self, up_to=None):
