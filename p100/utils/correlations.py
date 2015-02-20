@@ -17,12 +17,6 @@ class CompareDataFrames:
         """
         Returns a dataframe containing the pearson and spearman correlation with
         other useful statistics between the 2 given dataframes.
-        mh_method - method used for multiple hypothesis testing
-                    see: http://statsmodels.sourceforge.net/0.5.0/generated/statsmodels.sandbox.stats.multicomp.multipletests.html
-        cutoff - rejection level for the corrected p-values
-        rejected - return only relationships that have corrected p-values less than
-                the threshold for {'both', 'spearman', 'pearson', 'either', None},
-                with None meaning return all correlations
 
         min_obs - minimum number of valid values to observe for calculating
         
@@ -56,6 +50,14 @@ class CompareDataFrames:
         return (df1, df2)
 
     def filter(self, rejected='both', mh_method='fdr_bh', cutoff=.05):
+        """
+        mh_method - method used for multiple hypothesis testing
+                    see: http://statsmodels.sourceforge.net/0.5.0/generated/statsmodels.sandbox.stats.multicomp.multipletests.html
+        cutoff - rejection level for the corrected p-values
+        rejected - return only relationships that have corrected p-values less than
+                the threshold for {'both', 'spearman', 'pearson', 'either', None},
+                with None meaning return all correlations
+        """
         if self._corr is None:
             self.spearman_pearson()
         t = self._corr.copy() 
@@ -81,10 +83,10 @@ class CompareDataFrames:
         hypothesis
         """
         mt = statsmodels.sandbox.stats.multicomp.multipletests
-        (accepted, corrected, unused1, unused2) = mt(corr_df['spearman_pval'].fillna(1), method=method)
+        (accepted, corrected, unused1, unused2) = mt(corr_df['spearman_pval'].fillna(1), method=method, alpha=cutoff)
         corr_df['spearman_corrected'] = corrected
         corr_df['spearman_rejected'] = accepted
-        (accepted, corrected, unused1, unused2) =mt(corr_df['pearson_pval'].fillna(1), method=method)
+        (accepted, corrected, unused1, unused2) =mt(corr_df['pearson_pval'].fillna(1), method=method, alpha=cutoff)
         corr_df['pearson_corrected'] = corrected
         corr_df['pearson_rejected'] = accepted
         return corr_df
