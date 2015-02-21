@@ -78,4 +78,26 @@ class DataFrameOps(object):
         z_stat, p_val = stats.ranksums(d1, d2)
         return (z_stat, p_val, np.mean(d1), np.mean(d2), np.std(d1), np.std(d2))
 
+    def _username_round_index(self, dataframe, username_col='username', round_col='round', drop=True):
+        """
+        Given a dataframe with username and round columns return 
+        a new dataframe with a unique index based on them
+        """
+        dataframe = dataframe.copy()
+        if round_col in dataframe.columns:
+            dataframe['tmp'] = dataframe.apply( lambda row: '%s_%s' % (row[username_col], row[round_col]), axis=1)
+            dataframe = dataframe.set_index('tmp')
+            if drop:
+                dataframe = dataframe.drop(username_col, 1)
+                dataframe = dataframe.drop(round_col, 1)
+        else:
+            dataframe = dataframe.set_index(username_col, drop=drop)
+        return dataframe 
+
+    def _map_uname_rnd(self, row):
+        #print row
+        return "%s_%i" % (row['username'], row['round'])
+
+
+
 

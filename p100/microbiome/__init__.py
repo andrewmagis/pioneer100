@@ -14,18 +14,19 @@ from ete2 import Tree
 
 # Codebase imports
 from p100.errors import MyError
+from p100.utils.dataframeops import DataFrameOps
 import time
 
 l_logger = logging.getLogger("p100.microbiome")
 
-class Microbiome(object):
+class Microbiome(DataFrameOps):
     tax = ['kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'species']
     def __init__(self, database):
         l_logger.debug("Creating a Microbiome object")
         self.database = database
 
     def GetData(self,username=None, rnd=None, agg_to='species',
-            perc=True, observation_id=None):
+            perc=True, observation_id=None, vectorize=False):
         """
         Returns a dataframe with the microbiomic data for
         a given user and round(if provided) aggregated to the agg_to
@@ -105,8 +106,11 @@ class Microbiome(object):
         column_order += ["%s_id" % x for x in tr_tax]
         column_order += ['value']
         column_order += [x for x in res.columns if x not in column_order]
-
-        return res[column_order]
+        result = res[column_order]
+        if vectorize:
+            return self.username_vectors( result ).transpose()
+        else:
+            return result
 
     def get_taxonomy_names(self, up_to=None):
         if up_to:
@@ -134,7 +138,7 @@ class Microbiome(object):
                 if len(udf.index)>0:
                     d = udf[utax + ['value']].to_dict(orient="split")['data']
                     if len(rnds) > 1:
-                        key = "%s-%i" % (uname, rnd)
+                        key = "%s_%i" % (uname, rnd)
                     else:
                         key = uname
                     result[key] = {}

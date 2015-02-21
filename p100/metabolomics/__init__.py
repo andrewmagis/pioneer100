@@ -36,7 +36,7 @@ def partition_dataframe(dataframe,  username_set_1, username_set_2=None):
 def sub_part( args ):
     def _map_uname_rnd( row):
         #print row
-        return "%s-%i" % (row['username'], row['round'])
+        return "%s_%i" % (row['username'], row['round'])
     df, met_id, username_set_1, username_set_2, round = args
     limited_df = df[df.metabolite_id == met_id]
     if round is None:
@@ -68,14 +68,15 @@ class Metabolomics(DataFrameOps):
         l_logger.debug("Creating a Metabolomics object")
         self.database = database
 
-    def GetData(self, username=None, round=None, metabolite_id=None):
+    def GetData(self, username=None, round=None, metabolite_id=None, vectorize=False):
         """
         Returns a dataframe with the metabolomic data for
         a given user and round(if provided).
         """
         l_logger.debug("GetData( %s, %s )" %(username, round))
         q_string = """
-        SELECT mo.observation_id, mo.username, mo.round, imputed as value, biochemical as metabolite_name,
+        SELECT mo.observation_id, mo.username, mo.round, imputed as value, 
+                biochemical as metabolite_name,
                 super_pathway, sub_pathway, hmdb, mm.metabolite_id
         FROM meta_values mv, meta_observation mo, meta_metabolite mm
         WHERE mm.metabolite_id = mv.metabolite_id
@@ -94,7 +95,19 @@ class Metabolomics(DataFrameOps):
             conditions.append("mm.metabolite_id = %s")
             var_tup += [metabolite_id]
         q_string = ' and '.join( [ q_string ] + conditions )
-        return self.database.GetDataFrame( q_string, tuple(var_tup) )
+        result = self.database.GetDataFrame( q_string, tuple(var_tup) )
+        if vectorize:
+            result['uname_rnd'] = result.apply( self._map_uname_rnd, axis=1)
+            result['label'] = result.apply(self._compress_metabolite , axis=1)
+            return result.pivot(columns='label',index='uname_rnd', values='value')
+        else:
+            return result
+
+    def _compress_metabolite( self, row):
+        sup =  row['super_pathway']# if len( row['super_pathway'] ) > 0 else 'unk'
+        sub =  row['sub_pathway']# if len( row['sub_pathway'] ) > 0 else 'unk'
+        bioc =  row['metabolite_name']# if len( row['metabolite_name'] ) > 0 else 'unk'
+        return "%s->%s->%s" % (sup[:3],sub[:3], bioc)
 
     def GetAssociationsByUsername(self, username_set_1, username_set_2=None, round=None, nprocs=5):
         """
@@ -171,7 +184,7 @@ class Metabolomics(DataFrameOps):
 
     def _map_uname_rnd(self, row):
         #print row
-        return "%s-%i" % (row['username'], row['round'])
+        return "%s_%i" % (row['username'], row['round'])
 
     def _get_field_by_name(self, round, field_name):
 

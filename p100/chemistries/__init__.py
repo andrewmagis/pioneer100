@@ -90,7 +90,7 @@ class Chemistries(DataFrameOps):
     def __init__(self, database):
         self.database = database
 
-    def GetData(self, username=None, round=None, chemistry_id=None):
+    def GetData(self, username=None, round=None, chemistry_id=None, vectorize=False):
         """
         Returns a dataframe with the BMI data for
         a given user and round(if provided).
@@ -115,7 +115,12 @@ class Chemistries(DataFrameOps):
             var_tup += [chemistry_id]
         q_string = ' and '.join( [ q_string ] + conditions )
         var_tup = tuple( var_tup )
-        return self.database.GetDataFrame( q_string, tuple(var_tup) )
+        result = self.database.GetDataFrame( q_string, tuple(var_tup) )
+        if vectorize:
+               result['uname_rnd'] = result.apply(self._map_uname_rnd, axis=1)
+               return result.pivot(columns='name', index='uname_rnd', values='value')
+        else:
+            return result
 
     def GetAssociationsByUsername(self, username_set_1, username_set_2=None, round=None, nprocs=5):
         """

@@ -12,6 +12,10 @@ import pandas, pandas.io
 from p100.errors import MyError
 from p100.utils.dataframeops import DataFrameOps
 
+
+import logging
+l_logger = logging.getLogger("p100.proteomics")
+
 class Proteomics(DataFrameOps):
 
     def __init__(self, database):
@@ -51,33 +55,45 @@ class Proteomics(DataFrameOps):
         # Build pandas Series
         return pandas.DataFrame(array[str(field_id)], index=array['username'], columns=[str(field_id)])
 
-    def GetData(self, username=None, round=None, metabolite_id=None):
+    def GetData(self, username=None, round=None,protein_id=None, vectorize=False ):
         """
         Returns a dataframe with the metabolomic data for
         a given user and round(if provided).
         """
         l_logger.debug("GetData( %s, %s )" %(username, round))
         q_string = """
-        SELECT po.observation_id, po.username, po.round, imputed as value, biochemical as metabolite_name,
-                super_pathway, sub_pathway, hmdb, mm.metabolite_id
-        FROM meta_values pv, meta_observation po, meta_metabolite pp
-        WHERE mm.metabolite_id = mv.metabolite_id
-        and mo.observation_id = mv.observation_id
+        SELECT po.observation_id, po.username, po.round, norm_value as value,
+                pp.category, pp.abbreviation,pp.protein_id
+        FROM prot_values pv, prot_observations po, prot_proteins pp
+        WHERE po.observation_id = pv.observation_id and
+        pp.protein_id = pv.protein_id
         """
 
         conditions = []
         var_tup = []
         if username is not None:
-            conditions.append("mo.username = %s ")
+            conditions.append("po.username = %s ")
             var_tup += [username]
         if round is not None:
-            conditions.append("mo.round = %s")
+            conditions.append("po.round = %s")
             var_tup += [round]
-        if metabolite_id is not None:
-            conditions.append("mm.metabolite_id = %s")
-            var_tup += [metabolite_id]
+        if protein_id is not None:
+            conditions.append("pp.protein_id = %s")
+            var_tup += [protein_id]
+
         q_string = ' and '.join( [ q_string ] + conditions )
-        return self.database.GetDataFrame( q_string, tuple(var_tup) )
+        result =  self.database.GetDataFrame( q_string, tuple(var_tup) )
+        if vectorize:
+               result['uname_rnd'] = result.apply(self._map_uname_rnd, axis=1)
+               result['name'] = result.apply(self._compress_protein, axis=1)
+               return result.pivot(columns='name', index='uname_rnd', values='value')
+        else:
+            return result
+
+    def _compress_protein( self, row):
+        cat =  row['category']# if len( row['super_pathway'] ) > 0 else 'unk'
+        abb =  row['abbreviation']# if len( row['sub_pathway'] ) > 0 else 'unk'
+        return "%s->%s" % (cat[:3],abb)
 
     def GetPartitionsByUsername( self, username_set_1, username_set_2=None, round=None, met_id = None, df=None, nprocs=5):
         """
