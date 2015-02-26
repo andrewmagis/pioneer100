@@ -26,7 +26,8 @@ class Microbiome(DataFrameOps):
         self.database = database
 
     def GetData(self,username=None, rnd=None, agg_to='species',
-            perc=True, observation_id=None, vectorize=False):
+            perc=True, observation_id=None, vectorize=False,
+            correlize=False):
         """
         Returns a dataframe with the microbiomic data for
         a given user and round(if provided) aggregated to the agg_to
@@ -109,8 +110,36 @@ class Microbiome(DataFrameOps):
         result = res[column_order]
         if vectorize:
             return self.username_vectors( result ).transpose()
+        elif correlize:
+            return self.correlize(result)
         else:
             return result
+
+    def correlize(self,dataframe ):
+        utax =  [x for x in self.tax if x in dataframe.columns]
+        final = ["%s_id" %x for x in utax]
+        dataframe = dataframe.copy()
+        dataframe['uname_rnd'] = dataframe.apply(lambda x: x['username'] + '_' +str(x['round']), axis=1)
+        dataframe['unique_row'] = dataframe.apply(lambda x: ','.join([str(x[f]) for f in final]), axis=1)
+        return  dataframe[['uname_rnd','unique_row' , 'value']].pivot(index='uname_rnd', columns='unique_row', values='value')
+
+    def get_correlize_map( self, agg_to='phylum' ):
+        dataframe = self.GetData( agg_to=agg_to )
+        sub_tax = [x for x in self.tax if x in dataframe.columns and x != agg_to ]
+        dataframe['unique_row'] = dataframe.apply(lambda row: '>'.join([row['%s'%x][:3] for x in sub_tax] + [row[agg_to]]), axis=1)
+        mymap = {}
+        sub_tax += [agg_to]
+        sub_tax += ["%s_id"%x for x in sub_tax]
+        for i, row in dataframe.iterrows():
+            mm = mymap[row['unique_row']] = {}
+            for st in sub_tax:
+                mm[st] = row[st]
+        return mymap
+
+    def _compress_mb(self,row, agg_to):
+        sub_tax = [x for x in self.tax if x in row.columns and x != agg_to ]
+
+        return '>'.join([row['%s'%x][:3] for x in sub_tax] + [row[agg_to]])
 
     def get_taxonomy_names(self, up_to=None):
         if up_to:

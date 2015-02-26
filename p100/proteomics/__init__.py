@@ -95,6 +95,16 @@ class Proteomics(DataFrameOps):
         abb =  row['abbreviation']# if len( row['sub_pathway'] ) > 0 else 'unk'
         return "%s->%s" % (cat[:3],abb)
 
+    def get_correlize_map(self):
+        dataframe = self.database.GetDataFrame( """SELECT category, abbreviation, protein_id
+                              FROM prot_proteins""")
+        columns = dataframe.columns
+        dataframe['labels'] = dataframe.apply( self._compress_protein, axis=1 )
+        mymap = {}
+        for i,row in dataframe.iterrows():
+            mymap[row['labels']] = dict([(k,row[k]) for k in columns ])
+        return mymap
+
     def GetPartitionsByUsername( self, username_set_1, username_set_2=None, round=None, met_id = None, df=None, nprocs=5):
         """
         Given a set(or 2 sets) of usernames for thatr returns a list of dataframe pairs for that partitioning.

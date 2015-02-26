@@ -103,6 +103,20 @@ class Metabolomics(DataFrameOps):
         else:
             return result
 
+    def get_correlize_map( self ):
+        q_string = """SELECT
+                biochemical as metabolite_name,
+                super_pathway, sub_pathway, metabolite_id
+           FROM meta_metabolite
+        """
+        dataframe = self.database.GetDataFrame(q_string)
+        cols = dataframe.columns
+        dataframe['label'] = dataframe.apply(self._compress_metabolite , axis=1)
+        mymap = {}
+        for i,row in dataframe.iterrows():
+            mymap[row['label']] = dict([ (k,row[k]) for k in cols])
+        return mymap
+
     def _compress_metabolite( self, row):
         sup =  row['super_pathway']# if len( row['super_pathway'] ) > 0 else 'unk'
         sub =  row['sub_pathway']# if len( row['sub_pathway'] ) > 0 else 'unk'

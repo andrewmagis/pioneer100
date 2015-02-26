@@ -1,5 +1,3 @@
-
-
 # System imports
 from datetime import date, datetime, timedelta as td
 import logging
@@ -122,6 +120,7 @@ class Feedback(DataFrameOps):
         cursor = self.database.GetCursor()
         q_string = """INSERT into coach_feedback_observations( username, round ) VALUES( %s, %s ) RETURNING observation_id"""
         cursor.execute( q_string, (username, round ))
+        self.database.Commit()
         return cursor.fetchone()[0]
 
     def AddFeedback(self, description, datatype_id):
@@ -139,6 +138,7 @@ class Feedback(DataFrameOps):
         cursor = self.database.GetCursor()
         q_string = """INSERT into coach_feedback( description, datatype_id ) VALUES( %s, %s ) RETURNING feedback_id"""
         cursor.execute( q_string,  (description, datatype_id))
+        self.database.Commit()
         return cursor.fetchone()[0]
 
 
@@ -161,6 +161,7 @@ class Feedback(DataFrameOps):
             l_logger.debug( "%s, %r" % (q_string, tup) )
             cursor = self.database.GetCursor()
             cursor.execute( q_string,tup )
+            self.database.Commit()
             return vid
         else:
             q_string = """INSERT INTO coach_feedback_values(observation_id, feedback_id, value )
@@ -171,6 +172,7 @@ class Feedback(DataFrameOps):
             cursor = self.database.GetCursor()
             cursor.execute( q_string,tup )
             return cursor.fetchone()[0]
+
 
     def DeleteValue( self, cf_values_id ):
         q_string = """
@@ -187,10 +189,84 @@ class Feedback(DataFrameOps):
         q_string = """DELETE from coach_feedback_values WHERE 1=1"""
         cursor = self.database.GetCursor()
         cursor.execute( q_string, None )
+        
+        q_string = """DELETE from coach_feedback_recommendations WHERE 1=1"""
+        cursor.execute( q_string, None )
+        
+        cursor = self.database.GetCursor()
         q_string = """DELETE from coach_feedback WHERE 1=1"""
         cursor.execute( q_string, None )
         q_string = """DELETE from coach_feedback_observations WHERE 1=1"""
         cursor.execute( q_string, None )
+        self.database.Commit()            
 
 
+class Recommendations(Feedback):
+    def AddValue( self, feedback_id, observation_id, value):
+        self._check_datatype( value=value, feedback_id=feedback_id)
 
+        q_string = """SELECT cf_recommendation_id
+                    from coach_feedback_recommendations cfv, coach_feedback cf
+                    WHERE cfv.feedback_id = %s and cfv.observation_id=%s and cf.datatype_id != 4
+                    and cfv.feedback_id = cf.feedback_id
+                    """
+        curr = self.database.GetDataFrame(q_string, ( feedback_id, observation_id))
+        if curr is not None:
+            vid =  curr['cf_recommendation_id'].unique()[0]
+            q_string = """
+            UPDATE coach_feedback_recommendations
+            SET value = %s
+            WHERE cf_recommendation_id = %s """
+            tup = ( vid, value )
+            l_logger.debug( "%s, %r" % (q_string, tup) )
+            cursor = self.database.GetCursor()
+            cursor.execute( q_string,tup )
+            self.database.Commit()
+            return vid
+        else:
+            q_string = """INSERT INTO coach_feedback_recommendations(observation_id, feedback_id, value )
+                VALUES(%s,%s,%s)
+                RETURNING cf_recommendation_id
+                """
+            tup =  (observation_id, feedback_id, value)
+            cursor = self.database.GetCursor()
+            cursor.execute( q_string,tup )
+            return cursor.fetchone()[0]
+
+
+    def GetData( self, username=None, round=None, feedback_id=None):
+        l_logger.debug("GetData(%s, %s, %s)" % (username, round, feedback_id) )
+        q_string = """
+            SELECT cfo.username, cfo.round, cfv.value, cfd.datatype, cf.description, cf.feedback_id,
+                cfv.cf_recommendation_id, cfd.datatype_id, cfo.observation_id
+            FROM coach_feedback_datatype cfd,
+            coach_feedback cf,
+            coach_feedback_recommendations cfv,
+            coach_feedback_observations cfo
+            WHERE cfd.datatype_id = cf.datatype_id AND
+                cf.feedback_id = cfv.feedback_id AND
+                cfo.observation_id = cfv.observation_id
+        """
+        conditions = []
+        var_tup = []
+        if username is not None:
+            conditions.append('cfo.username = %s')
+            var_tup += [username]
+        if round is not None:
+            conditions.append('cfo.round = %s')
+            var_tup += [round]
+        if feedback_id is not None:
+            conditions.append( 'cf.feedback_id = %s' )
+            var_tup += [feedback_id]
+
+        q_string = ' and '.join( [ q_string ] + conditions )
+        return self.database.GetDataFrame( q_string, tuple(var_tup) )
+
+    def _cleanup(self):
+        q_string = """DELETE from coach_feedback_recommendations WHERE 1=1"""
+        cursor = self.database.GetCursor()
+        cursor.execute( q_string, None )
+        q_string = """DELETE from coach_feedback WHERE 1=1"""
+        cursor.execute( q_string, None )
+        q_string = """DELETE from coach_feedback_observations WHERE 1=1"""
+        cursor.execute( q_string, None )

@@ -122,6 +122,16 @@ class Chemistries(DataFrameOps):
         else:
             return result
 
+    def get_correlize_map(self):
+        q_string = """SELECT chemistry_id, name
+                        FROM chem_chemistries
+                        """
+        dataframe = self.database.GetDataFrame( q_string )
+        mymap = {}
+        for i,row in dataframe.iterrows():
+            mymap[row['name']] = {'chemistry_id':row['chemistry_id']}
+        return mymap
+
     def GetAssociationsByUsername(self, username_set_1, username_set_2=None, round=None, nprocs=5):
         """
         Given a set(or 2 sets) of usernames, return the t-test and ranksums

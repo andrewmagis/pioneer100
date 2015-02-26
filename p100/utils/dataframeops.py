@@ -98,6 +98,12 @@ class DataFrameOps(object):
         #print row
         return "%s_%i" % (row['username'], row['round'])
 
+    def min_fill(self, dataframe, adjust=.1):
+        """
+        Assumes dataframe is vectorized or correlized,
+
+        """
+        return dataframe.fillna( dataframe.min() * adjust )
 
 
 

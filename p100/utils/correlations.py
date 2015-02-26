@@ -1,7 +1,11 @@
 import statsmodels.sandbox.stats.multicomp
 from scipy import stats
 import pandas
+import json
 
+
+import logging
+l_logger = logging.getLogger("p100.utils.correlations")
 
 class CompareDataFrames:
     """
@@ -12,6 +16,7 @@ class CompareDataFrames:
         self._df1 = dataframe1
         self._df2 = dataframe2
         self._corr = None
+        self._mh_method = None
 
     def spearman_pearson(self,min_obs=10 ):
         """
@@ -33,7 +38,7 @@ class CompareDataFrames:
                             'var_1': col1,
                             'var_2': col2,
                             'spearman_coeff': sp,
-                            'spearman_pval': sppv,
+                            'spearman_pval':sppv,
                             'pearson_coeff': p,
                             'pearson_pval': pv })
             self._corr = pandas.DataFrame(results)
@@ -62,6 +67,7 @@ class CompareDataFrames:
             self.spearman_pearson()
         t = self._corr.copy() 
         t = self._add_rejected(t, mh_method, cutoff)
+        self._mh_method = mh_method#save for addendum
         if t is not None:
             front = ['var_1', 'var_2','spearman_corrected', 'pearson_corrected']
             back = sorted([c for c in t.columns if c not in front])
@@ -90,3 +96,34 @@ class CompareDataFrames:
         corr_df['pearson_corrected'] = corrected
         corr_df['pearson_rejected'] = accepted
         return corr_df
+
+    def save(self, database, table_1, column1, table_2, column2, corr, addendum={}):
+
+        q_string = """
+            INSERT into correlations( dt1_table, dt1_column, dt2_table, dt2_column, addendum,
+            dt1_id, dt2_id, p_coeff, p_pval, p_pval_adj, s_coeff, s_pval, s_pval_adj) 
+            VALUES (""" 
+        q_string += ', '.join(['%s']*13) + ')'
+        if 'mh_method' not in addendum:
+            addendum['mh_method'] = self._mh_method
+
+        addendum = json.dumps( addendum )
+        base = [table_1, column1, table_2, column2, addendum]
+        inserts = []
+        for idx,row in corr.iterrows():
+            local = [row['var_1' ], row['var_2'],
+            row['pearson_coeff'], row['pearson_pval'], row['pearson_corrected'],
+            row['spearman_coeff'], row['spearman_pval'], row['spearman_corrected']]
+            inserts.append( tuple( base + local ) )
+        cursor =  database.GetCursor()
+        l_logger.debug(q_string)
+        l_logger.debug(inserts)
+        cursor.executemany( q_string, inserts)
+        database.Commit()
+
+    def GetData( self, database ):
+        return database.GetDataFrame( "SELECT * from correlations" )
+
+
+
+
