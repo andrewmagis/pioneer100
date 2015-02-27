@@ -2,6 +2,8 @@
 REGION = 'us-west-2'
 BUCKET = 'p100-analytics'
 CREDENTIALS = 'db-credentials-2015-02-17'
+
+
 import logging
 import MySQLdb
 #from MySQLdb import ProgrammingError, OperationalError, InterfaceError
@@ -16,6 +18,7 @@ from csv import reader
 
 from p100.range import Range
 from p100.errors import MyError
+from p100.utils.botoops import BotoOps
 
 l_logger = logging.getLogger("p100.database")
 
@@ -26,28 +29,12 @@ import boto
 from boto.s3.key import Key
 import json
 
-
-def get_credentials( credentials_file, bucket, REGION ):
-    """
-    This method hit the s3 bucket and pulls down the credentials
-    file which is encrypted by a kms key that this iam role has
-    decrypt privileges to.
-    """
-    s3 = boto.connect_s3()
-    b = s3.get_bucket(bucket)
-    k = Key(b)
-    k.key = credentials_file
-    kms = boto.kms.connect_to_region(REGION)
-    return json.loads(kms.decrypt(k.get_contents_as_string())['Plaintext'])
-
-
-
 class Database(object):
 
     def __init__(self, host=None, user=None, passwd=None, db=None,
                     port=None, credentials=CREDENTIALS, bucket=BUCKET, region=REGION):
         if user is None and credentials is not None:
-            cred = get_credentials( credentials, bucket, region)
+            cred = BotoOps().get_credentials( credentials, bucket, region)
             self.host = cred['host']
             self.user = cred['user']
             self.passwd = cred['password']
@@ -131,11 +118,6 @@ class Database(object):
                 database=self.db_name,
                 port=self.port
                 )
-        """
-        'host':"wellnessdb.cwypimiwd4pq.us-west-2.rds.amazonaws.com",        
-                     'port':"5432",                                                     
-                                   'user':"wellnessdbadmin",                                         
-                                                  'database':"wellnessdb",  'password':"N6DPJqy74TnRNTcnMLG6"  """
 
     @property
     def db( self ):

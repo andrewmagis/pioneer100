@@ -1,6 +1,5 @@
 REGION = 'us-west-2'
 BUCKET = 'p100-analytics'
-CREDENTIALS = 'db-credentials-2015-02-17'
 TEMP = '/scratch/'
 
 import os, hashlib, sys
@@ -11,7 +10,7 @@ import json
 
 class BotoOps:
 
-    def get_credentials(self, credentials_file=CREDENTIALS, bucket=BUCKET, region=REGION ):
+    def get_credentials(self, credentials_file, bucket=BUCKET, region=REGION ):
         """
         This method hit the s3 bucket and pulls down the credentials
         file which is encrypted by a kms key that this iam role has
