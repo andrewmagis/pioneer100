@@ -12,10 +12,57 @@ import pandas, pandas.io
 from p100.errors import MyError
 from p100.utils.dataframeops import DataFrameOps
 
+from multiprocessing import Pool
+import statsmodels
+import scipy.stats as scistats
+import logging
+
 
 import logging
-l_logger = logging.getLogger("p100.proteomics")
 
+l_logger = logging.getLogger("p100.proteomics")
+def partition_dataframe(dataframe,  username_set_1, username_set_2=None):
+    limited_df = dataframe.set_index('username', drop=False)
+    set_1_limited_df = limited_df.loc[username_set_1]
+    #remove where we have no record for usernames, otherwise fubars difference
+    set_1_limited_df = set_1_limited_df.dropna(axis=0) 
+    if username_set_2 is None:
+        set_2_limited_df = limited_df.drop(set_1_limited_df.index)
+    else:
+        set_2_limited_df = limited_df.loc[username_set_2]
+        #remove where we have no record for usernames
+        set_2_limited_df = set_2_limited_df.dropna(axis=0) 
+    return (set_1_limited_df, set_2_limited_df )
+
+def sub_part( args ):
+    def _map_uname_rnd( row):
+        #print row
+        return "%s_%i" % (row['username'], row['round'])
+    df, prot_id, username_set_1, username_set_2, round = args
+    limited_df = df[df.protein_id == prot_id]
+    if round is None:
+        cut_dfs = []
+        for rnd in limited_df['round'].unique():
+            rnd_df = limited_df[limited_df['round'] == rnd]
+            (s1l_df, s2l_df) = partition_dataframe( rnd_df, username_set_1, username_set_2 )
+            s1l_df['uname_rnd'] = s1l_df.apply( _map_uname_rnd, axis=1 )
+            s2l_df['uname_rnd'] = s2l_df.apply( _map_uname_rnd, axis=1 )
+            s1l_df = s1l_df.set_index('uname_rnd')
+            s2l_df = s2l_df.set_index('uname_rnd')
+            cut_dfs.append(( s1l_df, s2l_df ))
+        set_1_limited_df = pandas.concat( [a for a,_ in cut_dfs], axis=0 )
+        set_2_limited_df = pandas.concat( [b for _,b in cut_dfs], axis=0 )
+    else:
+        (s1l_df, s2l_df) = partition_dataframe( limited_df, username_set_1, username_set_2 )
+
+        s1l_df['uname_rnd'] = s1l_df.apply( _map_uname_rnd, axis=1 )
+        s2l_df['uname_rnd'] = s2l_df.apply( _map_uname_rnd, axis=1 )
+        s1l_df = s1l_df.set_index('uname_rnd')
+        s2l_df = s2l_df.set_index('uname_rnd')
+
+        set_1_limited_df, set_2_limited_df = s1l_df, s2l_df
+    return (set_1_limited_df, set_2_limited_df)
+ 
 class Proteomics(DataFrameOps):
 
     def __init__(self, database):
@@ -69,7 +116,9 @@ class Proteomics(DataFrameOps):
         pp.protein_id = pv.protein_id
         """
 
-        conditions = []
+        ctrls = "pp.protein_id not in (4,100,19,115,46,142,47,143)"
+
+        conditions = [ctrls]
         var_tup = []
         if username is not None:
             conditions.append("po.username = %s ")
@@ -105,7 +154,7 @@ class Proteomics(DataFrameOps):
             mymap[row['labels']] = dict([(k,row[k]) for k in columns ])
         return mymap
 
-    def GetPartitionsByUsername( self, username_set_1, username_set_2=None, round=None, met_id = None, df=None, nprocs=5):
+    def GetPartitionsByUsername( self, username_set_1, username_set_2=None, round=None, prot_id = None, df=None, nprocs=5):
         """
         Given a set(or 2 sets) of usernames for thatr returns a list of dataframe pairs for that partitioning.
 
@@ -114,23 +163,23 @@ class Proteomics(DataFrameOps):
         Options
         -------
         Given a single username set, returns comparison for that set and the difference of the whole set.
-        met_id - only performs partitioning for that metabolite (default:all)
+        prot_id - only performs partitioning for that metabolite (default:all)
         round - restricts the results to a single round (default:all)
         df - performs partitioning on given dataframe (i.e. you have your own subset)
         """
 
 
         l_logger.debug("GetPartitionsByUsername(%r,%r,%r,%r,%r,%r)" %(username_set_1, username_set_2,
-                round, met_id , df, nprocs))
+                round, prot_id , df, nprocs))
         if df is None:
-            df = self.GetData(round=round,metabolite_id=met_id)
-        ids = df.metabolite_id.unique()
+            df = self.GetData(round=round,protein_id=prot_id)
+        ids = df.protein_id.unique()
         p = Pool(nprocs)
         #note the sub_part function is declared at the top of the module and is not
         #part of the class.
         #this is necessary in order to get the subprocess map to work
         #from some cheap hand tuning, appears to top out at 5
-        return p.map( sub_part, [  (df, met_id, username_set_1, username_set_2, round) for met_id in ids ] )
+        return p.map( sub_part, [  (df, prot_id, username_set_1, username_set_2, round) for prot_id in ids ] )
 
 
     def GetAssociationsByUsername(self, username_set_1, username_set_2=None, round=None, nprocs=5):
@@ -155,10 +204,10 @@ class Proteomics(DataFrameOps):
         for set_1_limited_df, set_2_limited_df in partitions:
             zstat, pval = scistats.ranksums( set_2_limited_df['value'], set_1_limited_df['value'] )
             tscore, tpval = scistats.ttest_ind( set_2_limited_df['value'], set_1_limited_df['value'] )
-            met_info = {'met_id': set_2_limited_df['metabolite_id'][0],
-             'met_name':set_2_limited_df['metabolite_name'][0],
-             'n_set_1': len(set_1_limited_df['metabolite_name']),
-             'n_set_2': len(set_2_limited_df['metabolite_name']),
+            met_info = {'prot_id': set_2_limited_df['protein_id'][0],
+             'prot_name':set_2_limited_df['abbreviation'][0],
+             'n_set_1': len(set_1_limited_df['abbreviation']),
+             'n_set_2': len(set_2_limited_df['abbreviation']),
              'rsum_p_value': pval,
              'rsum_zstat':zstat,
              'ttest_p_value': tpval,
