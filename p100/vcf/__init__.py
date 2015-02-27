@@ -10,12 +10,16 @@
 
 # Exceptions
 from p100.errors import MyError
+from p100.utils.botoops import BotoOps
 
 import tabix
+import gzip, os, sys
 
 class VCFObject(object):
 
     def __init__(self, tokens):
+
+        self.good = True
 
         # Do a quality check on this set of tokens
         self.chr = tokens[0].strip('chr')
@@ -25,6 +29,12 @@ class VCFObject(object):
         self.ref = tokens[3].strip()
         self.alt = tokens[4].strip().split(',')
         self.score = tokens[5].strip()
+
+        try:
+            test = float(self.score)
+        except:
+            self.score = -1.0
+
         self.quality = tokens[6].strip()
         self.info = tokens[7].strip()
         self.flags = tokens[8].strip()
@@ -46,9 +56,11 @@ class VCFObject(object):
             elif (self.chr == 'M'):
                 pass
             else:
-                print "Warning, irregular genotype %s"%(temp)
+                #print "Warning, irregular genotype %s"%(temp)
+                self.good = False
+                return
 
-        self.alleles = set()
+        self.alleles = set([])
         for e in genotype:
             # Reference allele
             if (e == '0'):
@@ -62,10 +74,18 @@ class VCFObject(object):
             elif (e == '.'):
                 self.alleles.add('?')
             else:
-                print "%s Warning, unknown genotype %s" % (self.dbsnp, genotype)
+                print "[%s %s] Warning, unknown genotype %s" % (self.chr, self.pos, genotype)
+
+        # Check to see if the genotype is completely undefined
 
         if (len(self.alleles)==1):
             self.zygosity = "HOMOZYGOUS"
+
+            # CGI data has lots of lines with no alleles. Do not upload to database
+            if (list(self.alleles)[0] == '?'):
+                self.good = False
+                return
+
         elif (len(self.alleles)==2):
             self.zygosity = "HETEROZYGOUS"
         else:
@@ -98,8 +118,21 @@ class VCFObject(object):
         else:
             self.vc = "MNV"
 
+        # Truncate genotype field if it gets too long
+        if (len(self.genotype)>65535):
+            self.genotype = self.genotype[0:65535]
+        if (len(self.info)>65535):
+            self.info = self.info[0:65535]
+        if (len(self.flags)>65535):
+            self.flags = self.flags[0:65535]
+
     def Print(self):
-        print self.chr, self.start, self.end, self.ref, self.alt, self.vc, self.quality, self.genotype, self.alleles
+        print self.chr, self.start, self.end, self.ref, self.alt, self.vc, self.quality, self.genotype, self.alleles, self.zygosity
+
+    def WriteUsername(self, fout, username):
+        fout.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n"%(username, self.chr, self.start, self.end,
+                    self.ref, ','.join(self.alt), self.score, self.quality, self.info, self.flags, self.genotype, self.vc,
+                    ','.join(self.alleles), self.zygosity))
 
     def Compare(self, clinvar):
 
@@ -149,7 +182,7 @@ class VCF(object):
         self.filename = filename
         self.assembly = assembly
         self.dbsnp = dbsnp
-        self.tb = tabix.open(filename)
+        #self.tb = tabix.open(filename)
 
     def Query(self, rsid, suppress_errors=False):
 
@@ -184,3 +217,38 @@ class VCF(object):
 
         # Return the set of discovered variants
         return vcfs
+
+    def ReformatVCF(self):
+
+        # Download the data to the ephemeral workspace
+        filename = BotoOps().copy_s3_to_ephemeral(self.filename, '100i-wgs-data')
+        fout = gzip.open('/scratch/processed.gz', 'w')
+
+        # Process the file
+        count = 0
+        with gzip.open(filename, 'Ur') as f:
+            for line in f:
+
+                if (line.startswith('#')):
+                    continue
+
+                v = VCFObject(line.strip().split('\t'))
+
+                if (v.good):
+                    v.WriteUsername(fout, self.username)
+
+                count += 1
+                if (count % 100000 == 0):
+                    print "Processed %d lines"%(count)
+                    sys.stdout.flush()
+
+        fout.close()
+
+        # Upload the process file to S3
+        path = os.path.dirname(self.filename)
+        BotoOps().copy_ephemeral_to_s3('processed.gz', '100i-wgs-data', path)
+
+        # Now delete the files
+        os.remove(filename)
+        os.remove('/scratch/processed.gz')
+
